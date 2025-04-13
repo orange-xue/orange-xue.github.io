@@ -4,13 +4,75 @@
   
     
     <entry>
-      <title>hexo-butterfly安装配置</title>
-      <link href="/2025/04/12/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
-      <url>/2025/04/12/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+      <title>hexo图床和文章编辑写作</title>
+      <link href="/2025/04/13/hexo%E5%9B%BE%E5%BA%8A%E5%92%8C%E6%96%87%E7%AB%A0%E5%86%99%E4%BD%9C/"/>
+      <url>/2025/04/13/hexo%E5%9B%BE%E5%BA%8A%E5%92%8C%E6%96%87%E7%AB%A0%E5%86%99%E4%BD%9C/</url>
       
-        <content type="html"><![CDATA[<h1 id="Hexo下载"><a href="#Hexo下载" class="headerlink" title="Hexo下载"></a>Hexo下载</h1><h1 id="Typero下载"><a href="#Typero下载" class="headerlink" title="Typero下载"></a>Typero下载</h1><h3 id="1-下载Typero"><a href="#1-下载Typero" class="headerlink" title="1.下载Typero"></a>1.下载Typero</h3><p>打开Typora官网，下载最新版<a href="https://typoraio.cn/">https://typoraio.cn/</a></p><h3 id="2-修改文件"><a href="#2-修改文件" class="headerlink" title="2.修改文件"></a>2.修改文件</h3><p>打开Typora所在文件夹，找到该文件夹。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typora\resources\page-dist\static\js</span><br></pre></td></tr></table></figure><p>打开文件夹中的LicenseIndex.180dd4c7…文件，将文件中的</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e.hasActivated=&quot;true&quot;==e.hasActivated</span><br></pre></td></tr></table></figure><p>替换为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e.hasActivated=&quot;true&quot;==&quot;true&quot;</span><br></pre></td></tr></table></figure><h3 id="3-关闭软件启动时的激活弹窗"><a href="#3-关闭软件启动时的激活弹窗" class="headerlink" title="3.关闭软件启动时的激活弹窗"></a>3.关闭软件启动时的激活弹窗</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resources\page-dist\license.html</span><br></pre></td></tr></table></figure><p>打开上述文件，将代码末尾位置的</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><p>替换成</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">window</span>.οnlοad=<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;<span class="variable language_">window</span>.<span class="title function_">close</span>();&#125;,<span class="number">5</span>);&#125;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><h3 id="4-关闭软件左下角未激活提示"><a href="#4-关闭软件左下角未激活提示" class="headerlink" title="4.关闭软件左下角未激活提示"></a>4.关闭软件左下角未激活提示</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resources\locales\zh-Hans.lproj\Panel.json </span><br></pre></td></tr></table></figure><p>打开上述文件，找到以下代码</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;UNREGISTERED&quot;</span><span class="punctuation">:</span><span class="string">&quot;未激活&quot;</span></span><br></pre></td></tr></table></figure><p>替换成</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;UNREGISTERED&quot;</span><span class="punctuation">:</span><span class="string">&quot; &quot;</span></span><br></pre></td></tr></table></figure><hr><p>破解完成。</p><h1 id="Picgo下载和github图床配置"><a href="#Picgo下载和github图床配置" class="headerlink" title="Picgo下载和github图床配置"></a>Picgo下载和github图床配置</h1><h1 id="写作和上传"><a href="#写作和上传" class="headerlink" title="写作和上传"></a>写作和上传</h1>]]></content>
+        <content type="html"><![CDATA[<h1 id="Typora下载"><a href="#Typora下载" class="headerlink" title="Typora下载"></a>Typora下载</h1><h3 id="1-下载Typora"><a href="#1-下载Typora" class="headerlink" title="1.下载Typora"></a>1.下载Typora</h3><p>打开Typora官网，下载最新版<a href="https://typoraio.cn/">https://typoraio.cn/</a></p><h3 id="2-修改文件"><a href="#2-修改文件" class="headerlink" title="2.修改文件"></a>2.修改文件</h3><p>打开Typora所在文件夹，找到该文件夹。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typora\resources\page-dist\static\js</span><br></pre></td></tr></table></figure><p>打开文件夹中的LicenseIndex.180dd4c7…文件，将文件中的</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e.hasActivated=&quot;true&quot;==e.hasActivated</span><br></pre></td></tr></table></figure><p>替换为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e.hasActivated=&quot;true&quot;==&quot;true&quot;</span><br></pre></td></tr></table></figure><h3 id="3-关闭软件启动时的激活弹窗"><a href="#3-关闭软件启动时的激活弹窗" class="headerlink" title="3.关闭软件启动时的激活弹窗"></a>3.关闭软件启动时的激活弹窗</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resources\page-dist\license.html</span><br></pre></td></tr></table></figure><p>打开上述文件，将代码末尾位置的</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><p>替换成</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="variable language_">window</span>.οnlοad=<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;<span class="variable language_">window</span>.<span class="title function_">close</span>();&#125;,<span class="number">5</span>);&#125;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure><h3 id="4-关闭软件左下角未激活提示"><a href="#4-关闭软件左下角未激活提示" class="headerlink" title="4.关闭软件左下角未激活提示"></a>4.关闭软件左下角未激活提示</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resources\locales\zh-Hans.lproj\Panel.json </span><br></pre></td></tr></table></figure><p>打开上述文件，找到以下代码</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;UNREGISTERED&quot;</span><span class="punctuation">:</span><span class="string">&quot;未激活&quot;</span></span><br></pre></td></tr></table></figure><p>替换成</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;UNREGISTERED&quot;</span><span class="punctuation">:</span><span class="string">&quot; &quot;</span></span><br></pre></td></tr></table></figure><hr><p>破解完成。</p><h1 id="PicGo-github图床配置"><a href="#PicGo-github图床配置" class="headerlink" title="PicGo+github图床配置"></a>PicGo+github图床配置</h1><h3 id="1-配置github"><a href="#1-配置github" class="headerlink" title="1.配置github"></a>1.配置github</h3><p>1.github新建一个仓库保存图片。注：仓库大小有限制，最大1GB。</p><p>2.打开<strong>settings</strong>，选择最左下的<strong>Developer settings</strong>，选择”<strong>Personal access tokens</strong>“，并选择其中下方的”<strong>Tokens (classic)<strong>”；随后，选择右上角”</strong>Generate new token</strong>“，并再选择”**Generate new token (classic)**“。</p><p>3.在弹出的配置界面中，首先填写”<strong>Note</strong>“，这个是当前<strong>token</strong>的<strong>注释</strong>，也用一个和图片有关的名称来填写即可；随后，配置<strong>token</strong>的有效期。其实我们可以将有效期选择为<strong>永久</strong>。勾选<strong>repo</strong>，最后确认即可。</p><p>4.界面显示token，将序号保存下来，之后在github网页上该token不可见。</p><h3 id="2-配置PicGo"><a href="#2-配置PicGo" class="headerlink" title="2.配置PicGo"></a>2.配置PicGo</h3><p>1.下载并打开<strong>PicGo设置</strong>，滑到底部，在<strong>请选择显示的图床</strong>中只勾选<strong>github</strong></p><p>2.点进<strong>图床设置</strong>，编辑配置信息。仓库名就是我们前面创建的<strong>Repository</strong>的名称，分支名为main；随后的<strong>Token</strong>就是前面我们获取的<strong>token</strong>序号，存储路径这里我们可以空着，如果大家需要指定将图片存储到仓库中的某个路径下，就在这里设置即可。自定义域名使用<a href="https://cdn.staticaly.com/gh/orange-xue/PicgoImg@main%E8%8E%B7%E5%8F%96%E5%8A%A0%E9%80%9F%E3%80%82">https://cdn.staticaly.com/gh/orange-xue/PicgoImg@main获取加速。</a></p><h3 id="3-配置typora"><a href="#3-配置typora" class="headerlink" title="3.配置typora"></a>3.配置typora</h3><p>在”<strong>文件</strong>“中选择”<strong>偏好设置…</strong>“，随后选择”<strong>图像</strong>“，并按照如下图所示的配置方式来加以设置。</p><p><img src="https://cdn.staticaly.com/gh/orange-xue/PicgoImg@main/img/image-20250413203248892.png" alt="image-20250413203248892"></p><p>选择上图中的”<strong>验证图片上传选项</strong>“，如果出现显示<strong>验证成功</strong>的窗口，则表明我们已经成功配置完毕。此时，如果我们在<strong>Typora</strong>内添加了图片，那么这张图片将自动通过<strong>PicGo</strong>，上传到我们前面建立好的图床中。</p><h1 id="写作和上传"><a href="#写作和上传" class="headerlink" title="写作和上传"></a>写作和上传</h1><h3 id="1-创建编辑文章"><a href="#1-创建编辑文章" class="headerlink" title="1.创建编辑文章"></a>1.创建编辑文章</h3><p>在D:\blog-c\myblog\source\_posts页面git bush，输入指令：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new 文章名字</span><br></pre></td></tr></table></figure><p>在_posts文件夹中会自动更新一个md文档，用typora打开编辑即可。</p><h3 id="2-上传文章"><a href="#2-上传文章" class="headerlink" title="2.上传文章"></a>2.上传文章</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo c</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>]]></content>
       
       
+      <categories>
+          
+          <category> blog搭建 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>博客基础配置修改</title>
+      <link href="/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9/"/>
+      <url>/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> blog搭建 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>demo-text</title>
+      <link href="/2025/04/13/demo-text/"/>
+      <url>/2025/04/13/demo-text/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> hexo基础 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
       
     </entry>
     
