@@ -33,7 +33,7 @@
       <link href="/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9/"/>
       <url>/2025/04/13/%E5%8D%9A%E5%AE%A2%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9/</url>
       
-        <content type="html"><![CDATA[<h1 id="修改清单"><a href="#修改清单" class="headerlink" title="修改清单"></a>修改清单</h1><ul><li><input disabled="" type="checkbox"> </li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="修改清单"><a href="#修改清单" class="headerlink" title="修改清单"></a>修改清单</h1><ul><li><input disabled="" type="checkbox"> 头像</li><li><input checked="" disabled="" type="checkbox"> 首页title，侧边个人信息</li><li><input disabled="" type="checkbox"> </li></ul>]]></content>
       
       
       <categories>
