@@ -1,0 +1,21 @@
+/*太阳图标*/
+@font-face {
+    font-family: "iconfont"; /* Project id 4890961 */
+    src: url('//at.alicdn.com/t/c/font_4890961_kil6ek2d0we.woff2?t=1744514452590') format('woff2'),
+         url('//at.alicdn.com/t/c/font_4890961_kil6ek2d0we.woff?t=1744514452590') format('woff'),
+         url('//at.alicdn.com/t/c/font_4890961_kil6ek2d0we.ttf?t=1744514452590') format('truetype');
+  }
+  
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-taiyang:before {
+    content: "\e69d";
+  }
+
+/**/
