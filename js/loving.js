@@ -15,7 +15,7 @@
       { city: '芜湖市', date: '2025-01-31', note: '萌宠馆!rua' }
     ],
     '河北省': [
-      { city: '保定', date: '2025-03-29', note: '复试结束，ji' }
+      { city: '保定', date: '2025-03-29', note: '复试结束，见到恋人' }
     ],
     '上海市': [
       { city: '上海市', date: '2024-08-15', note: '第一次远行' }
@@ -36,15 +36,17 @@
 
   const DIARY_URL = '/loving/diary/'
 
-  const LIT_COLORS = {
-    light: [255, 240, 244],
-    dark: [210, 100, 125]
+  const BASE_GRAY = {
+    light: [230, 230, 230],
+    dark: [85, 85, 85]
   }
 
-  const UNCHECKED_COLOR = {
-    light: 'rgba(120, 175, 230, 0.45)',
-    dark: 'rgba(90, 140, 210, 0.35)'
+  const CHECKIN_OVERLAY = {
+    light: { start: [224, 238, 249], end: [110, 170, 220] },
+    dark: { start: [90, 110, 130], end: [70, 130, 175] }
   }
+
+  const COVER_RANGE = { min: 0.2, max: 0.55 }
 
   function normalizeProvinceName (name) {
     return name.replace(/(省|市|自治区|特别行政区|壮族自治区|维吾尔自治区|回族自治区)$/u, '')
@@ -88,19 +90,28 @@
     }, 0)
   }
 
-  function getUncheckedColor (isDark) {
-    return isDark ? UNCHECKED_COLOR.dark : UNCHECKED_COLOR.light
+  function getBaseGray (isDark) {
+    return isDark ? BASE_GRAY.dark : BASE_GRAY.light
   }
 
-  function getLitColor (count, maxCount, isDark) {
-    if (count <= 0) return getUncheckedColor(isDark)
-    if (maxCount <= 1) {
-      return rgbToHex(LIT_COLORS.dark[0], LIT_COLORS.dark[1], LIT_COLORS.dark[2])
-    }
-    const ratio = (count - 1) / (maxCount - 1)
-    const r = Math.round(LIT_COLORS.light[0] + (LIT_COLORS.dark[0] - LIT_COLORS.light[0]) * ratio)
-    const g = Math.round(LIT_COLORS.light[1] + (LIT_COLORS.dark[1] - LIT_COLORS.light[1]) * ratio)
-    const b = Math.round(LIT_COLORS.light[2] + (LIT_COLORS.dark[2] - LIT_COLORS.light[2]) * ratio)
+  function getAreaColor (count, maxCount, isDark) {
+    const gray = getBaseGray(isDark)
+    if (count <= 0) return rgbToHex(gray[0], gray[1], gray[2])
+
+    const palette = isDark ? CHECKIN_OVERLAY.dark : CHECKIN_OVERLAY.light
+    const depth = maxCount <= 1 ? 1 : (count - 1) / (maxCount - 1)
+    const tint = [
+      Math.round(palette.start[0] + (palette.end[0] - palette.start[0]) * depth),
+      Math.round(palette.start[1] + (palette.end[1] - palette.start[1]) * depth),
+      Math.round(palette.start[2] + (palette.end[2] - palette.start[2]) * depth)
+    ]
+    const cover = maxCount <= 1
+      ? 0.28
+      : COVER_RANGE.min + (COVER_RANGE.max - COVER_RANGE.min) * depth
+
+    const r = Math.round(gray[0] * (1 - cover) + tint[0] * cover)
+    const g = Math.round(gray[1] * (1 - cover) + tint[1] * cover)
+    const b = Math.round(gray[2] * (1 - cover) + tint[2] * cover)
     return rgbToHex(r, g, b)
   }
 
@@ -142,21 +153,20 @@
   }
 
   function buildSeriesData (geoJson, maxCount, isDark) {
-    const uncheckedColor = getUncheckedColor(isDark)
     const borderColor = isDark ? '#555' : '#fff'
     return geoJson.features.map(feature => {
       const name = feature.properties.name
       const count = getCheckinsByMapName(name).length
-      const litColor = getLitColor(count, maxCount, isDark)
+      const areaColor = getAreaColor(count, maxCount, isDark)
       return {
         name,
         value: count,
         itemStyle: {
-          areaColor: count > 0 ? litColor : uncheckedColor,
+          areaColor,
           borderColor,
           borderWidth: 1,
-          shadowBlur: count > 0 ? 6 + count * 2 : 0,
-          shadowColor: count > 0 ? 'rgba(210, 100, 125, 0.35)' : 'transparent'
+          shadowBlur: count > 0 ? 4 + count : 0,
+          shadowColor: count > 0 ? 'rgba(110, 181, 255, 0.35)' : 'transparent'
         }
       }
     })
@@ -180,26 +190,20 @@
             trigger: 'item',
             formatter: params => formatTooltip(params.name)
           },
-          visualMap: {
-            show: false,
-            min: 1,
-            max: maxCount,
-            inRange: {
-              color: [
-                rgbToHex(LIT_COLORS.light[0], LIT_COLORS.light[1], LIT_COLORS.light[2]),
-                rgbToHex(LIT_COLORS.dark[0], LIT_COLORS.dark[1], LIT_COLORS.dark[2])
-              ]
-            }
-          },
           series: [{
             type: 'map',
             map: 'china',
             roam: true,
             scaleLimit: { min: 0.8, max: 3 },
             label: { show: false },
+            itemStyle: {
+              areaColor: rgbToHex(...getBaseGray(isDark)),
+              borderColor: isDark ? '#555' : '#fff',
+              borderWidth: 1
+            },
             emphasis: {
               label: { show: true, color: '#666' },
-              itemStyle: { areaColor: rgbToHex(255, 200, 215) }
+              itemStyle: { areaColor: isDark ? rgbToHex(100, 140, 175) : rgbToHex(190, 220, 245) }
             },
             data: buildSeriesData(geoJson, maxCount, isDark)
           }]

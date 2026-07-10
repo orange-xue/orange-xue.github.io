@@ -27,6 +27,81 @@
   margin-left: auto !important;
   padding: 0 !important;
 }
+
+/* 导航栏一级、二级菜单：大号加粗深色文字，保留图标 */
+#nav .menus_items > .menus_item {
+  padding: 0 1.6rem !important;
+}
+
+#nav .menus_items > .menus_item > a.site-page,
+#nav .menus_items > .menus_item > span.site-page.group,
+#nav .menus_items .menus_item .menus_item_child li a.site-page.child {
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+  text-shadow: none !important;
+  padding-bottom: 0 !important;
+}
+
+#nav .menus_items > .menus_item > a.site-page > i.fa-fw,
+#nav .menus_items > .menus_item > span.site-page.group > i.fa-fw:not(.fa-chevron-down),
+#nav .menus_items .menus_item .menus_item_child li a.site-page.child > i.fa-fw {
+  display: inline-block !important;
+  margin-right: 6px;
+  color: #000 !important;
+}
+
+#nav .menus_items > .menus_item > span.site-page.group > i.fa-chevron-down {
+  color: #000 !important;
+}
+
+#nav .menus_items > .menus_item > a.site-page span,
+#nav .menus_items > .menus_item > span.site-page.group > span:first-of-type,
+#nav .menus_items .menus_item .menus_item_child li a.site-page.child span {
+  margin-left: 0 !important;
+}
+
+#nav .menus_items .menus_item .menus_item_child li a.site-page.child {
+  padding: 0.4rem 0.9rem !important;
+}
+
+#page-header.not-top-img #nav .menus_items > .menus_item > a.site-page,
+#page-header.not-top-img #nav .menus_items > .menus_item > span.site-page.group,
+#page-header.nav-fixed #nav .menus_items > .menus_item > a.site-page,
+#page-header.nav-fixed #nav .menus_items > .menus_item > span.site-page.group,
+#page-header.not-top-img #nav .menus_items .menus_item .menus_item_child li a.site-page.child,
+#page-header.nav-fixed #nav .menus_items .menus_item .menus_item_child li a.site-page.child {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+/* 导航栏站点名、搜索、菜单按钮 */
+#nav .nav-site-title .site-name,
+#nav .nav-page-title .site-name,
+#nav #search-button .fa-search,
+#nav #toggle-menu .fa-bars {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+#nav #search-button .site-page,
+#nav #toggle-menu .site-page {
+  color: #000 !important;
+}
+
+/* 首页大标题与副标题 */
+#page-header #site-title,
+#page-header #site-subtitle,
+#page-header #site-subtitle #subtitle {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="dark"] #nav .menus_items > .menus_item > a.site-page,
+[data-theme="dark"] #nav .menus_items > .menus_item > span.site-page.group,
+[data-theme="dark"] #nav .menus_items .menus_item .menus_item_child li a.site-page.child {
+  color: #e0e0e0 !important;
+}
 /* 子菜单横向展示 */
 #nav .menus_items .menus_item:hover .menus_item_child {
   display: flex !important;
@@ -192,11 +267,82 @@
 }
 
 /* 首页文章卡片 */
-#recent-posts > .recent-post-item {
-  background: var(--trans-light);
+#recent-posts .recent-post-items > .recent-post-item {
+  background: #fff;
   backdrop-filter: var(--backdrop-filter);
-  border-radius: 25px;
+  border-radius: 16px;
   border: var(--border-style);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+#recent-posts .recent-post-items > .recent-post-item .post_cover {
+  position: relative;
+  flex-shrink: 0;
+}
+
+#recent-posts .recent-post-items > .recent-post-item .post_cover .post-bg,
+#recent-posts .recent-post-items > .recent-post-item .post_cover img.post-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#recent-posts .recent-post-items > .recent-post-item .post-cover-category {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: rgba(74, 154, 232, 0.88);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+#recent-posts .recent-post-items > .recent-post-item:nth-child(even) .post-cover-category {
+  background: rgba(90, 175, 120, 0.88);
+}
+
+#recent-posts .recent-post-items > .recent-post-item:nth-child(3n) .post-cover-category {
+  background: rgba(232, 120, 100, 0.88);
+}
+
+#recent-posts .recent-post-items > .recent-post-item:first-child::after {
+  content: '最新';
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* 首页文字统一黑色 */
+#recent-posts .recent-post-items > .recent-post-item .article-title,
+#recent-posts .recent-post-items > .recent-post-item .article-title:hover,
+#recent-posts .recent-post-items > .recent-post-item .article-meta-wrap,
+#recent-posts .recent-post-items > .recent-post-item .article-meta-wrap a,
+#recent-posts .recent-post-items > .recent-post-item .article-meta-wrap i,
+#recent-posts .recent-post-items > .recent-post-item .content {
+  color: #000 !important;
+}
+
+#recent-posts .recent-post-items > .recent-post-item .article-title {
+  font-weight: 700;
+}
+
+#recent-posts .recent-post-items > .recent-post-item .article-meta-wrap a:hover {
+  color: #333 !important;
 }
 
 /* 首页侧栏卡片 */
@@ -228,7 +374,7 @@ div#archive {
 }
 
 /* 夜间模式遮罩 */
-[data-theme="dark"] #recent-posts > .recent-post-item,
+[data-theme="dark"] #recent-posts .recent-post-items > .recent-post-item,
 [data-theme="dark"] #aside-content .card-widget,
 [data-theme="dark"] div#post,
 [data-theme="dark"] div#archive,
@@ -298,4 +444,27 @@ div#archive {
   -moz-transform: scale(0.5);
   -ms-transform: scale(0.5);
   -o-transform: scale(0.5);
+}
+
+/* 文章标题前缀图标：FA6 实心图标需 font-weight 900 */
+.container.post-content h1,
+.container.post-content h2,
+.container.post-content h3,
+.container.post-content h4,
+.container.post-content h5,
+.container.post-content h6 {
+  position: relative;
+}
+
+.container.post-content h1:before,
+.container.post-content h2:before,
+.container.post-content h3:before,
+.container.post-content h4:before,
+.container.post-content h5:before,
+.container.post-content h6:before {
+  font-family: 'Font Awesome 6 Free' !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
 }

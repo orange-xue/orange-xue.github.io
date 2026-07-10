@@ -1,3 +1,11 @@
+.loving-page,
+.loving-moment-page {
+  --loving-accent: #52a4fc;
+  --loving-accent-deep: #298bec;
+  --loving-accent-soft: #f6fafc;
+  --loving-accent-mid: #80baee;
+}
+
 .loving-page {
   max-width: 960px;
   margin: 0 auto;
@@ -14,7 +22,7 @@
 
 .loving-section-title i {
   margin-right: 8px;
-  color: #ff6b8a;
+  color: var(--loving-accent);
 }
 
 .loving-map-card,
@@ -54,7 +62,7 @@
 }
 
 .loving-map-stats strong {
-  color: #ff6b8a;
+  color: var(--loving-accent-deep);
 }
 
 .loving-map-tip {
@@ -76,7 +84,7 @@
   padding: 14px 18px;
   width: min(420px, 100%);
   border-radius: 14px;
-  background: #fff0f4;
+  background: var(--loving-accent-soft);
   color: var(--font-color);
   font-size: 1.05rem;
   font-weight: 600;
@@ -86,7 +94,7 @@
 }
 
 [data-theme='dark'] .loving-gate-question {
-  background: rgba(255, 182, 193, 0.12);
+  background: rgba(110, 181, 255, 0.12);
 }
 
 .loving-gate-form {
@@ -109,8 +117,8 @@
 }
 
 .loving-gate-input:focus {
-  border-color: #ff6b8a;
-  box-shadow: 0 0 0 3px rgba(255, 107, 138, 0.15);
+  border-color: var(--loving-accent);
+  box-shadow: 0 0 0 3px rgba(110, 181, 255, 0.15);
 }
 
 .loving-gate-btn {
@@ -118,7 +126,7 @@
   padding: 10px 28px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ff8fa3, #ff6b8a);
+  background: linear-gradient(135deg, #8ec5ff, var(--loving-accent-deep));
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
@@ -127,7 +135,7 @@
 
 .loving-gate-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(255, 107, 138, 0.35);
+  box-shadow: 0 6px 18px rgba(110, 181, 255, 0.35);
 }
 
 .loving-gate-error {
@@ -136,89 +144,163 @@
   font-size: 0.9rem;
 }
 
-/* 日记问答页 */
-.loving-qa-page {
-  max-width: 760px;
+/* 日记时间轴 · 微博文形式 */
+.loving-moment-page {
+  max-width: 720px;
   margin: 0 auto;
-  padding: 8px 12px 40px;
+  padding: 8px 12px 48px;
 }
 
-.loving-qa-intro {
-  margin: 0 0 28px;
+.loving-moment-intro {
+  margin: 0 0 32px;
   text-align: center;
   color: var(--grey);
   line-height: 1.8;
   font-size: 0.95rem;
 }
 
-.loving-qa-list {
+.loving-timeline {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
 }
 
-.loving-qa-item {
-  background: var(--trans-light, rgba(255, 255, 255, 0.88));
-  backdrop-filter: blur(5px) saturate(150%);
-  border: 1px solid rgb(169, 169, 169);
-  border-radius: 18px;
-  padding: 20px 22px;
+.loving-timeline::before {
+  content: '';
+  position: absolute;
+  left: 88px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--loving-accent-mid), var(--loving-accent-soft));
+  border-radius: 2px;
 }
 
-[data-theme='dark'] .loving-qa-item {
-  background: var(--trans-dark, rgba(25, 25, 25, 0.88));
+.loving-moment {
+  display: grid;
+  grid-template-columns: 72px 32px 1fr;
+  gap: 0 12px;
+  padding-bottom: 28px;
 }
 
-.loving-qa-q,
-.loving-qa-a {
-  margin: 0;
-  line-height: 1.85;
-  color: var(--font-color);
+.loving-moment:last-child {
+  padding-bottom: 0;
 }
 
-.loving-qa-q {
-  margin-bottom: 14px;
-  font-weight: 600;
+.loving-moment-date {
+  text-align: right;
+  padding-top: 4px;
 }
 
-.loving-qa-a {
-  padding-top: 14px;
-  border-top: 1px dashed rgba(255, 182, 193, 0.55);
+.loving-moment-date time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.3;
+}
+
+.loving-moment-day {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--loving-accent-deep);
+}
+
+.loving-moment-year {
+  margin-top: 2px;
+  font-size: 0.78rem;
   color: var(--grey);
 }
 
-.loving-qa-q span,
-.loving-qa-a span {
+.loving-moment-track {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.loving-moment-dot {
+  position: relative;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--loving-accent);
+  border: 3px solid var(--loving-accent-soft);
+  box-shadow: 0 0 0 2px rgba(110, 181, 255, 0.25);
+}
+
+.loving-moment-card {
+  background: var(--trans-light, rgba(255, 255, 255, 0.92));
+  backdrop-filter: blur(5px) saturate(150%);
+  border: 1px solid rgba(169, 169, 169, 0.65);
+  border-radius: 16px;
+  padding: 16px 18px 14px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.loving-moment-card:hover {
+  border-color: var(--loving-accent-mid);
+  box-shadow: 0 4px 16px rgba(110, 181, 255, 0.12);
+}
+
+[data-theme='dark'] .loving-moment-card {
+  background: var(--trans-dark, rgba(25, 25, 25, 0.92));
+}
+
+.loving-moment-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.loving-moment-avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  margin-right: 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--loving-accent-soft), var(--loving-accent-mid));
+  color: var(--loving-accent-deep);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.loving-moment-author {
+  font-size: 0.92rem;
   font-weight: 700;
-  vertical-align: middle;
+  color: var(--font-color);
 }
 
-.loving-qa-q span {
-  background: #ffe8ef;
-  color: #e88da3;
+.loving-moment-time {
+  font-size: 0.8rem;
+  color: var(--grey);
 }
 
-.loving-qa-a span {
-  background: #ffd6e0;
-  color: #d4738f;
+.loving-moment-text {
+  margin: 0;
+  line-height: 1.85;
+  color: var(--font-color);
+  font-size: 0.98rem;
+  word-break: break-word;
 }
 
-[data-theme='dark'] .loving-qa-q span {
-  background: rgba(255, 182, 193, 0.18);
-  color: #ffb6c8;
+.loving-moment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(110, 181, 255, 0.18);
+  font-size: 0.82rem;
+  color: var(--grey);
 }
 
-[data-theme='dark'] .loving-qa-a span {
-  background: rgba(255, 214, 224, 0.12);
-  color: #ffc9d4;
+.loving-moment-meta span i {
+  margin-right: 5px;
+  color: var(--loving-accent);
 }
 
 @media screen and (max-width: 768px) {
@@ -229,5 +311,22 @@
   .loving-map-card,
   .loving-gate-card {
     padding: 16px;
+  }
+
+  .loving-timeline::before {
+    left: 62px;
+  }
+
+  .loving-moment {
+    grid-template-columns: 52px 24px 1fr;
+    gap: 0 8px;
+  }
+
+  .loving-moment-day {
+    font-size: 0.92rem;
+  }
+
+  .loving-moment-card {
+    padding: 14px 14px 12px;
   }
 }
