@@ -11,7 +11,8 @@
   const CHECKINS = {
     '安徽省': [
       { city: '繁昌县', date: '2002-08-23', note: '小蛇大驾光临' },
-      { city: '繁昌县', date: '2002-11-14', note: '小橙驾到，统统闪开' }
+      { city: '繁昌县', date: '2002-11-14', note: '小橙驾到，统统闪开' },
+      { city: '芜湖市', date: '2025-01-31', note: '萌宠馆!rua' }
     ],
     '浙江省': [
       { city: '杭州市', date: '2024-06-01', note: '西湖边' }
@@ -43,6 +44,21 @@
   const UNCHECKED_COLOR = {
     light: 'rgba(120, 175, 230, 0.45)',
     dark: 'rgba(90, 140, 210, 0.35)'
+  }
+
+  function normalizeProvinceName (name) {
+    return name.replace(/(省|市|自治区|特别行政区|壮族自治区|维吾尔自治区|回族自治区)$/u, '')
+  }
+
+  function getCheckinKeyForMapName (mapName) {
+    if (CHECKINS[mapName]) return mapName
+    return Object.keys(CHECKINS).find(key => normalizeProvinceName(key) === mapName) || null
+  }
+
+  function getCheckinsByMapName (mapName) {
+    const key = getCheckinKeyForMapName(mapName)
+    if (!key) return []
+    return getProvinceCheckins(key)
   }
 
   function getProvinceCheckins (province) {
@@ -101,11 +117,29 @@
     return GATE.answers.some(item => normalizeAnswer(item) === answer)
   }
 
-  function formatTooltip (province) {
-    const records = getProvinceCheckins(province)
-    if (!records.length) return `${province}<br/>还未打卡`
+  function formatTooltip (mapName) {
+    const records = getCheckinsByMapName(mapName)
+    const displayName = getCheckinKeyForMapName(mapName) || mapName
+    if (!records.length) return `${displayName}<br/>还未打卡`
     const lines = records.map((record, index) => formatCheckinLine(record, index)).join('<br/>')
-    return `<strong>${province}</strong>（${records.length} 次）<br/>${lines}`
+    return `<strong>${displayName}</strong>（${records.length} 次）<br/>${lines}`
+  }
+
+  const GEO_URLS = [
+    () => (window.GLOBAL_CONFIG && window.GLOBAL_CONFIG.root || '/') + 'js/china-geo.json',
+    'https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/json/china.json',
+    'https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/china.json'
+  ]
+
+  function loadChinaGeoJson (index = 0) {
+    if (index >= GEO_URLS.length) {
+      return Promise.reject(new Error('geo load failed'))
+    }
+    const url = typeof GEO_URLS[index] === 'function' ? GEO_URLS[index]() : GEO_URLS[index]
+    return fetch(url).then(res => {
+      if (!res.ok) throw new Error('geo http error')
+      return res.json()
+    }).catch(() => loadChinaGeoJson(index + 1))
   }
 
   function buildSeriesData (geoJson, maxCount, isDark) {
@@ -113,7 +147,7 @@
     const borderColor = isDark ? '#555' : '#fff'
     return geoJson.features.map(feature => {
       const name = feature.properties.name
-      const count = getProvinceCheckins(name).length
+      const count = getCheckinsByMapName(name).length
       const litColor = getLitColor(count, maxCount, isDark)
       return {
         name,
@@ -138,8 +172,7 @@
     const maxCount = getMaxCheckinCount()
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
 
-    fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
-      .then(res => res.json())
+    loadChinaGeoJson()
       .then(geoJson => {
         echarts.registerMap('china', geoJson)
 

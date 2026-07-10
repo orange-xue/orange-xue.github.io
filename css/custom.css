@@ -2,23 +2,28 @@
 /* #nav *::after {
     background-color: var(--june-theme) !important;
 } */
-/* 导航栏布局：一级菜单居中，搜索键靠右 */
+/* 导航栏布局：一级菜单相对整栏居中，搜索键靠右 */
 #nav #menus {
+  position: static !important;
   flex: 1;
   display: flex !important;
   align-items: center;
   justify-content: flex-end;
-  position: relative;
 }
 
 #nav .menus_items {
   position: absolute !important;
   width: fit-content !important;
   left: 50% !important;
-  transform: translateX(-50%) !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1;
+  white-space: nowrap;
 }
 
 #nav #search-button {
+  position: relative;
+  z-index: 2;
   margin-left: auto !important;
   padding: 0 !important;
 }
