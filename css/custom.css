@@ -2,12 +2,25 @@
 /* #nav *::after {
     background-color: var(--june-theme) !important;
 } */
-/* 一级菜单居中 */
+/* 导航栏布局：一级菜单居中，搜索键靠右 */
+#nav #menus {
+  flex: 1;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
 #nav .menus_items {
   position: absolute !important;
   width: fit-content !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
+}
+
+#nav #search-button {
+  margin-left: auto !important;
+  padding: 0 !important;
 }
 /* 子菜单横向展示 */
 #nav .menus_items .menus_item:hover .menus_item_child {
