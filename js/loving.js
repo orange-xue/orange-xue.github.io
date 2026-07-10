@@ -14,8 +14,8 @@
       { city: '繁昌县', date: '2002-11-14', note: '小橙驾到，统统闪开' },
       { city: '芜湖市', date: '2025-01-31', note: '萌宠馆!rua' }
     ],
-    '浙江省': [
-      { city: '杭州市', date: '2024-06-01', note: '西湖边' }
+    '河北省': [
+      { city: '保定', date: '2025-03-29', note: '复试结束，ji' }
     ],
     '上海市': [
       { city: '上海市', date: '2024-08-15', note: '第一次远行' }
@@ -127,7 +127,6 @@
 
   const GEO_URLS = [
     () => (window.GLOBAL_CONFIG && window.GLOBAL_CONFIG.root || '/') + 'js/china-geo.json',
-    'https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/json/china.json',
     'https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/china.json'
   ]
 
