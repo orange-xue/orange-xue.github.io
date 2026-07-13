@@ -1,9 +1,11 @@
 .loving-page,
-.loving-moment-page {
+.loving-jike-page {
   --loving-accent: #52a4fc;
   --loving-accent-deep: #298bec;
   --loving-accent-soft: #f6fafc;
   --loving-accent-mid: #80baee;
+  --loving-jike-warm: #fff8e8;
+  --loving-jike-accent-bg: #eef6ff;
 }
 
 .loving-page {
@@ -144,163 +146,103 @@
   font-size: 0.9rem;
 }
 
-/* 日记时间轴 · 微博文形式 */
-.loving-moment-page {
-  max-width: 720px;
+/* 日记 · 即刻短文瀑布流（纯 CSS 多列，静态部署友好） */
+.loving-jike-page {
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 8px 12px 48px;
+  padding: 8px 16px 48px;
 }
 
-.loving-moment-intro {
-  margin: 0 0 32px;
+.loving-jike-intro {
+  margin: 0 0 28px;
   text-align: center;
   color: var(--grey);
   line-height: 1.8;
   font-size: 0.95rem;
 }
 
-.loving-timeline {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+.loving-jike-waterfall {
+  column-count: 3;
+  column-gap: 14px;
 }
 
-.loving-timeline::before {
-  content: '';
-  position: absolute;
-  left: 88px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: linear-gradient(180deg, var(--loving-accent-mid), var(--loving-accent-soft));
-  border-radius: 2px;
-}
-
-.loving-moment {
-  display: grid;
-  grid-template-columns: 72px 32px 1fr;
-  gap: 0 12px;
-  padding-bottom: 28px;
-}
-
-.loving-moment:last-child {
-  padding-bottom: 0;
-}
-
-.loving-moment-date {
-  text-align: right;
-  padding-top: 4px;
-}
-
-.loving-moment-date time {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  line-height: 1.3;
-}
-
-.loving-moment-day {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--loving-accent-deep);
-}
-
-.loving-moment-year {
-  margin-top: 2px;
-  font-size: 0.78rem;
-  color: var(--grey);
-}
-
-.loving-moment-track {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-
-.loving-moment-dot {
-  position: relative;
-  z-index: 1;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--loving-accent);
-  border: 3px solid var(--loving-accent-soft);
-  box-shadow: 0 0 0 2px rgba(110, 181, 255, 0.25);
-}
-
-.loving-moment-card {
-  background: var(--trans-light, rgba(255, 255, 255, 0.92));
-  backdrop-filter: blur(5px) saturate(150%);
-  border: 1px solid rgba(169, 169, 169, 0.65);
-  border-radius: 16px;
+.loving-jike-card {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 14px;
   padding: 16px 18px 14px;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  border-radius: 14px;
+  background: var(--trans-light, rgba(255, 255, 255, 0.94));
+  backdrop-filter: blur(5px) saturate(150%);
+  border: 1px solid rgba(169, 169, 169, 0.45);
+  box-shadow: 0 2px 10px rgba(41, 139, 236, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.loving-moment-card:hover {
-  border-color: var(--loving-accent-mid);
-  box-shadow: 0 4px 16px rgba(110, 181, 255, 0.12);
+.loving-jike-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(41, 139, 236, 0.12);
 }
 
-[data-theme='dark'] .loving-moment-card {
+[data-theme='dark'] .loving-jike-card {
   background: var(--trans-dark, rgba(25, 25, 25, 0.92));
 }
 
-.loving-moment-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+.loving-jike-card--accent {
+  background: var(--loving-jike-accent-bg);
+  border-color: rgba(82, 164, 252, 0.25);
 }
 
-.loving-moment-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--loving-accent-soft), var(--loving-accent-mid));
-  color: var(--loving-accent-deep);
-  font-size: 0.95rem;
-  flex-shrink: 0;
+[data-theme='dark'] .loving-jike-card--accent {
+  background: rgba(41, 139, 236, 0.14);
 }
 
-.loving-moment-author {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--font-color);
+.loving-jike-card--warm {
+  background: var(--loving-jike-warm);
+  border-color: rgba(255, 180, 80, 0.3);
 }
 
-.loving-moment-time {
-  font-size: 0.8rem;
-  color: var(--grey);
+[data-theme='dark'] .loving-jike-card--warm {
+  background: rgba(255, 200, 100, 0.1);
 }
 
-.loving-moment-text {
+.loving-jike-text {
   margin: 0;
-  line-height: 1.85;
+  line-height: 1.75;
   color: var(--font-color);
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   word-break: break-word;
 }
 
-.loving-moment-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(110, 181, 255, 0.18);
-  font-size: 0.82rem;
-  color: var(--grey);
+.loving-jike-card--short .loving-jike-text {
+  font-size: 1.05rem;
+  font-weight: 500;
 }
 
-.loving-moment-meta span i {
-  margin-right: 5px;
-  color: var(--loving-accent);
+.loving-jike-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(82, 164, 252, 0.12);
+}
+
+.loving-jike-foot time {
+  font-size: 0.78rem;
+  color: var(--grey);
+  font-variant-numeric: tabular-nums;
+}
+
+.loving-jike-tag {
+  font-size: 0.76rem;
+  color: var(--loving-accent-deep);
+  font-weight: 600;
 }
 
 @media screen and (max-width: 768px) {
@@ -313,20 +255,19 @@
     padding: 16px;
   }
 
-  .loving-timeline::before {
-    left: 62px;
+  .loving-jike-waterfall {
+    column-count: 2;
+    column-gap: 12px;
   }
 
-  .loving-moment {
-    grid-template-columns: 52px 24px 1fr;
-    gap: 0 8px;
-  }
-
-  .loving-moment-day {
-    font-size: 0.92rem;
-  }
-
-  .loving-moment-card {
+  .loving-jike-card {
     padding: 14px 14px 12px;
+    margin-bottom: 12px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .loving-jike-waterfall {
+    column-count: 1;
   }
 }

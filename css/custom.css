@@ -446,6 +446,26 @@ div#archive {
   -o-transform: scale(0.5);
 }
 
+/* 无侧栏页面：内容区占页面宽度 70% 并居中 */
+.layout.hide-aside {
+  justify-content: center;
+  max-width: 100% !important;
+}
+
+.layout.hide-aside > div {
+  width: 70% !important;
+  max-width: 70%;
+  flex: 0 0 70%;
+}
+
+@media screen and (max-width: 900px) {
+  .layout.hide-aside > div {
+    width: 100% !important;
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+}
+
 /* 文章标题前缀图标：FA6 实心图标需 font-weight 900 */
 .container.post-content h1,
 .container.post-content h2,
