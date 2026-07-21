@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>labelme标注工具安装使用</title>
+      <link href="/2026/07/21/labelme%E6%A0%87%E6%B3%A8%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/"/>
+      <url>/2026/07/21/labelme%E6%A0%87%E6%B3%A8%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="下载conda并创建虚拟环境"><a href="#下载conda并创建虚拟环境" class="headerlink" title="下载conda并创建虚拟环境"></a>下载conda并创建虚拟环境</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda create <span class="literal">-n</span> labelme python=<span class="number">3.7</span></span><br><span class="line">conda activate labelme</span><br></pre></td></tr></table></figure><h1 id="安装相关包"><a href="#安装相关包" class="headerlink" title="安装相关包"></a>安装相关包</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pip install pyqt5<span class="literal">-sip</span>==<span class="number">12.11</span>.<span class="number">0</span> <span class="literal">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple/</span><br><span class="line"></span><br><span class="line">pip install pyqt5==<span class="number">5.15</span>.<span class="number">9</span> <span class="literal">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple/</span><br><span class="line"></span><br><span class="line">pip install pyqt5<span class="literal">-tools</span> <span class="literal">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple/</span><br></pre></td></tr></table></figure><h1 id="安装labelme版本指定3-16-7"><a href="#安装labelme版本指定3-16-7" class="headerlink" title="安装labelme版本指定3.16.7"></a>安装labelme版本指定3.16.7</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install labelme=3.16.7</span><br></pre></td></tr></table></figure><p>在命令行输入<code>labelme</code>即可打开进行标注</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据标注 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>windows环境下打包python后端</title>
       <link href="/2026/07/13/windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%89%93%E5%8C%85python%E5%90%8E%E7%AB%AF/"/>
       <url>/2026/07/13/windows%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%89%93%E5%8C%85python%E5%90%8E%E7%AB%AF/</url>
@@ -38,14 +63,14 @@
       
       <categories>
           
-          <category> 部署 </category>
+          <category> docker </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> docker </tag>
+            <tag> 工具 </tag>
             
         </tags>
       
@@ -95,7 +120,7 @@
       
         <tags>
             
-            <tag> 环境 </tag>
+            <tag> 工具 </tag>
             
         </tags>
       
