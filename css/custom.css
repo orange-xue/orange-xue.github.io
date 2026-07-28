@@ -410,11 +410,10 @@ div#archive {
 }
 
 /* 鼠标样式 */
-#cursor {
+/* #cursor {
   position: fixed;
   width: 16px;
   height: 16px;
-  /* 这里改变跟随的底色 */
   background: rgb(57, 197, 187);
   border-radius: 8px;
   opacity: 0.25;
@@ -444,7 +443,8 @@ div#archive {
   -moz-transform: scale(0.5);
   -ms-transform: scale(0.5);
   -o-transform: scale(0.5);
-}
+} */
+ 
 
 /* 无侧栏页面：内容区占页面宽度 70% 并居中 */
 .layout.hide-aside {

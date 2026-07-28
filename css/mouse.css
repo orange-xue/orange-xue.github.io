@@ -1,0 +1,36 @@
+/* 自定义鼠标：默认 / 悬停 */
+body,
+html {
+  cursor: url('/img/mouse1.png') 0 0, auto !important;
+}
+
+a,
+a:hover,
+button,
+button:hover,
+input[type='submit'],
+input[type='button'],
+input[type='reset'],
+label[for],
+select,
+summary,
+[role='button'],
+[onclick],
+.site-page,
+.menus_item,
+#search-button,
+#toggle-menu,
+.card-widget a,
+.recent-post-item a,
+.pagination a,
+#rightside > * {
+  cursor: url('/img/mouse2.png') 0 0, pointer !important;
+}
+
+a *,
+button *,
+.site-page *,
+#search-button *,
+#toggle-menu * {
+  cursor: url('/img/mouse2.png') 0 0, pointer !important;
+}
