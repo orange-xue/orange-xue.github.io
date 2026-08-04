@@ -466,6 +466,27 @@ div#archive {
   }
 }
 
+/* 时间轴年份生肖图标：固定 24px，避免部署后被全局 img 样式撑大 */
+.article-sort-item.year .article-sort-zodiac {
+  position: absolute !important;
+  left: calc(-20px - 28px) !important;
+  top: 50% !important;
+  z-index: 1;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 24px !important;
+  height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  margin-top: -12px !important;
+  flex: none !important;
+  overflow: hidden !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  pointer-events: none !important;
+}
+
 /* 文章标题前缀图标：FA6 实心图标需 font-weight 900 */
 .container.post-content h1,
 .container.post-content h2,
