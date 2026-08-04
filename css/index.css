@@ -1919,12 +1919,29 @@ figure.highlight pre .javascript .function {
 .article-sort-item.year {
   font-size: 1.43em;
   margin-bottom: 10px;
+  gap: 6px;
 }
 .article-sort-item.year:hover:before {
-  border-color: #49b1f5;
+  border-color: transparent;
 }
 .article-sort-item.year:before {
-  border-color: var(--pseudo-hover);
+  display: none;
+  content: none;
+}
+.article-sort-item.year .article-sort-zodiac {
+  position: absolute;
+  left: calc(-20px - 28px);
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
 }
 .article-sort-item-time {
   color: var(--card-meta);
