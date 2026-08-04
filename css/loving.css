@@ -8,10 +8,159 @@
   --loving-jike-accent-bg: #eef6ff;
 }
 
+#page:has(.loving-page) > .page-title {
+  display: none;
+}
+
 .loving-page {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 12px 40px;
+}
+
+.loving-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin: 4px 0 28px;
+}
+
+.loving-avatar-wrap {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.loving-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid rgba(82, 164, 252, 0.55);
+  box-shadow: 0 4px 14px rgba(41, 139, 236, 0.14);
+  background: #fff;
+}
+
+.loving-avatar-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--font-color);
+}
+
+.loving-ecg {
+  flex: 1 1 0;
+  min-width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.loving-ecg--flip {
+  transform: scaleX(-1);
+}
+
+.loving-ecg-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.loving-ecg-path {
+  fill: none;
+  stroke: var(--loving-accent-deep);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+[data-theme='dark'] .loving-ecg-path {
+  stroke: #8ec5ff;
+}
+
+.loving-duration {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+  color: var(--font-color);
+  text-align: center;
+}
+
+.loving-duration-label {
+  margin: 0 !important;
+  font-size: 0.82rem;
+  color: var(--grey);
+  letter-spacing: 0.04em;
+}
+
+.loving-duration-units {
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+
+.loving-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 36px;
+}
+
+.loving-unit-num {
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--loving-accent-deep);
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.loving-unit-num.is-tick {
+  color: #ff6b8a;
+  transform: translateY(-1px);
+}
+
+[data-theme='dark'] .loving-unit-num {
+  color: #8ec5ff;
+}
+
+[data-theme='dark'] .loving-unit-num.is-tick {
+  color: #ff8fab;
+}
+
+.loving-unit-label {
+  font-size: 0.68rem;
+  color: var(--grey);
+}
+
+.loving-unit-sep {
+  padding-bottom: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--loving-accent-mid);
+  line-height: 1;
+}
+
+.loving-duration-date {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--grey);
+}
+
+.loving-duration-date time {
+  font-variant-numeric: tabular-nums;
+  color: var(--loving-accent-deep);
 }
 
 .loving-section-title {
@@ -35,6 +184,18 @@
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 28px;
+}
+
+.loving-gate-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.loving-gate-card .loving-section-title {
+  margin: 0;
+  text-align: left;
 }
 
 [data-theme='dark'] .loving-map-card,
@@ -74,76 +235,26 @@
   font-size: 0.85rem;
 }
 
-.loving-gate-desc {
-  margin: 0 0 20px;
-  text-align: center;
-  color: var(--grey);
-  line-height: 1.7;
-}
-
-.loving-gate-question {
-  margin: 0;
-  padding: 14px 18px;
-  width: min(420px, 100%);
-  border-radius: 14px;
-  background: var(--loving-accent-soft);
-  color: var(--font-color);
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.9;
-  text-align: center;
-  white-space: normal;
-}
-
-[data-theme='dark'] .loving-gate-question {
-  background: rgba(110, 181, 255, 0.12);
-}
-
-.loving-gate-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-.loving-gate-input {
-  width: min(420px, 100%);
-  padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background: var(--card-bg, #fff);
-  color: var(--font-color);
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.loving-gate-input:focus {
-  border-color: var(--loving-accent);
-  box-shadow: 0 0 0 3px rgba(110, 181, 255, 0.15);
-}
-
 .loving-gate-btn {
-  min-width: 180px;
-  padding: 10px 28px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  padding: 10px 24px;
   border: none;
   border-radius: 999px;
   background: linear-gradient(135deg, #8ec5ff, var(--loving-accent-deep));
   color: #fff;
   font-size: 1rem;
+  text-decoration: none;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .loving-gate-btn:hover {
+  color: #fff;
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(110, 181, 255, 0.35);
-}
-
-.loving-gate-error {
-  min-height: 20px;
-  color: #e74c3c;
-  font-size: 0.9rem;
 }
 
 /* 日记 · 即刻短文瀑布流（纯 CSS 多列，静态部署友好） */
@@ -246,6 +357,41 @@
 }
 
 @media screen and (max-width: 768px) {
+  .loving-hero {
+    gap: 8px;
+  }
+
+  .loving-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+
+  .loving-avatar-name {
+    font-size: 0.75rem;
+  }
+
+  .loving-ecg {
+    height: 36px;
+    min-width: 28px;
+  }
+
+  .loving-unit {
+    min-width: 28px;
+  }
+
+  .loving-unit-num {
+    font-size: 1.15rem;
+  }
+
+  .loving-unit-sep {
+    padding-bottom: 12px;
+  }
+
+  .loving-duration-label {
+    font-size: 0.72rem;
+  }
+
   .loving-map-wrap {
     height: 380px;
   }
@@ -253,6 +399,18 @@
   .loving-map-card,
   .loving-gate-card {
     padding: 16px;
+  }
+
+  .loving-gate-card {
+    flex-wrap: wrap;
+  }
+
+  .loving-gate-card .loving-section-title {
+    flex: 1 1 auto;
+  }
+
+  .loving-gate-btn {
+    margin-left: auto;
   }
 
   .loving-jike-waterfall {

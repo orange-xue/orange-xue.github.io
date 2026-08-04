@@ -36,16 +36,8 @@
     ]
   }
 
-  const GATE = {
-    question: '现在你是一只海鸥,请选择你的任务',
-    options: [
-      '1.去码头整一根薯条',
-      '2.叼走一条蛇'
-    ],
-    answers: ['2.叼走一条蛇', '叼走一条蛇', '2']
-  }
-
-  const DIARY_URL = '/loving/diary/'
+  // 恋爱开始日期
+  const LOVE_START = '2025-02-03'
 
   const BASE_GRAY = {
     light: [230, 230, 230],
@@ -130,13 +122,49 @@
     return `#${[r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')}`
   }
 
-  function normalizeAnswer (value) {
-    return value.trim().replace(/\s+/g, '')
+  function pad2 (n) {
+    return String(n).padStart(2, '0')
   }
 
-  function isGateAnswerCorrect (value) {
-    const answer = normalizeAnswer(value)
-    return GATE.answers.some(item => normalizeAnswer(item) === answer)
+  function getLoveElapsed () {
+    const start = new Date(LOVE_START + 'T00:00:00')
+    const diff = Math.max(0, Date.now() - start.getTime())
+    const totalSeconds = Math.floor(diff / 1000)
+    return {
+      days: Math.floor(totalSeconds / 86400),
+      hours: Math.floor((totalSeconds % 86400) / 3600),
+      minutes: Math.floor((totalSeconds % 3600) / 60),
+      seconds: totalSeconds % 60
+    }
+  }
+
+  function setUnitText (el, value, animate) {
+    if (!el) return
+    const next = String(value)
+    if (el.textContent === next) return
+    el.textContent = next
+    if (!animate) return
+    el.classList.remove('is-tick')
+    // restart CSS animation
+    void el.offsetWidth
+    el.classList.add('is-tick')
+  }
+
+  function renderDuration (animate) {
+    const root = document.getElementById('loving-duration')
+    if (!root) return
+    const elapsed = getLoveElapsed()
+    setUnitText(root.querySelector('[data-unit="days"]'), elapsed.days, animate)
+    setUnitText(root.querySelector('[data-unit="hours"]'), pad2(elapsed.hours), animate)
+    setUnitText(root.querySelector('[data-unit="minutes"]'), pad2(elapsed.minutes), animate)
+    setUnitText(root.querySelector('[data-unit="seconds"]'), pad2(elapsed.seconds), animate)
+  }
+
+  function initDuration () {
+    const dateEl = document.getElementById('loving-start-date')
+    if (dateEl) dateEl.textContent = LOVE_START
+    renderDuration(false)
+    window.setInterval(() => renderDuration(true), 1000)
   }
 
   function formatTooltip (mapName) {
@@ -241,36 +269,8 @@
     window.addEventListener('resize', () => chart.resize())
   }
 
-  function renderGateQuestion (questionEl) {
-    if (!questionEl) return
-    const lines = [GATE.question, ...(GATE.options || [])]
-    questionEl.innerHTML = lines.join('<br>')
-  }
-
-  function initGate () {
-    const form = document.getElementById('loving-gate-form')
-    const input = document.getElementById('loving-gate-answer')
-    const error = document.getElementById('loving-gate-error')
-    const questionEl = document.getElementById('loving-gate-question')
-    if (!form || !input) return
-
-    if (questionEl) renderGateQuestion(questionEl)
-
-    form.addEventListener('submit', event => {
-      event.preventDefault()
-      if (isGateAnswerCorrect(input.value)) {
-        sessionStorage.setItem('loving_gate_passed', '1')
-        window.location.href = DIARY_URL
-        return
-      }
-      if (error) error.textContent = '答案不对，再想想吧'
-      input.value = ''
-      input.focus()
-    })
-  }
-
   function boot () {
-    initGate()
+    initDuration()
     if (window.echarts) {
       initMap()
     } else if (window.btf && typeof window.btf.getScript === 'function') {
