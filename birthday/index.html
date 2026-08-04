@@ -126,7 +126,16 @@
         }
         
         #cam-preview-container {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            z-index: 100000;
+            opacity: 0.9;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        #cam-preview-container.hidden {
+            display: none !important;
         }
         #cam-preview-container:hover {
             transform: scale(1.05);
@@ -162,6 +171,7 @@
             border-radius: 10px;
         }
     </style>
+    <link rel="stylesheet" href="./custom.css">
 </head>
 <body>
     
@@ -233,75 +243,67 @@
             <!-- 自动倒数提示文字 -->
             <p id="auto-countdown-text" class="mt-4 text-sm text-pink-200/60 font-light tracking-wider animate-pulse hidden"></p>
         </div>
+    </div>
 
-        <!-- 摄像头预览框 -->
-        <div id="cam-preview-container" class="absolute bottom-6 left-6 z-50 opacity-90 hover:opacity-100">
-            <div class="glass-panel p-2 rounded-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-                <div class="relative w-36 h-28 bg-black/40 rounded-lg overflow-hidden border border-white/5">
-                     <canvas id="output_canvas" width="160" height="120" class="w-full h-full object-cover transform scale-x-[-1]"></canvas>
-                     <div class="absolute top-2 right-2 flex items-center gap-1 bg-black/60 px-1.5 py-0.5 rounded-full backdrop-blur-sm">
-                        <div id="cam-status-dot" class="w-1.5 h-1.5 rounded-full bg-red-500 transition-colors duration-300"></div>
-                        <span id="cam-status-text" class="text-[8px] text-red-400 font-mono">NO HAND</span>
-                     </div>
-                </div>
-                <div class="text-center mt-1.5">
-                    <p class="text-[10px] text-pink-200/70 tracking-widest uppercase scale-90">Camera View</p>
-                </div>
+    <!-- 手势框：样式与原 GitHub 一致，仅置顶保证惊喜层期间仍可见 -->
+    <div id="cam-preview-container" class="hidden opacity-90 hover:opacity-100">
+        <div class="glass-panel p-2 rounded-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+            <div class="relative w-36 h-28 bg-black/40 rounded-lg overflow-hidden border border-white/5">
+                 <canvas id="output_canvas" width="160" height="120" class="w-full h-full object-cover transform scale-x-[-1]"></canvas>
+                 <div class="absolute top-2 right-2 flex items-center gap-1 bg-black/60 px-1.5 py-0.5 rounded-full backdrop-blur-sm">
+                    <div id="cam-status-dot" class="w-1.5 h-1.5 rounded-full bg-red-500 transition-colors duration-300"></div>
+                    <span id="cam-status-text" class="text-[8px] text-red-400 font-mono">NO HAND</span>
+                 </div>
+            </div>
+            <div class="text-center mt-1.5">
+                <p class="text-[10px] text-pink-200/70 tracking-widest uppercase scale-90">Camera View</p>
             </div>
         </div>
     </div>
 
-    <!-- 惊喜层 -->
+    <!-- 惊喜层：信封卡片 + 塔罗照片 -->
     <div id="surprise-layer" class="hidden">
-        <button id="reveal-btn" class="safe-click-area hidden px-10 py-5 bg-white text-pink-600 rounded-full font-bold text-2xl shadow-[0_0_60px_rgba(255,105,180,0.8)] hover:scale-105 transition-transform duration-300 animate-float">🎁 打开礼物</button>
-        
-        <!-- 卡片容器 -->
-        <div id="flip-card-container" class="hidden flip-card w-full max-w-sm md:max-w-md aspect-[3/4] mx-6 pop-in">
+        <p id="gesture-hint" class="hidden"></p>
+        <button id="reveal-btn" class="safe-click-area hidden px-10 py-5 bg-white text-pink-600 rounded-full font-bold text-2xl shadow-[0_0_60px_rgba(255,105,180,0.8)] hover:scale-105 transition-transform duration-300 animate-float">👋 挥手打开信封</button>
+
+        <div id="flip-card-container" class="hidden flip-card letter-card pop-in">
             <div class="flip-card-inner">
-                
-                <!-- 正面：引导开启 -->
                 <div class="flip-card-front glass-panel bg-gradient-to-br from-pink-500/40 to-purple-600/40 border border-white/30 p-1">
                     <div class="bg-black/80 rounded-[1rem] p-6 h-full flex flex-col backdrop-blur-md">
-                        <div class="w-full aspect-[4/3] bg-gray-800 rounded-lg mb-6 overflow-hidden relative border border-white/10 shadow-inner">
-                            <img src="https://bpic.588ku.com/Templet_origin_pic/05/19/43/8c971b1364922e551b4fbccb2d5719d2.jpg" class="w-full h-full object-cover" alt="Gift">
+                        <div class="w-full flex-1 min-h-0 bg-gray-800 rounded-lg mb-4 overflow-hidden relative border border-white/10 shadow-inner">
+                            <img src="/img/birthcard.jpg" class="w-full h-full object-cover" alt="Gift">
                             <div class="absolute bottom-3 left-4 text-white/90 font-handwriting text-2xl">Happy Birthday!</div>
                         </div>
-                        <div class="text-center mt-auto mb-8">
-                            <p class="text-gray-300 mb-6 font-light leading-relaxed">这不仅仅是一场数字烟花，<br>更是为你准备的专属时刻。</p>
-                            <button id="next-surprise-btn" class="safe-click-area w-full py-3 bg-gradient-to-r from-pink-600 to-purple-700 rounded-xl font-bold text-white shadow-lg hover:brightness-110 active:scale-95 transition">What's the surprise? ✨</button>
+                        <div class="text-center mt-auto mb-2">
+                            <p class="text-gray-300 mb-4 font-light leading-relaxed">捏合保持打开 · 竖食指保持翻转</p>
+                            <button id="next-surprise-btn" class="safe-click-area w-full py-3 bg-gradient-to-r from-pink-600 to-purple-700 rounded-xl font-bold text-white shadow-lg hover:brightness-110 active:scale-95 transition">翻转信封 ✨</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- 背面：祝福内容 (分页显示) -->
                 <div class="flip-card-back glass-panel bg-gradient-to-br from-purple-500/40 to-blue-600/40 border border-white/30 p-1">
-                    <div class="bg-black/90 rounded-[1rem] p-8 h-full flex flex-col items-center justify-center backdrop-blur-md">
-                        
-                        <!-- 第一页：生日祝福 (带照片) -->
-                        <div id="card-page-1" class="w-full h-full flex flex-col">
-                            <div class="mb-4 text-5xl animate-bounce text-center">💌</div>
-                            <h3 class="text-2xl font-bold text-pink-300 mb-6 font-handwriting text-center">致最特别的你</h3>
-                            <div id="typewriter-text-1" class="text-left text-gray-200 space-y-4 font-light leading-7 text-sm md:text-base border-l-2 border-pink-500/50 pl-4 mb-4 flex-grow scrollable-text"></div>
-                            
-                            <button id="to-page-2-btn" class="safe-click-area px-6 py-2 mt-auto rounded-full bg-white/10 text-pink-200 hover:bg-white/20 transition text-sm flex items-center justify-center mx-auto">
-                                还有话对你说... <span class="ml-2">👉</span>
-                            </button>
-                        </div>
-
-                        <!-- 第二页：快递信息 (纯文字，带滚动) -->
-                        <div id="card-page-2" class="w-full h-full flex flex-col hidden">
-                            <h3 class="text-xl font-bold text-purple-300 mb-4 font-handwriting text-center mt-2">一点小小的歉意</h3>
-                            <!-- 滚动区域 -->
-                            <div id="typewriter-text-2" class="text-left text-gray-200 space-y-3 font-light leading-6 text-sm md:text-base border-l-2 border-purple-500/50 pl-4 mb-4 flex-grow scrollable-text h-full"></div>
-                            
-                            <button id="close-card-btn" class="safe-click-area px-8 py-2 mt-auto rounded-full border border-white/30 text-gray-300 hover:bg-white/10 hover:text-white transition text-sm mx-auto">
-                                收起卡片
-                            </button>
-                        </div>
-
+                    <div class="bg-black/90 rounded-[1rem] p-6 md:p-8 h-full flex flex-col backdrop-blur-md">
+                        <div class="mb-2 text-4xl text-center">💌</div>
+                        <h3 id="letter-title" class="text-2xl font-bold text-pink-300 mb-4 font-handwriting text-center">写给你</h3>
+                        <div id="letter-md-body" class="flex-grow"></div>
+                        <button id="close-card-btn" class="safe-click-area px-8 py-2 mt-4 rounded-full border border-white/30 text-gray-300 hover:bg-white/10 hover:text-white transition text-sm mx-auto">
+                            握拳保持关闭（或点击）
+                        </button>
+                        <!-- 兼容原脚本引用 -->
+                        <div id="card-page-1" class="hidden"></div>
+                        <div id="card-page-2" class="hidden"></div>
+                        <div id="typewriter-text-1" class="hidden"></div>
+                        <div id="typewriter-text-2" class="hidden"></div>
+                        <button id="to-page-2-btn" class="hidden"></button>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="tarot-layer" class="hidden">
+            <div id="tarot-stage" aria-label="塔罗照片"></div>
+            <p id="tarot-hint">挥手选牌 · 握拳翻开照片</p>
+            <button id="enter-loving-btn" class="safe-click-area hidden">进入博客空间</button>
         </div>
     </div>
 
@@ -347,6 +349,7 @@
         // --- 自动倒数变量 ---
         let autoEntryTimer = null;
         let autoEntrySeconds = 10;
+        let cameraReady = false;
         
         let audioContext, analyser;
         const bgm = document.getElementById('bgm');
@@ -743,7 +746,14 @@
             setTimeout(() => {
                 ui.surpriseLayer.classList.remove('hidden');
                 ui.surpriseLayer.classList.add('active');
-                ui.revealBtn.classList.remove('hidden');
+                const kick = () => {
+                    if (window.BirthdayGestures) window.BirthdayGestures.beginAfterCelebration();
+                    else {
+                        ui.revealBtn.classList.remove('hidden');
+                        setTimeout(kick, 120);
+                    }
+                };
+                kick();
             }, 1500);
         }
 
@@ -810,80 +820,49 @@
             type();
         }
 
-        ui.revealBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            ui.revealBtn.classList.add('hidden');
-            ui.cardContainer.classList.remove('hidden');
-        });
-
-        // "What's the surprise" 按钮 -> 翻转到背面 (第一页)
-        ui.nextBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            ui.cardContainer.classList.add('flipped');
-            // 显示第一页，隐藏第二页
-            ui.page1.classList.remove('hidden');
-            ui.page2.classList.add('hidden');
-            setTimeout(() => typeWriter(wishes_part1, 'typewriter-text-1'), 400);
-        });
-
-        // "还有话对你说" 按钮 -> 切换到第二页
-        ui.toPage2Btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            ui.page1.classList.add('hidden');
-            ui.page2.classList.remove('hidden');
-            // 重新触发第二页的打字机
-            setTimeout(() => typeWriter(wishes_part2, 'typewriter-text-2', 30), 100);
-        });
+        // 信封/塔罗交互改由 birthday/custom.js（挥手开、握拳关、握拳摊开进塔罗）
+        // 保留空引用，避免旧代码报错
+        ui.revealBtn.addEventListener('click', (e) => { e.stopPropagation(); });
+        ui.nextBtn.addEventListener('click', (e) => { e.stopPropagation(); });
+        if (ui.toPage2Btn) ui.toPage2Btn.addEventListener('click', (e) => { e.stopPropagation(); });
 
         ui.floatingGiftBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             ui.floatingGiftBtn.classList.add('hidden'); 
             ui.surpriseLayer.classList.remove('hidden'); 
             ui.surpriseLayer.classList.add('active');
-            interactionMode = 0;
-            ui.cardContainer.classList.remove('hidden');
-            ui.cardContainer.classList.remove('flipped');
-            // 重置为第一页状态
-            ui.page1.classList.remove('hidden');
-            ui.page2.classList.add('hidden');
+            if (window.BirthdayGestures) window.BirthdayGestures.beginAfterCelebration();
         });
 
-        // "收起卡片" 按钮
         ui.closeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            ui.mainText.innerText = ""; 
-            ui.surpriseLayer.classList.remove('active');
-            ui.surpriseLayer.classList.add('hidden');    
-            ui.floatingGiftBtn.classList.remove('hidden');
-            
-            interactionMode = 1; 
-            transitionTo('cake'); 
-            ui.statusText.innerText = "INTERACTIVE MODE: DRAG TO ROTATE";
-            ui.typewriter.innerHTML = ""; 
-            ui.topBanner.classList.remove('hidden');
         });
 
         
-        // --- 自动倒数功能 ---
+        // --- 自动倒数：仅摄像头失败时保底；成功则靠手势，不再抢进度 ---
         function startAutoEntryCountdown() {
-            autoEntrySeconds = 15;
+            if (cameraReady) {
+                ui.autoCountdownText.classList.add('hidden');
+                log('摄像头就绪：关闭自动保底，等待手势');
+                return;
+            }
+
+            autoEntrySeconds = 20;
             ui.autoCountdownText.classList.remove('hidden');
-            ui.autoCountdownText.innerText = `若未检测到手势，${autoEntrySeconds}秒后自动开始...`;
+            ui.autoCountdownText.innerText = `摄像头未就绪，${autoEntrySeconds}秒后自动开始...`;
             
-            // 清除旧的计时器（如果存在）
             if (autoEntryTimer) clearInterval(autoEntryTimer);
 
             autoEntryTimer = setInterval(() => {
                 autoEntrySeconds--;
                 if (autoEntrySeconds > 0) {
-                    ui.autoCountdownText.innerText = `若未检测到手势，${autoEntrySeconds}秒后自动开始...`;
+                    ui.autoCountdownText.innerText = `摄像头未就绪，${autoEntrySeconds}秒后自动开始...`;
                 } else {
                     clearInterval(autoEntryTimer);
                     autoEntryTimer = null;
                     ui.autoCountdownText.classList.add('hidden');
-                    // 只有在还是 IDLE 状态时才自动开始，防止用户刚好在此时触发了手势
                     if (currentState === STATE.IDLE) {
-                        log('自动倒数结束，触发开始序列');
+                        log('自动保底触发');
                         startSequence();
                     }
                 }
@@ -915,8 +894,10 @@
             try {
                 log('尝试启动摄像头...');
                 await initCamera();
+                cameraReady = true;
                 log('摄像头启动成功');
             } catch (e) {
+                cameraReady = false;
                 log('摄像头/MediaPipe 失败: ' + e);
                 ui.statusText.innerText = "CAMERA FAILED - USE SPACEBAR";
             }
@@ -925,8 +906,9 @@
             currentState = STATE.IDLE;
             ui.startOverlay.classList.add('hidden');
             ui.uiLayer.style.display = 'flex';
+            const camBox = document.getElementById('cam-preview-container');
+            if (camBox) camBox.classList.remove('hidden');
 
-            // 启动自动倒数
             startAutoEntryCountdown();
         });
 
@@ -1013,25 +995,36 @@
             
             hands.setOptions({ 
                 maxNumHands: 1, 
-                modelComplexity: 0, 
-                minDetectionConfidence: 0.5, 
-                minTrackingConfidence: 0.5 
+                modelComplexity: 1, 
+                minDetectionConfidence: 0.35, 
+                minTrackingConfidence: 0.35 
             });
             
             hands.onResults((results) => {
+                const ctx = document.getElementById('output_canvas').getContext('2d');
+                ctx.clearRect(0, 0, 160, 120);
+
                 if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                     ui.camStatusDot.className = "w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_8px_#4ade80]";
                     ui.camStatusText.innerText = "DETECTED";
                     ui.camStatusText.className = "text-[8px] text-green-400 font-mono font-bold";
                     
+                    const landmarks = results.multiHandLandmarks[0];
+                    for (const l of results.multiHandLandmarks) {
+                        drawConnectors(ctx, l, HAND_CONNECTIONS, {color: '#ff69b4', lineWidth: 2});
+                    }
+
+                    if (window.BirthdayGestures) {
+                        window.BirthdayGestures.onHand(landmarks);
+                    }
+
                     if (currentState === STATE.IDLE) {
                         startSequence();
                     }
                     if (interactionMode === 1) {
-                        const currentHandX = results.multiHandLandmarks[0][9].x; 
+                        const currentHandX = landmarks[9].x; 
                         const delta = currentHandX - lastHandX;
                         if (Math.abs(delta) > 0.002) {
-                            // 大幅提高手势控制灵敏度
                             rotationVelocity += delta * -0.4; 
                         }
                         lastHandX = currentHandX;
@@ -1041,20 +1034,12 @@
                     ui.camStatusText.innerText = "NO HAND";
                     ui.camStatusText.className = "text-[8px] text-red-400 font-mono";
                 }
-
-                const ctx = document.getElementById('output_canvas').getContext('2d');
-                ctx.clearRect(0, 0, 160, 120);
-                if(results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                     for (const l of results.multiHandLandmarks) {
-                         drawConnectors(ctx, l, HAND_CONNECTIONS, {color: '#ff69b4', lineWidth: 2});
-                     }
-                }
             });
 
             const camera = new Camera(video, { 
                 onFrame: async () => { await hands.send({image: video}); }, 
-                width: 320, 
-                height: 240 
+                width: 640, 
+                height: 480 
             });
             
             return camera.start();
@@ -1066,5 +1051,6 @@
             renderer.render(scene, camera);
         }
     </script>
+    <script src="./custom.js"></script>
 </body>
 </html>

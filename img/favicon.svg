@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <radialGradient id="orangeBody" cx="38%" cy="32%" r="70%">
+      <stop offset="0%" stop-color="#FFC978"/>
+      <stop offset="55%" stop-color="#FF8A1F"/>
+      <stop offset="100%" stop-color="#E35E00"/>
+    </radialGradient>
+  </defs>
+  <!-- œž -->
+  <circle cx="32" cy="36" r="22" fill="url(#orangeBody)"/>
+  <!-- ØI -->
+  <ellipse cx="24" cy="28" rx="7" ry="9" fill="#fff" opacity="0.28"/>
+  <!-- ¹ -->
+  <path d="M32 16c6 8 6 20 0 28M22 22c5 7 5 17 0 24M42 22c-5 7-5 17 0 24" fill="none" stroke="#E06A00" stroke-width="1.2" opacity="0.35"/>
+  <!-- ‚ -->
+  <path d="M32 14c1.5 5 1 9-0.5 12" fill="none" stroke="#5B3A1A" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- ö -->
+  <ellipse cx="40" cy="12" rx="9" ry="4.5" fill="#4CAF50" transform="rotate(28 40 12)"/>
+  <ellipse cx="40" cy="12" rx="9" ry="4.5" fill="#81C784" opacity="0.45" transform="rotate(28 40 12)"/>
+</svg>
