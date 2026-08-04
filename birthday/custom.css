@@ -61,6 +61,21 @@
 
 #gesture-hint.hidden { display: none !important; }
 
+/* 关信封后到塔罗前：粒子飘散，不再露卡片正面 */
+#scatter-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 88;
+  pointer-events: none;
+  overflow: hidden;
+}
+#scatter-layer.hidden { display: none !important; }
+#scatter-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* 塔罗层 */
 #tarot-layer {
   position: absolute;

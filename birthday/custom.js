@@ -44,6 +44,9 @@
   let lastLabel = ''
   let holdStart = null
   let holdKind = ''
+  let scatterRaf = 0
+  let scatterParts = []
+  let scatterRunning = false
 
   function $(id) { return document.getElementById(id) }
 
@@ -228,18 +231,98 @@
     if (window.log) window.log('竖食指保持：翻转信封')
   }
 
+  function stopScatter () {
+    scatterRunning = false
+    if (scatterRaf) {
+      cancelAnimationFrame(scatterRaf)
+      scatterRaf = 0
+    }
+    const layer = $('scatter-layer')
+    if (layer) layer.classList.add('hidden')
+    const canvas = $('scatter-canvas')
+    if (canvas) {
+      const ctx = canvas.getContext('2d')
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
+    scatterParts = []
+  }
+
+  function startScatter () {
+    const layer = $('scatter-layer')
+    const canvas = $('scatter-canvas')
+    if (!layer || !canvas) return
+    layer.classList.remove('hidden')
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const w = layer.clientWidth || window.innerWidth
+    const h = layer.clientHeight || window.innerHeight
+    canvas.width = Math.floor(w * dpr)
+    canvas.height = Math.floor(h * dpr)
+    canvas.style.width = w + 'px'
+    canvas.style.height = h + 'px'
+    const ctx = canvas.getContext('2d')
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+
+    const colors = ['#ff69b4', '#ffb6c1', '#e0aaff', '#ffd6a5', '#a0c4ff', '#fff']
+    scatterParts = []
+    for (let i = 0; i < 90; i++) {
+      scatterParts.push({
+        x: w * 0.5 + (Math.random() - 0.5) * w * 0.25,
+        y: h * 0.5 + (Math.random() - 0.5) * h * 0.2,
+        vx: (Math.random() - 0.5) * 6.5,
+        vy: (Math.random() - 0.5) * 6.5 - 1.2,
+        r: 1.5 + Math.random() * 3.5,
+        a: 0.55 + Math.random() * 0.4,
+        color: colors[(Math.random() * colors.length) | 0]
+      })
+    }
+
+    scatterRunning = true
+    const tick = () => {
+      if (!scatterRunning) return
+      ctx.clearRect(0, 0, w, h)
+      scatterParts.forEach((p) => {
+        p.x += p.vx
+        p.y += p.vy
+        p.vy += 0.02
+        p.vx *= 0.995
+        p.a *= 0.997
+        ctx.globalAlpha = Math.max(0, p.a)
+        ctx.fillStyle = p.color
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fill()
+        if (p.r > 3) {
+          ctx.strokeStyle = p.color
+          ctx.lineWidth = 1
+          ctx.beginPath()
+          ctx.moveTo(p.x - p.r * 1.8, p.y)
+          ctx.lineTo(p.x + p.r * 1.8, p.y)
+          ctx.moveTo(p.x, p.y - p.r * 1.8)
+          ctx.lineTo(p.x, p.y + p.r * 1.8)
+          ctx.stroke()
+        }
+      })
+      ctx.globalAlpha = 1
+      scatterRaf = requestAnimationFrame(tick)
+    }
+    tick()
+  }
+
   function closeEnvelope () {
     if (phase !== Phase.CARD_OPEN) return
     lockGesture(1000)
     const card = $('flip-card-container')
+    // 直接收起，不再翻回正面
     if (card) {
+      card.classList.add('hidden')
       card.classList.remove('flipped')
-      setTimeout(() => card.classList.add('hidden'), 450)
     }
     phase = Phase.WAIT_PALM
+    startScatter()
     setHint('✋ 张开手掌并保持，开启塔罗')
     lastLabel = 'closed'
-    if (window.log) window.log('握拳保持：关闭信封')
+    if (window.log) window.log('握拳保持：关闭信封 → 粒子')
   }
 
   function buildTarot () {
@@ -314,6 +397,7 @@
     lockGesture(1000)
     phase = Phase.TAROT
     setHint('')
+    stopScatter()
 
     const surprise = $('surprise-layer')
     if (surprise) {
