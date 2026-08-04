@@ -38,11 +38,14 @@
 .loving-avatar {
   width: 84px;
   height: 84px;
+  max-width: 84px;
+  max-height: 84px;
   border-radius: 20px;
   object-fit: cover;
   border: 2px solid rgba(82, 164, 252, 0.55);
   box-shadow: 0 4px 14px rgba(41, 139, 236, 0.14);
   background: #fff;
+  vertical-align: middle;
 }
 
 .loving-avatar-name {
@@ -364,6 +367,8 @@
   .loving-avatar {
     width: 64px;
     height: 64px;
+    max-width: 64px;
+    max-height: 64px;
     border-radius: 16px;
   }
 
