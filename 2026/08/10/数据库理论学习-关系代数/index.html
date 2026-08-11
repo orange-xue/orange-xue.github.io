@@ -1,0 +1,584 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库理论学习-关系代数 | 圆橙子</title><meta name="author" content="Cheng-orange"><meta name="copyright" content="Cheng-orange"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="关系数据库的基本概念 行为元组，列属性 每个属性的取值范围为该属性的域，一般在关系数据库模型中，所有的域都应是原子数据的集合。 一个数据表可称为一个关系，行（元组）数为基数，列（属性）数为元数 关系的相关名词 候选码与主码（主键）：能唯一标识一行（一个元组）的某一属性或属性组。选择其中一个为主码（主键）。 主属性：所有候选码都是主属性，其他都是非主属性。 外码：若干属性不是自己表的主键，同时引用另">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库理论学习-关系代数">
+<meta property="og:url" content="https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/index.html">
+<meta property="og:site_name" content="圆橙子">
+<meta property="og:description" content="关系数据库的基本概念 行为元组，列属性 每个属性的取值范围为该属性的域，一般在关系数据库模型中，所有的域都应是原子数据的集合。 一个数据表可称为一个关系，行（元组）数为基数，列（属性）数为元数 关系的相关名词 候选码与主码（主键）：能唯一标识一行（一个元组）的某一属性或属性组。选择其中一个为主码（主键）。 主属性：所有候选码都是主属性，其他都是非主属性。 外码：若干属性不是自己表的主键，同时引用另">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg">
+<meta property="article:published_time" content="2026-08-10T02:17:43.000Z">
+<meta property="article:modified_time" content="2026-08-10T05:54:54.854Z">
+<meta property="article:author" content="Cheng-orange">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据库理论学习-关系代数",
+  "url": "https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/",
+  "image": "https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg",
+  "datePublished": "2026-08-10T02:17:43.000Z",
+  "dateModified": "2026-08-10T05:54:54.854Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Cheng-orange",
+      "url": "https://orange-xue.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/sun.svg"><link rel="canonical" href="https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库理论学习-关系代数',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/modify.css"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_4890961_bimfirxk94m.css"><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/readPercent.css"><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/loving.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><style>#loading-box{position:fixed;inset:0;z-index:2147483646;width:100vw;height:100vh;overflow:hidden;text-align:center;background:#37474f}
+#loading-box.loaded{opacity:0;visibility:hidden;pointer-events:none;z-index:-1;transition:opacity .35s ease,visibility .35s}
+#loading-box .pokeball-back{position:absolute;inset:0;background:#37474f}
+#loading-box .pokeball-loading{height:48px;width:264px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+#loading-box .pokeball{width:4px;height:4px;transform-origin:24px 24px;animation:bf-rotate-ball 1.5s infinite forwards}
+#loading-box #pokeball-great{animation-delay:.25s;margin:-4px 0 0 54px}
+#loading-box #pokeball-ultra{animation-delay:.5s;margin:-4px 0 0 108px}
+#loading-box #pokeball-master{animation-delay:.75s;margin:-4px 0 0 162px}
+#loading-box #pokeball-safari{animation-delay:1s;margin:-4px 0 0 216px}
+@keyframes bf-rotate-ball{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+</style><div id="loading-box"><div class="pokeball-back"></div><div class="pokeball-loading"><div class="pokeball" id="pokeball-normal"></div><div class="pokeball" id="pokeball-great"></div><div class="pokeball" id="pokeball-ultra"></div><div class="pokeball" id="pokeball-master"></div><div class="pokeball" id="pokeball-safari"></div></div></div><script>(() => {
+  const box = document.getElementById('loading-box')
+  if (!box) return
+  const MIN_MS = 900
+  const MAX_MS = 15000
+  const started = Date.now()
+  let ended = false
+
+  const extractBgUrls = (value) => {
+    if (!value || value === 'none') return []
+    const out = []
+    const re = /url\(["']?([^"')]+)["']?\)/g
+    let m
+    while ((m = re.exec(value))) out.push(m[1])
+    return out
+  }
+
+  const loadUrl = (url) => new Promise((resolve) => {
+    if (!url || url.startsWith('data:')) return resolve()
+    const img = new Image()
+    img.onload = img.onerror = () => resolve()
+    img.src = url
+  })
+
+  const waitDomImages = () => Promise.all(
+    Array.from(document.images || []).map((img) => {
+      if (img.complete) return Promise.resolve()
+      return new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true })
+        img.addEventListener('error', resolve, { once: true })
+      })
+    })
+  )
+
+  const waitCssBackgrounds = () => {
+    const urls = new Set()
+    const nodes = [
+      document.getElementById('web_bg'),
+      document.getElementById('page-header'),
+      document.querySelector('.banner'),
+      document.querySelector('#blog-info'),
+      ...Array.from(document.querySelectorAll('[style*="background"]'))
+    ].filter(Boolean)
+    nodes.forEach((el) => {
+      extractBgUrls(el.getAttribute('style') || '').forEach((u) => urls.add(u))
+      try {
+        extractBgUrls(getComputedStyle(el).backgroundImage).forEach((u) => urls.add(u))
+      } catch (e) {}
+    })
+    return Promise.all(Array.from(urls).map(loadUrl))
+  }
+
+  const whenReady = () => Promise.all([
+    new Promise((resolve) => {
+      if (document.readyState === 'complete') resolve()
+      else window.addEventListener('load', resolve, { once: true })
+    }),
+    waitDomImages(),
+    waitCssBackgrounds()
+  ])
+
+  const preloader = {
+    endLoading: () => {
+      if (ended) return
+      const wait = Math.max(0, MIN_MS - (Date.now() - started))
+      setTimeout(() => {
+        if (ended) return
+        ended = true
+        document.body.style.overflow = ''
+        box.classList.add('loaded')
+      }, wait)
+    },
+    initLoading: () => {
+      ended = false
+      document.body.style.overflow = 'hidden'
+      box.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  whenReady().then(preloader.endLoading).catch(preloader.endLoading)
+  setTimeout(preloader.endLoading, MAX_MS)
+})()</script><div id="web_bg" style="background-image: url(/img/banner.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">圆橙子</span></a><a class="nav-page-title" href="/"><span class="site-name">数据库理论学习-关系代数</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div><div id="mask-name-container" style="z-index: -1"></div><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span= ' ' + _p('search.title')--></span></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据库理论学习-关系代数</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-10T02:17:43.000Z" title="发表于 2026-08-10 10:17:43">2026-08-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-10T05:54:54.854Z" title="更新于 2026-08-10 13:54:54">2026-08-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="关系数据库的基本概念"><a href="#关系数据库的基本概念" class="headerlink" title="关系数据库的基本概念"></a>关系数据库的基本概念</h1><p><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202608101034821.jpg" alt="db4c14be8810c2aea79be5245708d45d"></p>
+<p>行为元组，列属性</p>
+<p>每个属性的取值范围为<strong>该属性的域</strong>，一般在关系数据库模型中，所有的域都应是<strong>原子数据的集合</strong>。</p>
+<p>一个数据表可称为一个关系，行（元组）数为基数，列（属性）数为元数</p>
+<h2 id="关系的相关名词"><a href="#关系的相关名词" class="headerlink" title="关系的相关名词"></a>关系的相关名词</h2><ul>
+<li>候选码与主码（主键）：能<strong>唯一标识</strong>一行（一个元组）的<strong>某一属性或属性组</strong>。选择其中一个为<strong>主码</strong>（主键）。</li>
+<li>主属性：所有候选码都是主属性，其他都是非主属性。</li>
+<li>外码：若干属性<strong>不是自己表的主键</strong>，同时<strong>引用另一张表的主键</strong>。用来建立两张表之间联系的一列或多列。</li>
+<li>全码：关系模式的<strong>所有属性组是这个关系模式的候选码</strong>，称为全码</li>
+</ul>
+<h2 id="关系的三种类型"><a href="#关系的三种类型" class="headerlink" title="关系的三种类型"></a>关系的三种类型</h2><ul>
+<li>基本关系(基本表、基表)：实际存在的表，是实际存储数据的逻辑表示</li>
+<li>查询表：查询结果对应的表</li>
+<li>视图表：由基本表或其他视图表导出的表。本身不独立存储在数据库中，数据库中只存放它的定义，所以常称为虚表</li>
+</ul>
+<h2 id="完整性约束"><a href="#完整性约束" class="headerlink" title="完整性约束"></a>完整性约束</h2><ul>
+<li>实体完整性：主键唯一且非空</li>
+<li>参照完整性：外键为空or等于被参照表中存在的主键值</li>
+<li>用户自定义完整性：针对具体业务场景的规则。eg.约束某个属性值只能为1or2；unique约束…</li>
+</ul>
+<h2 id="关系代数运算"><a href="#关系代数运算" class="headerlink" title="关系代数运算"></a>关系代数运算</h2><h3 id="并"><a href="#并" class="headerlink" title="并"></a>并</h3><p>将两个表头相同的表R、S上下堆叠并去重。它要求两张表的列数、列名和数据类型必须一致。在 SQL 里就是 <code>UNION</code> 操作。记为<br>$$<br>R U S &#x3D; {t | t∈R∪t∈S}，t为元组<br>$$</p>
+<h3 id="差"><a href="#差" class="headerlink" title="差"></a>差</h3><p>从一张表里，剔除掉同时存在于第二张表里的行。比如，找出“已注册但没选课的学生”。在 SQL 里常用 <code>EXCEPT</code> 或 <code>NOT IN</code> 实现。记为<br>$$<br>R - S  &#x3D; {t | t\in R \land t \notin S}，t为元组<br>$$</p>
+<h3 id="笛卡尔积R-X-S"><a href="#笛卡尔积R-X-S" class="headerlink" title="笛卡尔积R X S"></a>笛卡尔积R X S</h3><p><strong>两张表所有行的排列组合</strong>。如果A表有M行，B表有N行，结果就是 M×N 行的新表。</p>
+<h3 id="选择R-σ-S"><a href="#选择R-σ-S" class="headerlink" title="选择R σ S"></a>选择R σ S</h3><p><strong>水平切片</strong>操作，相当于写 SQL 时 <code>WHERE</code> 后面的行过滤条件。从一张表里选出满足条件的行，比如 <code>σ(年龄&gt;20)</code> 是找出所有年龄大于20岁的学生。</p>
+<h3 id="投影R-π-S"><a href="#投影R-π-S" class="headerlink" title="投影R π S"></a>投影R π S</h3><p><strong>垂直切片</strong>操作，相当于 SQL 里 <code>SELECT</code> 后面跟的列名。它返回指定列，并会自动去除重复的行。比如 <code>π(学号, 姓名)</code> 是只看这两列数据。</p>
+<h3 id="除R-÷-S"><a href="#除R-÷-S" class="headerlink" title="除R ÷ S"></a>除<strong>R ÷ S</strong></h3><blockquote>
+<p>设关系R除以关系S的结果为关系T，则T包含所有在R但不在S中的属性及其值，且T的元组与S的元组的所有组合都在R中。</p>
+</blockquote>
+<p>s1.找R包含而S不包含的属性X，写入关系表T</p>
+<p>s2.确定属性X在R中值对应的象集 和 S在两个表共有属性上的投影</p>
+<p>s3.属性X列中，若有值的象集包含S的投影集，则将该值写入关系表T</p>
+<table>
+<thead>
+<tr>
+<th>关系R</th>
+<th></th>
+<th></th>
+<th></th>
+<th>关系S</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td></td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+</tr>
+<tr>
+<td>a1</td>
+<td>b1</td>
+<td>c2</td>
+<td></td>
+<td>b1</td>
+<td>c2</td>
+<td>d1</td>
+</tr>
+<tr>
+<td>a2</td>
+<td>b3</td>
+<td>c7</td>
+<td></td>
+<td>b2</td>
+<td>c1</td>
+<td>d1</td>
+</tr>
+<tr>
+<td>a3</td>
+<td>b4</td>
+<td>c6</td>
+<td></td>
+<td>b2</td>
+<td>c3</td>
+<td>d2</td>
+</tr>
+<tr>
+<td>a1</td>
+<td>b2</td>
+<td>c1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>a4</td>
+<td>b6</td>
+<td>c6</td>
+<td></td>
+<td>R ÷ S</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>a2</td>
+<td>b2</td>
+<td>c3</td>
+<td></td>
+<td>A</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>a1</td>
+<td>b2</td>
+<td>c3</td>
+<td></td>
+<td>a1</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>1.关系R和关系S拥有共同的属性B、C，R÷S得到的属性就是关系R包含而关系S不包含的属性 A</p>
+<p>2.在R关系中A属性的值可以取{a1, a2, a3, a4},</p>
+<p>​	a1值对应的象集为{ (b1,c2) , (b2,c1) , (b2,c3) }</p>
+<p>​	a2值对应的象集为{ (b3,c7) , (b2,c3) }</p>
+<p>​	a3值对应的象集为{ (b4,c6) }</p>
+<p>​	a4值对应的象集为{ (b6,c6) }</p>
+<p>关系S在B、C上的投影为{ (b1,c2) , (b2,c1) , (b2,c3) }</p>
+<p>3.只有a1值对应的象集包含关系S的投影集,所以结果如上表所示。</p>
+<h3 id="交R-∩-S"><a href="#交R-∩-S" class="headerlink" title="交R ∩ S"></a>交R ∩ S</h3><p>所有同时属于两个表的元组构成的集合。</p>
+<h3 id="内连接R-⋈-S"><a href="#内连接R-⋈-S" class="headerlink" title="内连接R  ⋈ S"></a>内连接R  ⋈ S</h3><p>θ连接：<strong>θ 代表一个比较运算符</strong>。先做笛卡尔积，再根据条件θ （例如<code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>!=</code>、<code>=</code> 等）进行选择。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*学生成绩 &gt; 奖学金要求的最低分*/</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> 学生 S</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> 奖学金 J <span class="keyword">ON</span> S.成绩 <span class="operator">&gt;</span> J.最低分;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>等值连接。 θ 为 <strong>等于号（&#x3D;）</strong> 时的特例，保留<strong>属性值</strong>相等的元组<ul>
+<li>自然连接：<strong>特殊的等值连接</strong>，自动找同名列并在结果中去除重复的属性列</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>表R</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>表S</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>B</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>A</td>
+<td>B</td>
+<td>D</td>
+</tr>
+<tr>
+<td>a1</td>
+<td>c</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>a1</td>
+<td>c</td>
+<td>f</td>
+</tr>
+<tr>
+<td>a2</td>
+<td>d</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>a2</td>
+<td>g</td>
+<td>d</td>
+</tr>
+<tr>
+<td>a3</td>
+<td>e</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>a4</td>
+<td>e</td>
+<td>e</td>
+</tr>
+<tr>
+<td><strong>R⋈S</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>等值连接</strong></td>
+<td>R.B&#x3D;S.D</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>自然连接</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>R.A</td>
+<td>R.B</td>
+<td>S.A</td>
+<td>S.B</td>
+<td>D</td>
+<td></td>
+<td>A</td>
+<td>B</td>
+<td>D</td>
+</tr>
+<tr>
+<td>a2</td>
+<td>d</td>
+<td>a2</td>
+<td>g</td>
+<td>d</td>
+<td></td>
+<td>a1</td>
+<td>c</td>
+<td>f</td>
+</tr>
+<tr>
+<td>a3</td>
+<td>e</td>
+<td>a4</td>
+<td>e</td>
+<td>e</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h3><ul>
+<li>左外连接：保留了连接精度。在内连接的基础上，<strong>会强制保留左边表里的所有行</strong>。如果右表中没有匹配的行，对应位置就用 <code>NULL</code> 填充。</li>
+<li>右外连接：和左连接完全对称，<strong>强制保留右边表里的所有行</strong>。左表匹配不上的部分就用 <code>NULL</code> 填充。</li>
+<li><strong>全外连接</strong>：同时保留左右两表的所有行，相当于左连接和右连接的并集，MySQL 不直接支持，但可以用 <code>UNION</code> 实现。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io">Cheng-orange</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/">https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://orange-xue.github.io" target="_blank">圆橙子</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mysql/">mysql</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/08/04/hexo%E9%A6%96%E9%A1%B5%E5%88%86%E7%B1%BB%E7%A3%81%E8%B4%B4%E5%AE%9E%E7%8E%B0/" title="hexo首页分类磁贴实现"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">hexo首页分类磁贴实现</div></div><div class="info-2"><div class="info-item-1">目标效果 首页文章列表上方展示分类卡片网格（默认 3 列 × 2 行） 每张卡片显示：分类名、文章数、描述文案、背景封面 点击卡片进入对应分类页（兼容 Pjax） 封面优先走图床 CDN，失败自动回退本地 cover* 图 描述按分类名绑定，不因 Hexo 分类排序变化而错位  安装插件博客根目录： 1npm install hexo-butterfly-categories-card --save  主题配置文件：themes/butterfly/_config.yml 123456789101112131415161718192021222324252627282930# hexo-butterfly-categories-card# 原版见 https://akilar.top/posts/a9131002/categoryBar:  enable: true  priority: 5  enable_page: /          # 仅首页  layout:    type: id    name: recent-posts    # 挂到首页文章区   ...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">数据库理论学习-sql语句</div></div><div class="info-2"><div class="info-item-1">列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223242526272829/*创建*/-- 约束项没有就不加create table 表名 (	列名 数据类型 约束1 约束2,    	 ...		 ,    列名 数据类型 约束1);/*删除*/drop table 表名;     -- 直接删除表，不检查是否存在drop table if exists 表名; -- 如果存在表就删除/*修改*/-- 插入一列。如果不要求在特定列后插入，after及以后部分不写alter table 表名 add 列名 数据类型 约束 after 特定列;-- 交换列1、2alter table 表名 modify 列名1 数据类型 after...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0/" title="数据库学习-updating"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-07</div><div class="info-item-2">数据库学习-updating</div></div><div class="info-2"><div class="info-item-1"> navicat+idea  1.MySQL下载2.数据库服务启动和连接win+r并输入cmd，同时按住ctrl和shift并点确定，用管理员模式打开cmd。 12net start mysql //启动数据库服务mysql -u root -p //连接到数据库  不用管理员模式会显示“发生系统错误5.拒绝访问”。 3.navicat连接到本地数据库并建表 连接前先启动数据库服务   点击进入连接信息界面后依次填入信息，最后点击下方“测试连接”。测试无误后点击确认即可连接到本地数据库。 右键建库建表。使用“生成数据”生成模拟数据。 4.idea中连接数据库点击图中右侧图标后，选择“新建数据源”，输入用户、密码、数据库这些信息后“测试连接”，最后点击确认即可。  创建后窗口会自动弹出console窗口，后续各种表和数据操作的sql语句在这里编写和保存。可以右键选择将其重命名，这样便于后续操作。 5.Mybatis1.配置Mybatis并测试1.创建springboot项目时勾选Mybatis相关依赖：MySQL Driver和MyBaties...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">数据库理论学习-sql语句</div></div><div class="info-2"><div class="info-item-1">列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223242526272829/*创建*/-- 约束项没有就不加create table 表名 (	列名 数据类型 约束1 约束2,    	 ...		 ,    列名 数据类型 约束1);/*删除*/drop table 表名;     -- 直接删除表，不检查是否存在drop table if exists 表名; -- 如果存在表就删除/*修改*/-- 插入一列。如果不要求在特定列后插入，after及以后部分不写alter table 表名 add 列名 数据类型 约束 after 特定列;-- 交换列1、2alter table 表名 modify 列名1 数据类型 after...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Cheng-orange</div><div class="author-info-description">一起看日出吧^</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/orange-xue"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">关系数据库的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E7%9A%84%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D"><span class="toc-number">2.1.</span> <span class="toc-text">关系的相关名词</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.2.</span> <span class="toc-text">关系的三种类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E6%80%A7%E7%BA%A6%E6%9D%9F"><span class="toc-number">2.3.</span> <span class="toc-text">完整性约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97"><span class="toc-number">2.4.</span> <span class="toc-text">关系代数运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6"><span class="toc-number">2.4.1.</span> <span class="toc-text">并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE"><span class="toc-number">2.4.2.</span> <span class="toc-text">差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AFR-X-S"><span class="toc-number">2.4.3.</span> <span class="toc-text">笛卡尔积R X S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9R-%CF%83-S"><span class="toc-number">2.4.4.</span> <span class="toc-text">选择R σ S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1R-%CF%80-S"><span class="toc-number">2.4.5.</span> <span class="toc-text">投影R π S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%A4R-%C3%B7-S"><span class="toc-number">2.4.6.</span> <span class="toc-text">除R ÷ S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4R-%E2%88%A9-S"><span class="toc-number">2.4.7.</span> <span class="toc-text">交R ∩ S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E8%BF%9E%E6%8E%A5R-%E2%8B%88-S"><span class="toc-number">2.4.8.</span> <span class="toc-text">内连接R  ⋈ S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.4.9.</span> <span class="toc-text">外连接</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" data-cover-fallback="/img/cover4.jpg" onerror="this.onerror=null;this.src='/img/cover4.jpg'" alt="数据库理论学习-sql语句"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句">数据库理论学习-sql语句</a><time datetime="2026-08-10T06:03:03.000Z" title="发表于 2026-08-10 14:03:03">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" data-cover-fallback="/img/cover3.jpg" onerror="this.onerror=null;this.src='/img/cover3.jpg'" alt="数据库理论学习-关系代数"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数">数据库理论学习-关系代数</a><time datetime="2026-08-10T02:17:43.000Z" title="发表于 2026-08-10 10:17:43">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/04/hexo%E9%A6%96%E9%A1%B5%E5%88%86%E7%B1%BB%E7%A3%81%E8%B4%B4%E5%AE%9E%E7%8E%B0/" title="hexo首页分类磁贴实现"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" data-cover-fallback="/img/cover2.jpg" onerror="this.onerror=null;this.src='/img/cover2.jpg'" alt="hexo首页分类磁贴实现"/></a><div class="content"><a class="title" href="/2026/08/04/hexo%E9%A6%96%E9%A1%B5%E5%88%86%E7%B1%BB%E7%A3%81%E8%B4%B4%E5%AE%9E%E7%8E%B0/" title="hexo首页分类磁贴实现">hexo首页分类磁贴实现</a><time datetime="2026-08-04T07:00:00.000Z" title="发表于 2026-08-04 15:00:00">2026-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/04/WinSCP-PuTTY%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%89%93%E5%8C%85/" title="WinSCP+PuTTY实现服务器连接和打包"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135216.jpg" data-cover-fallback="/img/cover1.jpg" onerror="this.onerror=null;this.src='/img/cover1.jpg'" alt="WinSCP+PuTTY实现服务器连接和打包"/></a><div class="content"><a class="title" href="/2026/08/04/WinSCP-PuTTY%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%89%93%E5%8C%85/" title="WinSCP+PuTTY实现服务器连接和打包">WinSCP+PuTTY实现服务器连接和打包</a><time datetime="2026-08-04T05:26:38.000Z" title="发表于 2026-08-04 13:26:38">2026-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/28/hexo%E9%BC%A0%E6%A0%87%E6%A0%B7%E5%BC%8F%E4%BF%AE%E6%94%B9/" title="hexo鼠标样式修改"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135217.jpg" data-cover-fallback="/img/cover14.jpg" onerror="this.onerror=null;this.src='/img/cover14.jpg'" alt="hexo鼠标样式修改"/></a><div class="content"><a class="title" href="/2026/07/28/hexo%E9%BC%A0%E6%A0%87%E6%A0%B7%E5%BC%8F%E4%BF%AE%E6%94%B9/" title="hexo鼠标样式修改">hexo鼠标样式修改</a><time datetime="2026-07-28T02:54:49.000Z" title="发表于 2026-07-28 10:54:49">2026-07-28</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By Cheng-orange</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i><span id="percent">0</span></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer src="/js/nav.js"></script><script defer data-pjax src="/js/readPercent.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([href="/birthday/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false 
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script>window.COVER_LOCAL_POOL=[];</script>
+<script defer data-pjax src="/js/cover-fallback.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135218.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/JAVA后端/&quot;);" href="javascript:void(0);">JAVA后端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">SpringBoot相关知识学习</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135217.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/安装和使用/&quot;);" href="javascript:void(0);">安装和使用</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">各种环境与工具安装使用</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135216.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/部署/&quot;);" href="javascript:void(0);">部署</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">打包与服务器部署</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/hexo/&quot;);" href="javascript:void(0);">hexo</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr">blog美化建设中...</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/前端/&quot;);" href="javascript:void(0);">前端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">vue3相关</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/demo/&quot;);" href="javascript:void(0);">demo</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">无所属项目</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/数据库/&quot;);" href="javascript:void(0);">数据库</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">mysql</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>

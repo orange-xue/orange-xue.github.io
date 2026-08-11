@@ -1,0 +1,413 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库理论学习-sql语句 | 圆橙子</title><meta name="author" content="Cheng-orange"><meta name="copyright" content="Cheng-orange"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库理论学习-sql语句">
+<meta property="og:url" content="https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/index.html">
+<meta property="og:site_name" content="圆橙子">
+<meta property="og:description" content="列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg">
+<meta property="article:published_time" content="2026-08-10T06:03:03.000Z">
+<meta property="article:modified_time" content="2026-08-10T08:04:53.915Z">
+<meta property="article:author" content="Cheng-orange">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据库理论学习-sql语句",
+  "url": "https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/",
+  "image": "https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg",
+  "datePublished": "2026-08-10T06:03:03.000Z",
+  "dateModified": "2026-08-10T08:04:53.915Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Cheng-orange",
+      "url": "https://orange-xue.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/sun.svg"><link rel="canonical" href="https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库理论学习-sql语句',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/modify.css"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_4890961_bimfirxk94m.css"><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/readPercent.css"><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/loving.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><style>#loading-box{position:fixed;inset:0;z-index:2147483646;width:100vw;height:100vh;overflow:hidden;text-align:center;background:#37474f}
+#loading-box.loaded{opacity:0;visibility:hidden;pointer-events:none;z-index:-1;transition:opacity .35s ease,visibility .35s}
+#loading-box .pokeball-back{position:absolute;inset:0;background:#37474f}
+#loading-box .pokeball-loading{height:48px;width:264px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+#loading-box .pokeball{width:4px;height:4px;transform-origin:24px 24px;animation:bf-rotate-ball 1.5s infinite forwards}
+#loading-box #pokeball-great{animation-delay:.25s;margin:-4px 0 0 54px}
+#loading-box #pokeball-ultra{animation-delay:.5s;margin:-4px 0 0 108px}
+#loading-box #pokeball-master{animation-delay:.75s;margin:-4px 0 0 162px}
+#loading-box #pokeball-safari{animation-delay:1s;margin:-4px 0 0 216px}
+@keyframes bf-rotate-ball{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+</style><div id="loading-box"><div class="pokeball-back"></div><div class="pokeball-loading"><div class="pokeball" id="pokeball-normal"></div><div class="pokeball" id="pokeball-great"></div><div class="pokeball" id="pokeball-ultra"></div><div class="pokeball" id="pokeball-master"></div><div class="pokeball" id="pokeball-safari"></div></div></div><script>(() => {
+  const box = document.getElementById('loading-box')
+  if (!box) return
+  const MIN_MS = 900
+  const MAX_MS = 15000
+  const started = Date.now()
+  let ended = false
+
+  const extractBgUrls = (value) => {
+    if (!value || value === 'none') return []
+    const out = []
+    const re = /url\(["']?([^"')]+)["']?\)/g
+    let m
+    while ((m = re.exec(value))) out.push(m[1])
+    return out
+  }
+
+  const loadUrl = (url) => new Promise((resolve) => {
+    if (!url || url.startsWith('data:')) return resolve()
+    const img = new Image()
+    img.onload = img.onerror = () => resolve()
+    img.src = url
+  })
+
+  const waitDomImages = () => Promise.all(
+    Array.from(document.images || []).map((img) => {
+      if (img.complete) return Promise.resolve()
+      return new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true })
+        img.addEventListener('error', resolve, { once: true })
+      })
+    })
+  )
+
+  const waitCssBackgrounds = () => {
+    const urls = new Set()
+    const nodes = [
+      document.getElementById('web_bg'),
+      document.getElementById('page-header'),
+      document.querySelector('.banner'),
+      document.querySelector('#blog-info'),
+      ...Array.from(document.querySelectorAll('[style*="background"]'))
+    ].filter(Boolean)
+    nodes.forEach((el) => {
+      extractBgUrls(el.getAttribute('style') || '').forEach((u) => urls.add(u))
+      try {
+        extractBgUrls(getComputedStyle(el).backgroundImage).forEach((u) => urls.add(u))
+      } catch (e) {}
+    })
+    return Promise.all(Array.from(urls).map(loadUrl))
+  }
+
+  const whenReady = () => Promise.all([
+    new Promise((resolve) => {
+      if (document.readyState === 'complete') resolve()
+      else window.addEventListener('load', resolve, { once: true })
+    }),
+    waitDomImages(),
+    waitCssBackgrounds()
+  ])
+
+  const preloader = {
+    endLoading: () => {
+      if (ended) return
+      const wait = Math.max(0, MIN_MS - (Date.now() - started))
+      setTimeout(() => {
+        if (ended) return
+        ended = true
+        document.body.style.overflow = ''
+        box.classList.add('loaded')
+      }, wait)
+    },
+    initLoading: () => {
+      ended = false
+      document.body.style.overflow = 'hidden'
+      box.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  whenReady().then(preloader.endLoading).catch(preloader.endLoading)
+  setTimeout(preloader.endLoading, MAX_MS)
+})()</script><div id="web_bg" style="background-image: url(/img/banner.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">圆橙子</span></a><a class="nav-page-title" href="/"><span class="site-name">数据库理论学习-sql语句</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div><div id="mask-name-container" style="z-index: -1"></div><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span= ' ' + _p('search.title')--></span></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据库理论学习-sql语句</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-10T06:03:03.000Z" title="发表于 2026-08-10 14:03:03">2026-08-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-10T08:04:53.915Z" title="更新于 2026-08-10 16:04:53">2026-08-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="列约束"><a href="#列约束" class="headerlink" title="列约束"></a>列约束</h1><p>not null 非空</p>
+<p>unique 列中值唯一</p>
+<p>PRIMARY KEY 主键</p>
+<p>FOREIGN KEY 外键</p>
+<p>CHECK(条件) 检查，用于限制列中的值必须满足指定条件</p>
+<p>AUTO_INCREMENT 关键字用于创建一个自增长的列</p>
+<h1 id="数据定义DDL"><a href="#数据定义DDL" class="headerlink" title="数据定义DDL"></a>数据定义DDL</h1><blockquote>
+<p>提供定义关系模式和视图、删除关系和视图、修改关系模式的命令</p>
+</blockquote>
+<h2 id="表的增删改查"><a href="#表的增删改查" class="headerlink" title="表的增删改查"></a>表的增删改查</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*创建*/</span></span><br><span class="line"><span class="comment">-- 约束项没有就不加</span></span><br><span class="line"><span class="keyword">create table</span> 表名 (</span><br><span class="line">	列名 数据类型 约束<span class="number">1</span> 约束<span class="number">2</span>,</span><br><span class="line">    	 ...		 ,</span><br><span class="line">    列名 数据类型 约束<span class="number">1</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*删除*/</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> 表名;     <span class="comment">-- 直接删除表，不检查是否存在</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> 表名; <span class="comment">-- 如果存在表就删除</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*修改*/</span></span><br><span class="line"><span class="comment">-- 插入一列。如果不要求在特定列后插入，after及以后部分不写</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 <span class="keyword">add</span> 列名 数据类型 约束 after 特定列;</span><br><span class="line"><span class="comment">-- 交换列1、2</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 modify 列名<span class="number">1</span> 数据类型 after 列名<span class="number">2</span>;</span><br><span class="line"><span class="comment">-- 添加约束</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 <span class="keyword">add</span> 约束 (列名);</span><br><span class="line"><span class="comment">-- 删除列</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 <span class="keyword">drop</span> <span class="keyword">column</span> 列名;</span><br><span class="line"><span class="comment">-- 更改列数据类型</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 <span class="keyword">alter</span> <span class="keyword">column</span> 列名 新数据类型;</span><br><span class="line"><span class="comment">-- 重命名表</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 rename 新表名;	</span><br><span class="line"></span><br><span class="line"><span class="comment">/*查表*/</span></span><br><span class="line"><span class="keyword">show</span> tables;</span><br><span class="line"><span class="keyword">describe</span> 表名;</span><br></pre></td></tr></table></figure>
+
+<h2 id="索引的定义、删除"><a href="#索引的定义、删除" class="headerlink" title="索引的定义、删除"></a>索引的定义、删除</h2><p>创建索引时，可以将多个常用列放在一起建立索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*创建索引*/</span></span><br><span class="line"><span class="keyword">create</span> index 索引名 <span class="keyword">on</span> 表名 (列名<span class="number">1</span> 次序, 列名<span class="number">2</span> 次序);</span><br><span class="line"><span class="comment">-- 上面语句中，可以在index前面加上索引约束</span></span><br><span class="line"><span class="comment">-- 次序：可选升序(ASC)或降序(DSC)，默认值为ASC</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">unique</span> cluster index 索引名 <span class="keyword">on</span> 表名 (列名<span class="number">1</span> 次序, 列名<span class="number">2</span> 次序);</span><br><span class="line"><span class="comment">-- unique表明此索引的每一个索引值只对应唯一的数据记录</span></span><br><span class="line"><span class="comment">-- CLUSTER表示要建立的索引是聚集索引，意为索引项的顺序与表中记录的物理顺序一致</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*删除索引*/</span></span><br><span class="line"><span class="keyword">drop</span> index 索引;</span><br></pre></td></tr></table></figure>
+
+<h2 id="视图的创建、删除"><a href="#视图的创建、删除" class="headerlink" title="视图的创建、删除"></a>视图的创建、删除</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*创建视图*/</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> 视图名 (表名) </span><br><span class="line">	<span class="keyword">as</span> <span class="keyword">select</span> 查询语句 </span><br><span class="line">	<span class="keyword">with</span> <span class="keyword">check</span> option;</span><br><span class="line">	</span><br><span class="line"><span class="comment">/*删除视图*/</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> 视图;</span><br></pre></td></tr></table></figure>
+
+<p>子查询可以是任意复杂的 SELECT 语句，但通常不允许含有order by子句和 distinct短语</p>
+<p>with check option表示对 update、insert、delete操作时要保证更新、插入或删除的行满足视图定义中的子查询中的条件表达式</p>
+<p>组成视图的属性列名或者全部省略或者全部指定。如果省略属性列名，则隐含该视图由 SELECT 子查询目标列的主属性组成</p>
+<h1 id="数据增删改查DML"><a href="#数据增删改查DML" class="headerlink" title="数据增删改查DML"></a>数据增删改查DML</h1><h2 id="查询select"><a href="#查询select" class="headerlink" title="查询select"></a>查询select</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 获取表中所有可用列的值</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> 表名<span class="operator">/</span>视图名;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 获取表中指定列的值</span></span><br><span class="line"><span class="keyword">select</span> 列名<span class="number">1</span>, 列名<span class="number">2</span> <span class="keyword">from</span> 表名<span class="operator">/</span>视图名;</span><br></pre></td></tr></table></figure>
+
+<h3 id="where子句"><a href="#where子句" class="headerlink" title="where子句"></a>where子句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 通过WHERE子句，仅提取满足指定条件的记录</span></span><br><span class="line"><span class="keyword">select</span> 列名<span class="number">1</span>, 列名<span class="number">2</span> <span class="keyword">from</span> 表名<span class="operator">/</span>视图名</span><br><span class="line">	<span class="keyword">where</span> 条件表达式;</span><br></pre></td></tr></table></figure>
+
+<p>条件中常用运算符：<code>&gt; , &lt; , = , &gt;= , &lt;= , like , in , not in , betweeen</code>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> name, country, grade <span class="keyword">from</span> student </span><br><span class="line">	<span class="keyword">where</span> name <span class="keyword">like</span> ‘tom’ <span class="keyword">and</span>  <span class="comment">-- 简单模式匹配like</span></span><br><span class="line">		( country <span class="keyword">in</span> (<span class="string">&#x27;USA&#x27;</span>, <span class="string">&#x27;UK&#x27;</span>) <span class="keyword">or</span> <span class="comment">-- 检查指定值是否与列表或子查询中的任何值匹配in</span></span><br><span class="line">		 grade <span class="keyword">between</span> <span class="number">3</span> <span class="keyword">and</span> <span class="number">5</span> );<span class="comment">-- 检查指定值是否在值范围内</span></span><br></pre></td></tr></table></figure>
+
+<p>like模式匹配时，使用两个特殊的字符来描述模式，即“%”  匹配任意字符串、“-” 匹配任意一个字符</p>
+<h3 id="order-by子句"><a href="#order-by子句" class="headerlink" title="order by子句"></a>order by子句</h3><p>对SELECTSQL查询返回的数据进行排序。默认排序顺序为升序asc。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> name, country, grade <span class="keyword">from</span> student </span><br><span class="line">	<span class="keyword">order</span> <span class="keyword">by</span> grade <span class="keyword">desc</span>;</span><br><span class="line">	</span><br><span class="line"><span class="comment">-- 先按first_name列排，再按last_name列排。没写desc或asc，就默认asc</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student</span><br><span class="line">	<span class="keyword">order</span> <span class="keyword">by</span> first_name, last_name;</span><br></pre></td></tr></table></figure>
+
+<h3 id="group-by子句"><a href="#group-by子句" class="headerlink" title="group by子句"></a>group by子句</h3><p>以对元组进行分组，group by后面跟着一 个分组属性列表。</p>
+<p>最简单的情况是，from子句后面只有一个关系，根据分组属性对其元组进行分组。</p>
+<p>SELECT 子句中使用的聚集操作符仅用在每个分组上。</p>
+<h3 id="having子句"><a href="#having子句" class="headerlink" title="having子句"></a>having子句</h3><p>通常与group by子句一起使用，以指定组或集合的过滤条件。</p>
+<blockquote>
+<p>having子句类似于where子句，但仅适用于整个组，而where子句适用于单独的行。</p>
+</blockquote>
+<p>select查询可以包含where和having子句，但是顺序必须是 where - group by - having - order by</p>
+<h3 id="定义列别名"><a href="#定义列别名" class="headerlink" title="定义列别名"></a>定义列别名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 列名 <span class="keyword">as</span> 新列名 <span class="keyword">from</span> 表名</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入删除修改"><a href="#插入删除修改" class="headerlink" title="插入删除修改"></a>插入删除修改</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> 表名 (列名<span class="number">1</span>, 列名<span class="number">2</span>) <span class="keyword">values</span> （值<span class="number">1</span>，值<span class="number">2</span>）</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名 <span class="keyword">where</span> 条件表达式</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 列名<span class="number">1</span><span class="operator">=</span>值表达式<span class="number">1</span>, 列名<span class="number">2</span><span class="operator">=</span>值<span class="number">2</span> <span class="keyword">where</span> 条件表达式</span><br></pre></td></tr></table></figure>
+
+<h1 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h1><p>DBA决定是控制用户的数据存储权利，DBMS 数据控制应具有以下功能</p>
+<ul>
+<li>通过grant和revoke将授权通知系统，并存入数据词典、</li>
+<li>当用户提出请求时，根据授权情况检查是否执行操作请求</li>
+<li>SQL标准包括delete、insert into、select和update权限</li>
+</ul>
+<h2 id="权限授予与收回"><a href="#权限授予与收回" class="headerlink" title="权限授予与收回"></a>权限授予与收回</h2><p>public参数可将权限赋予全体用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> 权限<span class="number">1</span>，权限<span class="number">2</span> </span><br><span class="line">	<span class="keyword">on</span> 对象类型 对象名 </span><br><span class="line">	<span class="keyword">to</span> 用户<span class="number">1</span>，用户<span class="number">2</span> </span><br><span class="line">	<span class="keyword">with</span> <span class="keyword">grant</span> option; <span class="comment">-- 若指定了此子句，获得权限的用户还可以将权限赋予其他用户</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对象</th>
+<th>对象类型</th>
+<th>权限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>属性列</td>
+<td>table</td>
+<td>增删改查，all privilege（全有）</td>
+</tr>
+<tr>
+<td>视图</td>
+<td>table</td>
+<td>增删改查，all privilege（全有）</td>
+</tr>
+<tr>
+<td>表</td>
+<td>table</td>
+<td>增删改查，alert，index，all privilege（全有）</td>
+</tr>
+<tr>
+<td>数据库</td>
+<td>database</td>
+<td>create table</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 收回权限</span></span><br><span class="line"><span class="keyword">revoke</span> 权限<span class="number">1</span>，<span class="number">2</span> <span class="keyword">on</span> 对象类型 对象 <span class="keyword">from</span> 用户<span class="number">1</span>，<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io">Cheng-orange</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/">https://orange-xue.github.io/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://orange-xue.github.io" target="_blank">圆橙子</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mysql/">mysql</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">数据库理论学习-关系代数</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0/" title="数据库学习-updating"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-07</div><div class="info-item-2">数据库学习-updating</div></div><div class="info-2"><div class="info-item-1"> navicat+idea  1.MySQL下载2.数据库服务启动和连接win+r并输入cmd，同时按住ctrl和shift并点确定，用管理员模式打开cmd。 12net start mysql //启动数据库服务mysql -u root -p //连接到数据库  不用管理员模式会显示“发生系统错误5.拒绝访问”。 3.navicat连接到本地数据库并建表 连接前先启动数据库服务   点击进入连接信息界面后依次填入信息，最后点击下方“测试连接”。测试无误后点击确认即可连接到本地数据库。 右键建库建表。使用“生成数据”生成模拟数据。 4.idea中连接数据库点击图中右侧图标后，选择“新建数据源”，输入用户、密码、数据库这些信息后“测试连接”，最后点击确认即可。  创建后窗口会自动弹出console窗口，后续各种表和数据操作的sql语句在这里编写和保存。可以右键选择将其重命名，这样便于后续操作。 5.Mybatis1.配置Mybatis并测试1.创建springboot项目时勾选Mybatis相关依赖：MySQL Driver和MyBaties...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">数据库理论学习-关系代数</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Cheng-orange</div><div class="author-info-description">一起看日出吧^</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/orange-xue"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%97%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.</span> <span class="toc-text">列约束</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89DDL"><span class="toc-number">2.</span> <span class="toc-text">数据定义DDL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="toc-number">2.1.</span> <span class="toc-text">表的增删改查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%AE%9A%E4%B9%89%E3%80%81%E5%88%A0%E9%99%A4"><span class="toc-number">2.2.</span> <span class="toc-text">索引的定义、删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E5%9B%BE%E7%9A%84%E5%88%9B%E5%BB%BA%E3%80%81%E5%88%A0%E9%99%A4"><span class="toc-number">2.3.</span> <span class="toc-text">视图的创建、删除</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5DML"><span class="toc-number">3.</span> <span class="toc-text">数据增删改查DML</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2select"><span class="toc-number">3.1.</span> <span class="toc-text">查询select</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#where%E5%AD%90%E5%8F%A5"><span class="toc-number">3.1.1.</span> <span class="toc-text">where子句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#order-by%E5%AD%90%E5%8F%A5"><span class="toc-number">3.1.2.</span> <span class="toc-text">order by子句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#group-by%E5%AD%90%E5%8F%A5"><span class="toc-number">3.1.3.</span> <span class="toc-text">group by子句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#having%E5%AD%90%E5%8F%A5"><span class="toc-number">3.1.4.</span> <span class="toc-text">having子句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%88%97%E5%88%AB%E5%90%8D"><span class="toc-number">3.1.5.</span> <span class="toc-text">定义列别名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4%E4%BF%AE%E6%94%B9"><span class="toc-number">3.2.</span> <span class="toc-text">插入删除修改</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text">访问控制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E6%8E%88%E4%BA%88%E4%B8%8E%E6%94%B6%E5%9B%9E"><span class="toc-number">4.1.</span> <span class="toc-text">权限授予与收回</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" data-cover-fallback="/img/cover4.jpg" onerror="this.onerror=null;this.src='/img/cover4.jpg'" alt="数据库理论学习-sql语句"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句">数据库理论学习-sql语句</a><time datetime="2026-08-10T06:03:03.000Z" title="发表于 2026-08-10 14:03:03">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" data-cover-fallback="/img/cover3.jpg" onerror="this.onerror=null;this.src='/img/cover3.jpg'" alt="数据库理论学习-关系代数"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数">数据库理论学习-关系代数</a><time datetime="2026-08-10T02:17:43.000Z" title="发表于 2026-08-10 10:17:43">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/04/hexo%E9%A6%96%E9%A1%B5%E5%88%86%E7%B1%BB%E7%A3%81%E8%B4%B4%E5%AE%9E%E7%8E%B0/" title="hexo首页分类磁贴实现"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" data-cover-fallback="/img/cover2.jpg" onerror="this.onerror=null;this.src='/img/cover2.jpg'" alt="hexo首页分类磁贴实现"/></a><div class="content"><a class="title" href="/2026/08/04/hexo%E9%A6%96%E9%A1%B5%E5%88%86%E7%B1%BB%E7%A3%81%E8%B4%B4%E5%AE%9E%E7%8E%B0/" title="hexo首页分类磁贴实现">hexo首页分类磁贴实现</a><time datetime="2026-08-04T07:00:00.000Z" title="发表于 2026-08-04 15:00:00">2026-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/04/WinSCP-PuTTY%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%89%93%E5%8C%85/" title="WinSCP+PuTTY实现服务器连接和打包"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135216.jpg" data-cover-fallback="/img/cover1.jpg" onerror="this.onerror=null;this.src='/img/cover1.jpg'" alt="WinSCP+PuTTY实现服务器连接和打包"/></a><div class="content"><a class="title" href="/2026/08/04/WinSCP-PuTTY%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9E%E6%8E%A5%E5%92%8C%E6%89%93%E5%8C%85/" title="WinSCP+PuTTY实现服务器连接和打包">WinSCP+PuTTY实现服务器连接和打包</a><time datetime="2026-08-04T05:26:38.000Z" title="发表于 2026-08-04 13:26:38">2026-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/28/hexo%E9%BC%A0%E6%A0%87%E6%A0%B7%E5%BC%8F%E4%BF%AE%E6%94%B9/" title="hexo鼠标样式修改"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135217.jpg" data-cover-fallback="/img/cover14.jpg" onerror="this.onerror=null;this.src='/img/cover14.jpg'" alt="hexo鼠标样式修改"/></a><div class="content"><a class="title" href="/2026/07/28/hexo%E9%BC%A0%E6%A0%87%E6%A0%B7%E5%BC%8F%E4%BF%AE%E6%94%B9/" title="hexo鼠标样式修改">hexo鼠标样式修改</a><time datetime="2026-07-28T02:54:49.000Z" title="发表于 2026-07-28 10:54:49">2026-07-28</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By Cheng-orange</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i><span id="percent">0</span></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer src="/js/nav.js"></script><script defer data-pjax src="/js/readPercent.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([href="/birthday/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false 
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script>window.COVER_LOCAL_POOL=[];</script>
+<script defer data-pjax src="/js/cover-fallback.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135218.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/JAVA后端/&quot;);" href="javascript:void(0);">JAVA后端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">SpringBoot相关知识学习</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135217.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/安装和使用/&quot;);" href="javascript:void(0);">安装和使用</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">各种环境与工具安装使用</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135216.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/部署/&quot;);" href="javascript:void(0);">部署</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">打包与服务器部署</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/hexo/&quot;);" href="javascript:void(0);">hexo</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr">blog美化建设中...</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/前端/&quot;);" href="javascript:void(0);">前端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">vue3相关</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/demo/&quot;);" href="javascript:void(0);">demo</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">无所属项目</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/数据库/&quot;);" href="javascript:void(0);">数据库</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">mysql</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
