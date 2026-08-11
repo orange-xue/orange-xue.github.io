@@ -1,0 +1,152 @@
+/* 恋爱日记：解锁后时间轴；修复 decrypt 后 inline 导致卡片/图标错位 */
+
+/* #page.nc 默认无内边距，标题/时间轴会贴边 —— 给日记页补上 */
+#page.nc:has(.diary-page) {
+  padding: 36px 32px 48px !important;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  #page.nc:has(.diary-page) {
+    padding: 28px 16px 36px !important;
+  }
+}
+
+.diary-page {
+  min-height: 120px;
+  box-sizing: border-box;
+}
+
+.diary-page:not(.diary-unlocked) {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.diary-page.diary-unlocked {
+  --diary-rail: 36px;
+  --diary-gap: 10px;
+  margin: 8px 0 24px;
+  padding-left: var(--diary-rail);
+  border-left: 2px solid rgba(73, 177, 245, 0.45);
+  box-sizing: border-box;
+}
+
+/* hbe 解密后会写成 display:inline，必须强制 block，否则卡片背景与绝对定位都会坏 */
+.diary-page.diary-unlocked #hexo-blog-encrypt,
+.diary-page.diary-unlocked #hexo-blog-encrypt > div {
+  display: block !important;
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  box-sizing: border-box;
+}
+
+.diary-page.diary-unlocked .diary-intro {
+  margin: 0 var(--diary-gap) 12px;
+  color: var(--card-meta, #858585);
+  font-size: 0.95em;
+  box-sizing: border-box;
+}
+
+.diary-page.diary-unlocked h2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 1.35em var(--diary-gap) 0.75em;
+  padding: 0;
+  font-size: 1.45em;
+  font-weight: 700;
+  color: var(--font-color);
+  box-sizing: border-box;
+}
+
+/* 生肖中心对齐左边框中线：-(rail + gap) + 1px - 半宽 */
+.diary-page.diary-unlocked h2 .diary-zodiac {
+  position: absolute;
+  left: calc(-1 * (var(--diary-rail) + var(--diary-gap)) + 1px - 12px);
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.diary-page.diary-unlocked .diary-card {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  margin: 0 var(--diary-gap) 12px;
+  padding: 14px 16px 12px;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(73, 177, 245, 0.22);
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .diary-page.diary-unlocked .diary-card {
+  background-color: rgba(36, 36, 36, 0.92);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 橙子钉在时间轴上 */
+.diary-page.diary-unlocked .diary-card::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * (var(--diary-rail) + var(--diary-gap)) + 1px - 8px);
+  top: 16px;
+  width: 30px;
+  height: 30px;
+  background: url('/img/orange.svg') center / contain no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.diary-page.diary-unlocked .diary-card h3 {
+  margin: 0 0 0.45em;
+  padding: 0;
+  font-size: 1.02em;
+  font-weight: 600;
+  color: var(--card-meta, #858585);
+  box-sizing: border-box;
+}
+
+.diary-page.diary-unlocked .diary-card p {
+  margin: 0.35em 0 0.55em;
+  line-height: 1.75;
+  color: var(--font-color);
+  box-sizing: border-box;
+}
+
+.diary-page.diary-unlocked .diary-card p:last-child {
+  margin-bottom: 0;
+}
+
+.diary-page.diary-unlocked .diary-card img {
+  display: block;
+  max-width: min(420px, 100%);
+  margin: 0.55em 0 0.2em;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.diary-page #hexo-blog-encrypt.hbe-container {
+  margin: 1.5rem auto;
+  max-width: 420px;
+  box-sizing: border-box;
+}
+
+/* 隐藏解密后的 Encrypt again 按钮 */
+.diary-page #hexo-blog-encrypt > .hbe-button {
+  display: none !important;
+}

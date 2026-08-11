@@ -5,36 +5,36 @@
    * 打卡配置说明：
    * - 键名：省份全称，需与地图一致（如 安徽省、浙江省）
    * - 值：数组，同一省份可添加多条打卡记录
-   * - city：市区名（可重复，表示同一城市多次打卡）
-   * - date / note：日期与备注
+   * - city / date / note：市区、日期、备注
+   * - coord: [经度, 纬度]，用于地图坐标点
    */
   const CHECKINS = {
     '安徽省': [
-      { city: '繁昌县', date: '2002-08-23', note: '小蛇大驾光临' },
-      { city: '繁昌县', date: '2002-11-14', note: '小橙驾到，统统闪开' },
-      { city: '芜湖市', date: '2025-01-31', note: '萌宠馆!rua' }
+      { city: '繁昌县', date: '2002-08-23', note: '小蛇大驾光临', coord: [118.20, 31.08] },
+      { city: '繁昌县', date: '2002-11-14', note: '小橙驾到，统统闪开', coord: [118.20, 31.08] },
+      { city: '芜湖市', date: '2025-01-31', note: '萌宠馆!rua', coord: [118.38, 31.33] }
     ],
     '河北省': [
-      { city: '保定', date: '2025-03-29', note: '复试结束，小蛇闪现' },
-      { city: '石家庄', date: '2025-10-01', note: '石家庄博物馆，也是有文化起来了' },
-      { city: '天津', date: '2025-10-03', note: '香菜牛肉！永远的神！' },
-      { city: '保定', date: '2025-11-29', note: '疯狂动物城2一般般~终于见面了' }, 
-      { city: '天津', date: '2026-04-04', note: '给小蛇化妆~好好玩' },
-      { city: '秦皇岛', date: '2026-05-01', note: '海上日出真的很浪漫' },
-      { city: '保定', date: '2026-06-18', note: '我们一起吹吹风' },
+      { city: '保定', date: '2025-03-29', note: '复试结束，小蛇闪现', coord: [115.47, 38.87] },
+      { city: '石家庄', date: '2025-10-01', note: '石家庄博物馆，也是有文化起来了', coord: [114.51, 38.04] },
+      { city: '天津', date: '2025-10-03', note: '香菜牛肉！永远的神！', coord: [117.20, 39.13] },
+      { city: '保定', date: '2025-11-29', note: '疯狂动物城2一般般~终于见面了', coord: [115.47, 38.87] },
+      { city: '天津', date: '2026-04-04', note: '给小蛇化妆~好好玩', coord: [117.20, 39.13] },
+      { city: '秦皇岛', date: '2026-05-01', note: '海上日出真的很浪漫', coord: [119.60, 39.94] },
+      { city: '保定', date: '2026-06-18', note: '我们一起吹吹风', coord: [115.47, 38.87] }
     ],
     '河南省': [
-      { city: '郑州市', date: '2025-03-30', note: '第一次两个人的旅行' },
-      { city: '郑州市', date: '2025-06-27', note: '画了我们的第一个朋友圈背景' }
+      { city: '郑州市', date: '2025-03-30', note: '第一次两个人的旅行', coord: [113.65, 34.76] },
+      { city: '郑州市', date: '2025-06-27', note: '画了我们的第一个朋友圈背景', coord: [113.65, 34.76] }
     ],
     '陕西省': [
-      { city: '西安市', date: '2025-05-01', note: '小长假！见面见面' },
-      { city: '西安市', date: '2025-12-27', note: '西安跨年~这次体验好丰富' }
+      { city: '西安市', date: '2025-05-01', note: '小长假！见面见面', coord: [108.94, 34.34] },
+      { city: '西安市', date: '2025-12-27', note: '西安跨年~这次体验好丰富', coord: [108.94, 34.34] }
     ],
     '江苏省': [
-      { city: '南京市', date: '2025-08-08', note: '暑假好短，又要异地了'},
-      { city: '南京市', date: '2026-07-22', note: '田螺小子.she'},
-      { city: '南京市', date: '2026-08-06', note: '小蛇超级无敌宇宙第一惊喜闪现！真的泪目了T.T'}
+      { city: '南京市', date: '2025-08-08', note: '暑假好短，又要异地了', coord: [118.80, 32.06] },
+      { city: '南京市', date: '2026-07-22', note: '田螺小子.she', coord: [118.80, 32.06] },
+      { city: '南京市', date: '2026-08-06', note: '小蛇超级无敌宇宙第一惊喜闪现！真的泪目了T.T', coord: [118.80, 32.06] }
     ]
   }
 
@@ -213,6 +213,66 @@
     })
   }
 
+  function buildPinData () {
+    const byCity = Object.create(null)
+
+    Object.keys(CHECKINS).forEach((province) => {
+      getProvinceCheckins(province).forEach((record) => {
+        if (!record.coord || record.coord.length < 2) return
+        const key = record.city || province
+        if (!byCity[key]) {
+          byCity[key] = {
+            name: key,
+            value: [record.coord[0], record.coord[1]],
+            province,
+            records: []
+          }
+        }
+        byCity[key].records.push({
+          date: record.date,
+          note: record.note || '',
+          city: record.city || key
+        })
+      })
+    })
+
+    return Object.keys(byCity).map((key) => byCity[key])
+  }
+
+  function formatPinTooltip (data) {
+    if (!data) return ''
+    const records = data.records || []
+    if (!records.length) return data.name || ''
+    const lines = records.map((record, index) => {
+      const note = record.note ? ` · ${record.note}` : ''
+      return `${index + 1}. ${record.date}${note}`
+    }).join('<br/>')
+    return `<strong>${data.name}</strong>（${records.length} 次）<br/>${lines}`
+  }
+
+  function buildGeoRegions (geoJson, maxCount, isDark) {
+    const borderColor = isDark ? '#555' : '#fff'
+    return geoJson.features.map((feature) => {
+      const name = feature.properties.name
+      const count = getCheckinsByMapName(name).length
+      return {
+        name,
+        itemStyle: {
+          areaColor: getAreaColor(count, maxCount, isDark),
+          borderColor,
+          borderWidth: 1,
+          shadowBlur: count > 0 ? 4 + Math.min(count, 6) : 0,
+          shadowColor: count > 0 ? 'rgba(110, 181, 255, 0.35)' : 'transparent'
+        },
+        emphasis: {
+          itemStyle: {
+            areaColor: isDark ? rgbToHex(100, 140, 175) : rgbToHex(190, 220, 245)
+          }
+        }
+      }
+    })
+  }
+
   function initMap () {
     const container = document.getElementById('loving-china-map')
     if (!container || !window.echarts) return
@@ -225,30 +285,65 @@
     loadChinaGeoJson()
       .then(geoJson => {
         echarts.registerMap('china', geoJson)
+        const pinData = buildPinData()
 
-        chart.setOption({
-          tooltip: {
-            trigger: 'item',
-            formatter: params => formatTooltip(params.name)
-          },
-          series: [{
-            type: 'map',
-            map: 'china',
-            roam: true,
-            scaleLimit: { min: 0.8, max: 3 },
-            label: { show: false },
-            itemStyle: {
-              areaColor: rgbToHex(...getBaseGray(isDark)),
-              borderColor: isDark ? '#555' : '#fff',
-              borderWidth: 1
+        const applyTheme = (dark) => {
+          chart.setOption({
+            tooltip: {
+              trigger: 'item',
+              formatter: (params) => {
+                if (params.seriesType === 'scatter') {
+                  return formatPinTooltip(params.data)
+                }
+                return formatTooltip(params.name)
+              }
             },
-            emphasis: {
-              label: { show: true, color: '#666' },
-              itemStyle: { areaColor: isDark ? rgbToHex(100, 140, 175) : rgbToHex(190, 220, 245) }
+            // 用 geo.regions 上色（访问地变蓝），scatter 叠加大头钉
+            geo: {
+              map: 'china',
+              roam: true,
+              scaleLimit: { min: 0.8, max: 3 },
+              label: { show: false },
+              itemStyle: {
+                areaColor: rgbToHex(...getBaseGray(dark)),
+                borderColor: dark ? '#555' : '#fff',
+                borderWidth: 1
+              },
+              emphasis: {
+                label: { show: true, color: '#666' },
+                itemStyle: {
+                  areaColor: dark ? rgbToHex(100, 140, 175) : rgbToHex(190, 220, 245)
+                }
+              },
+              regions: buildGeoRegions(geoJson, maxCount, dark)
             },
-            data: buildSeriesData(geoJson, maxCount, isDark)
-          }]
-        })
+            series: [
+              {
+                name: '打卡点',
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                zlevel: 2,
+                data: pinData,
+                symbol: 'pin',
+                symbolSize: [18, 24],
+                itemStyle: {
+                  color: '#e74c3c',
+                  borderColor: '#fff',
+                  borderWidth: 1,
+                  shadowBlur: 6,
+                  shadowColor: 'rgba(180, 40, 40, 0.45)'
+                },
+                label: { show: false },
+                emphasis: {
+                  scale: 1.15,
+                  itemStyle: { color: '#c0392b' }
+                }
+              }
+            ]
+          }, { notMerge: true })
+        }
+
+        applyTheme(isDark)
 
         const provinceCountEl = document.getElementById('loving-province-count')
         const placeCountEl = document.getElementById('loving-place-count')
@@ -257,11 +352,7 @@
 
         new MutationObserver(() => {
           const dark = document.documentElement.getAttribute('data-theme') === 'dark'
-          chart.setOption({
-            series: [{
-              data: buildSeriesData(geoJson, maxCount, dark)
-            }]
-          })
+          applyTheme(dark)
         }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
       })
       .catch(() => {

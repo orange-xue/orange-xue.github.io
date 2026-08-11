@@ -239,25 +239,105 @@
 }
 
 .loving-gate-btn {
+  position: relative;
   flex-shrink: 0;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
-  padding: 10px 24px;
+  min-width: 132px;
+  padding: 12px 28px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #8ec5ff, var(--loving-accent-deep));
+  background: linear-gradient(135deg, #9cc3f2, #6bacf0 55%, #599ce8);
   color: #fff;
   font-size: 1rem;
   text-decoration: none;
   cursor: pointer;
+  overflow: visible;
+  isolation: isolate;
   transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow:
+    0 0 18px rgba(110, 181, 255, 0.35),
+    0 6px 18px rgba(41, 139, 236, 0.25);
 }
 
 .loving-gate-btn:hover {
   color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(110, 181, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 28px rgba(160, 220, 255, 0.55),
+    0 10px 24px rgb(103, 165, 227);
+}
+
+.firefly-btn .firefly-btn-label {
+  position: relative;
+  z-index: 2;
+  letter-spacing: 0.04em;
+  color: #eef6ff;
+  text-shadow: 0 0 12px rgba(239, 232, 232, 0.45);
+}
+
+.firefly-btn .firefly {
+  --x: 50%;
+  --y: 50%;
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e8fbff;
+  box-shadow:
+    0 0 6px 2px rgba(180, 240, 255, 0.95),
+    0 0 14px 4px rgba(110, 200, 255, 0.55);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: loving-firefly 3.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.45s);
+}
+
+.firefly-btn .firefly:nth-child(2) { --x: 12%; --y: 28%; }
+.firefly-btn .firefly:nth-child(3) { --x: 88%; --y: 22%; }
+.firefly-btn .firefly:nth-child(4) { --x: 18%; --y: 78%; }
+.firefly-btn .firefly:nth-child(5) { --x: 82%; --y: 72%; }
+.firefly-btn .firefly:nth-child(6) { --x: 48%; --y: 8%; }
+.firefly-btn .firefly:nth-child(7) { --x: 58%; --y: 92%; }
+.firefly-btn .firefly:nth-child(8) { --x: 6%; --y: 52%; }
+.firefly-btn .firefly:nth-child(9) { --x: 94%; --y: 48%; }
+
+@keyframes loving-firefly {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) translateY(0);
+  }
+  15% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1) translateY(-10px);
+  }
+  85% {
+    opacity: 0.35;
+  }
+}
+
+.firefly-btn::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 30% 40%, rgba(180, 240, 255, 0.22), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(120, 200, 255, 0.18), transparent 50%);
+  z-index: 0;
+  pointer-events: none;
+  animation: loving-firefly-glow 4s ease-in-out infinite;
+}
+
+@keyframes loving-firefly-glow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
 }
 
 /* 日记 · 即刻短文瀑布流（纯 CSS 多列，静态部署友好） */
