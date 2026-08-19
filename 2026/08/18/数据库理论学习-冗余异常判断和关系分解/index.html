@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库理论学习-冗余异常判断和关系分解 | 圆橙子</title><meta name="author" content="Cheng-orange"><meta name="copyright" content="Cheng-orange"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="冗余异常判断1.找候选码，区分出主属性和非主属性 2.一般1、2、3NF都是有冗余和修改、插入、删除异常的（有冗余一定有异常）。BCNF一般就没有冗余和异常了，除非存在“多值依赖”，才会有冗余  冗余：能够由其他数据推导出的、不必要的重复存储”。  元组重复：整行数据（除主键外）完全相同，也就是非主属性值在表中多次重复出现。 派生冗余：比如表中同时存了“单价、数量、总价”，总价可以由前两者算出，那">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库理论学习-冗余异常判断和关系分解">
+<meta property="og:url" content="https://orange-xue.github.io/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="圆橙子">
+<meta property="og:description" content="冗余异常判断1.找候选码，区分出主属性和非主属性 2.一般1、2、3NF都是有冗余和修改、插入、删除异常的（有冗余一定有异常）。BCNF一般就没有冗余和异常了，除非存在“多值依赖”，才会有冗余  冗余：能够由其他数据推导出的、不必要的重复存储”。  元组重复：整行数据（除主键外）完全相同，也就是非主属性值在表中多次重复出现。 派生冗余：比如表中同时存了“单价、数量、总价”，总价可以由前两者算出，那">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg">
+<meta property="article:published_time" content="2026-08-18T02:09:06.000Z">
+<meta property="article:modified_time" content="2026-08-18T02:33:20.567Z">
+<meta property="article:author" content="Cheng-orange">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据库理论学习-冗余异常判断和关系分解",
+  "url": "https://orange-xue.github.io/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/",
+  "image": "https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg",
+  "datePublished": "2026-08-18T02:09:06.000Z",
+  "dateModified": "2026-08-18T02:33:20.567Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Cheng-orange",
+      "url": "https://orange-xue.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/sun.svg"><link rel="canonical" href="https://orange-xue.github.io/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库理论学习-冗余异常判断和关系分解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/modify.css"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_4890961_bimfirxk94m.css"><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/readPercent.css"><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/loving.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><style>#loading-box{position:fixed;inset:0;z-index:2147483646;width:100vw;height:100vh;overflow:hidden;text-align:center;background:#37474f}
+#loading-box.loaded{opacity:0;visibility:hidden;pointer-events:none;z-index:-1;transition:opacity .35s ease,visibility .35s}
+#loading-box .pokeball-back{position:absolute;inset:0;background:#37474f}
+#loading-box .pokeball-loading{height:48px;width:264px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+#loading-box .pokeball{width:4px;height:4px;transform-origin:24px 24px;animation:bf-rotate-ball 1.5s infinite forwards}
+#loading-box #pokeball-great{animation-delay:.25s;margin:-4px 0 0 54px}
+#loading-box #pokeball-ultra{animation-delay:.5s;margin:-4px 0 0 108px}
+#loading-box #pokeball-master{animation-delay:.75s;margin:-4px 0 0 162px}
+#loading-box #pokeball-safari{animation-delay:1s;margin:-4px 0 0 216px}
+@keyframes bf-rotate-ball{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+</style><div id="loading-box"><div class="pokeball-back"></div><div class="pokeball-loading"><div class="pokeball" id="pokeball-normal"></div><div class="pokeball" id="pokeball-great"></div><div class="pokeball" id="pokeball-ultra"></div><div class="pokeball" id="pokeball-master"></div><div class="pokeball" id="pokeball-safari"></div></div></div><script>(() => {
+  const box = document.getElementById('loading-box')
+  if (!box) return
+  const MIN_MS = 900
+  const MAX_MS = 15000
+  const started = Date.now()
+  let ended = false
+
+  const extractBgUrls = (value) => {
+    if (!value || value === 'none') return []
+    const out = []
+    const re = /url\(["']?([^"')]+)["']?\)/g
+    let m
+    while ((m = re.exec(value))) out.push(m[1])
+    return out
+  }
+
+  const loadUrl = (url) => new Promise((resolve) => {
+    if (!url || url.startsWith('data:')) return resolve()
+    const img = new Image()
+    img.onload = img.onerror = () => resolve()
+    img.src = url
+  })
+
+  const waitDomImages = () => Promise.all(
+    Array.from(document.images || []).map((img) => {
+      if (img.complete) return Promise.resolve()
+      return new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true })
+        img.addEventListener('error', resolve, { once: true })
+      })
+    })
+  )
+
+  const waitCssBackgrounds = () => {
+    const urls = new Set()
+    const nodes = [
+      document.getElementById('web_bg'),
+      document.getElementById('page-header'),
+      document.querySelector('.banner'),
+      document.querySelector('#blog-info'),
+      ...Array.from(document.querySelectorAll('[style*="background"]'))
+    ].filter(Boolean)
+    nodes.forEach((el) => {
+      extractBgUrls(el.getAttribute('style') || '').forEach((u) => urls.add(u))
+      try {
+        extractBgUrls(getComputedStyle(el).backgroundImage).forEach((u) => urls.add(u))
+      } catch (e) {}
+    })
+    return Promise.all(Array.from(urls).map(loadUrl))
+  }
+
+  const whenReady = () => Promise.all([
+    new Promise((resolve) => {
+      if (document.readyState === 'complete') resolve()
+      else window.addEventListener('load', resolve, { once: true })
+    }),
+    waitDomImages(),
+    waitCssBackgrounds()
+  ])
+
+  const preloader = {
+    endLoading: () => {
+      if (ended) return
+      const wait = Math.max(0, MIN_MS - (Date.now() - started))
+      setTimeout(() => {
+        if (ended) return
+        ended = true
+        document.body.style.overflow = ''
+        box.classList.add('loaded')
+      }, wait)
+    },
+    initLoading: () => {
+      ended = false
+      document.body.style.overflow = 'hidden'
+      box.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  whenReady().then(preloader.endLoading).catch(preloader.endLoading)
+  setTimeout(preloader.endLoading, MAX_MS)
+})()</script><div id="web_bg" style="background-image: url(/img/banner.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">圆橙子</span></a><a class="nav-page-title" href="/"><span class="site-name">数据库理论学习-冗余异常判断和关系分解</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div><div id="mask-name-container" style="z-index: -1"></div><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span= ' ' + _p('search.title')--></span></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据库理论学习-冗余异常判断和关系分解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-18T02:09:06.000Z" title="发表于 2026-08-18 10:09:06">2026-08-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-18T02:33:20.567Z" title="更新于 2026-08-18 10:33:20">2026-08-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="冗余异常判断"><a href="#冗余异常判断" class="headerlink" title="冗余异常判断"></a>冗余异常判断</h1><p>1.找候选码，区分出主属性和非主属性</p>
+<p>2.一般1、2、3NF都是有冗余和修改、插入、删除异常的（有冗余一定有异常）。BCNF一般就没有冗余和异常了，除非存在“多值依赖”，才会有冗余</p>
+<ul>
+<li><p>冗余：<strong>能够由其他数据推导出的、不必要的重复存储”</strong>。</p>
+<ul>
+<li><strong>元组重复</strong>：整行数据（除主键外）完全相同，也就是<strong>非主属性值在表中多次重复出现</strong>。</li>
+<li><strong>派生冗余</strong>：比如表中同时存了“单价、数量、总价”，总价可以由前两者算出，那么“总价”这一列也是冗余（即使它没有完全重复的值）。</li>
+</ul>
+</li>
+<li><p>插入异常：想插入一条“只包含新实体信息，但缺少主键（或主键不全）”的记录，看插得进去吗</p>
+<blockquote>
+<p><strong>正常情况</strong>：学校成立了“人工智能系”，系主任是“赵教授”。这是一个<strong>客观事实</strong>，理应被数据库记录下来。</p>
+<p><strong>现实困境</strong>：因为这张表的主键是“学号”，而新系目前<strong>还没有招生（没有学生）</strong>。为了能插入，只能<strong>伪造一个“虚拟学号”</strong>（比如 <code>9999</code>，姓名填“待定”），然后把“人工智能系”挂在这个虚拟学生下面。出现插入异常</p>
+</blockquote>
+</li>
+<li><p>删除异常：想删除一条记录，结果把“不该删的其他信息”也一并连带删光了。</p>
+<blockquote>
+<p><strong>操作</strong>：“计算机系”只有“张三”这一个学生。现在张三毕业了，我们要删除他的学籍记录。</p>
+<p><strong>尝试删除</strong>：执行 <code>DELETE FROM R WHERE 学号 = 张三</code>。</p>
+<p>结果<strong>：张三的记录被删除了。与此同时，因为这是计算机系唯一的一条记录，</strong>“计算机系的系主任是谁”这条信息也彻底从数据库中消失了！**</p>
+</blockquote>
+</li>
+<li><p>修改异常：想修改某一个事实（比如一个值），却因为该值重复出现，导致你必须修改多条记录，否则就会数据矛盾。</p>
+<p>（牵一发而动全身）</p>
+<blockquote>
+<p><strong>操作</strong>：计算机系换系主任了，从“王教授”换成“李教授”。</p>
+<p>尝试修改：假设计算机系有 50 个学生，表里有 50 行。你只把其中 1 行（比如张三那行）的系主任改成了“李教授”，其他 49 行没来得及改。</p>
+<p>结果：现在查询“计算机系系主任是谁”，根据不同的行，数据库会给出“王教授”和“李教授”两个矛盾答案。必须费尽心思去修改全部 50 行。存在修改异常</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>假设员工关系EMP（员工号, 姓名, 部门, 部门电话, 部门负责人, 家庭住址, 家庭成员, 成员关系）如下表所示。一个部门可以有多名员工，一个员工可以有多个家庭成员。</p>
+<table>
+<thead>
+<tr>
+<th align="left">员工号</th>
+<th align="left">姓名</th>
+<th align="left">部门</th>
+<th align="left">部门电话</th>
+<th align="left">部门负责人</th>
+<th align="left">家庭住址</th>
+<th align="left">家庭成员</th>
+<th align="left">成员关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0011</td>
+<td align="left">张晓明</td>
+<td align="left">开发部</td>
+<td align="left">808356</td>
+<td align="left">0012</td>
+<td align="left">北京海淀区1号</td>
+<td align="left">张大军</td>
+<td align="left">父亲</td>
+</tr>
+<tr>
+<td align="left">0011</td>
+<td align="left">张晓明</td>
+<td align="left">开发部</td>
+<td align="left">808356</td>
+<td align="left">0012</td>
+<td align="left">北京海淀区 1 号</td>
+<td align="left">胡敏铮</td>
+<td align="left">母亲</td>
+</tr>
+<tr>
+<td align="left">0011</td>
+<td align="left">张晓明</td>
+<td align="left">开发部</td>
+<td align="left">808356</td>
+<td align="left">0012</td>
+<td align="left">北京海淀区1号</td>
+<td align="left">张晓丽</td>
+<td align="left">妹妹</td>
+</tr>
+<tr>
+<td align="left">0012</td>
+<td align="left">吴俊</td>
+<td align="left">开发部</td>
+<td align="left">808356</td>
+<td align="left">0012</td>
+<td align="left">上海昆明路15号</td>
+<td align="left">吴胜利</td>
+<td align="left">父亲</td>
+</tr>
+<tr>
+<td align="left">0012</td>
+<td align="left">吴俊</td>
+<td align="left">开发部</td>
+<td align="left">808356</td>
+<td align="left">0012</td>
+<td align="left">上海昆明路 15 号</td>
+<td align="left">王若</td>
+<td align="left">母亲</td>
+</tr>
+<tr>
+<td align="left">0021</td>
+<td align="left">李立丽</td>
+<td align="left">市场部</td>
+<td align="left">808358</td>
+<td align="left">0021</td>
+<td align="left">西安雁塔路8号</td>
+<td align="left">李国庆</td>
+<td align="left">父亲</td>
+</tr>
+<tr>
+<td align="left">0021</td>
+<td align="left">李立丽</td>
+<td align="left">市场部</td>
+<td align="left">808358</td>
+<td align="left">0021</td>
+<td align="left">西安雁路8号</td>
+<td align="left">罗明</td>
+<td align="left">母亲</td>
+</tr>
+<tr>
+<td align="left">0022</td>
+<td align="left">王学强</td>
+<td align="left">市场部</td>
+<td align="left">808356</td>
+<td align="left">0021</td>
+<td align="left">西安太白路2号</td>
+<td align="left">王国钧</td>
+<td align="left">父亲</td>
+</tr>
+<tr>
+<td align="left">0031</td>
+<td align="left">吴俊</td>
+<td align="left">财务部</td>
+<td align="left">808360</td>
+<td align="left"></td>
+<td align="left">西安科技路18号</td>
+<td align="left">吴鸿翔</td>
+<td align="left">父亲</td>
+</tr>
+</tbody></table>
+<p>那么关系EMP属于 （A ） </p>
+<p>A. 1NF     B. 2NF     C. 3NF     D. BCNF</p>
+<p>且 （D ） 问题；</p>
+<p>A. 无冗余、无插入异常和删除异常</p>
+<p>B. 无冗余，但存在插入异常和删除异常</p>
+<p>C. 存在冗余，但不存在修改操作的不一致</p>
+<p>D. 存在冗余、修改操作的不一致，以及插入异常和删除异常</p>
+<p>为了解决这一问题，应该将员工关系EMP分解为 （ ） 。</p>
+<p>A. EMP1（员工号, 姓名, 家庭住址）</p>
+<p>​	EMP2（部门, 部门电话, 部门负责人）</p>
+<p>​	EMP3（员工号, 家庭成员, 成员关系）</p>
+<p>B. EMP1（员工号, 姓名, 部门, 家庭住址）</p>
+<p>​	EMP2（部门, 部门电话, 部门负责人）</p>
+<p>​	EMP3（员工号, 家庭成员, 成员关系）</p>
+<p>C. EMP1（员工号, 姓名, 家庭住址）</p>
+<p>​	EMP2（部门, 部门电话, 部门负责人, 家庭成员, 成员关系）</p>
+<p>D. EMP1（员工号, 姓名, 部门, 部门电话, 部门负责人, 家庭住址）</p>
+<p>​	EMP2（员工号, 家庭住址, 家庭成员, 成员关系）</p>
+<blockquote>
+<p><strong>1.提取函数依赖</strong></p>
+<p>观察数据：</p>
+<p>a.一个员工号对应唯一的姓名、部门、部门电话、部门负责人、家庭住址，但对应<strong>多个</strong>家庭成员和成员关系。</p>
+<ul>
+<li><strong>员工号 → 姓名，部门，家庭住址</strong></li>
+</ul>
+<p>b.同一部门（如“开发部”）对应的电话、负责人唯一。</p>
+<ul>
+<li><strong>部门 → 部门电话，部门负责人</strong></li>
+</ul>
+<p>c.一个员工有多个家庭成员，要唯一区分每个家庭成员，需要<strong>员工号 + 家庭成员</strong>。</p>
+<ul>
+<li><strong>（员工号，家庭成员）→ 成员关系</strong></li>
+</ul>
+<p><strong>2.判断候选键</strong>和范式</p>
+<p>候选码：（员工号，家庭成员）</p>
+<p>存在部分依赖，为1NF</p>
+<p><strong>3.找异常现象</strong></p>
+<ul>
+<li><strong>冗余</strong>：张晓明有3个家庭成员，他的姓名、部门、住址在表中重复了3次。</li>
+<li><strong>修改异常</strong>：如果张晓明搬家（改住址），必须同时修改3条记录，漏改一条就数据不一致。</li>
+<li><strong>插入异常</strong>：新员工入职，还没有登记家庭成员，因为主键缺少“家庭成员”无法插入。</li>
+<li><strong>删除异常</strong>：如果删除了张晓明唯一一个家庭成员记录，整个员工信息就全丢了。</li>
+</ul>
+<p><strong>4.按“一事一表”原则进行分解</strong></p>
+<p>分解的核心目标是<strong>消除部分依赖</strong>（把依赖不同“主键部分”的属性拆开）。</p>
+<ul>
+<li><strong>R1（员工基本信息）</strong>：依赖“员工号 → 姓名，部门，家庭住址”<br>→ 建表 <strong>R1（员工号，姓名，部门，家庭住址）</strong>，主键为员工号。</li>
+<li><strong>R2（部门信息）</strong>：依赖“部门 → 部门电话，部门负责人”<br>→ 建表 <strong>R2（部门，部门电话，部门负责人）</strong>，主键为部门。</li>
+<li><strong>R3（家庭成员信息）</strong>：依赖“（员工号，家庭成员）→ 成员关系”<br>→ 建表 <strong>R3（员工号，家庭成员，成员关系）</strong>，主键为（员工号，家庭成员）。</li>
+</ul>
+<p>注意：R1中保留了“部门”作为外键，关联R2；R3中保留了“员工号”作为外键，关联R1。这样拆分后，每个表都达到 <strong>BCNF</strong>，彻底消除了上述所有异常</p>
+</blockquote>
+<h1 id="关系分解步骤"><a href="#关系分解步骤" class="headerlink" title="关系分解步骤"></a>关系分解步骤</h1><p>1.升2NF：把“部分依赖”的左边（即候选键的真子集）和它决定的属性抽出来，单独成表。</p>
+<ul>
+<li><em>例</em>：候选键是（学号，课程），存在依赖学号→姓名。就把 <strong>（学号，姓名）</strong> 拆出来，原表剩（学号，课程，成绩）。</li>
+</ul>
+<p>2.升3NF：把“传递依赖”的中间属性（非主属性）和它决定的属性抽出来，单独成表。<strong>也就是x-y-z的y-z抽出来</strong></p>
+<ul>
+<li><em>例</em>：有 学号→系名，系名→系主任。就把 <strong>（系名，系主任）</strong> 拆出来，原表剩（学号，系名）。</li>
+</ul>
+<p>3.升BCNF：检查所有依赖左边是否为超键，如果不是，就把左边及其决定的属性抽出来。</p>
+<h1 id="无损连接判断"><a href="#无损连接判断" class="headerlink" title="无损连接判断"></a>无损连接判断</h1><blockquote>
+<p>将R分解为R1、R2，做自然连接 R1 ⋈ R2，结果必须<strong>完全等于</strong>原R，不能多出假记录，也不能丢失真记录。</p>
+</blockquote>
+<h2 id="二元判定规则–一次性两个关系模式分解"><a href="#二元判定规则–一次性两个关系模式分解" class="headerlink" title="二元判定规则–一次性两个关系模式分解"></a><strong>二元判定规则</strong>–<strong>一次性两个关系模式分解</strong></h2><p>如果要分解R1,R2，同时R1,R2属性的交集能决定R1或R2，那么这个分解无损。所以在做分解时，<strong>一定要保留“桥梁属性”</strong>。</p>
+<ul>
+<li>例如：R（A，B，C），依赖 A→B，B→C。</li>
+<li>拆成 R1（A，B）和 R2（B，C）。</li>
+<li>检查：R1 ∩ R2 &#x3D; {B}。B 能决定 R2 的全部吗？是的（B→C）。所以 B 是 R2 的超键，该分解<strong>无损</strong>。</li>
+</ul>
+<h2 id="3个及以上的多路分解–Chase（表格法）"><a href="#3个及以上的多路分解–Chase（表格法）" class="headerlink" title="3个及以上的多路分解–Chase（表格法）"></a>3个及以上的多路分解–Chase（表格法）</h2><blockquote>
+<p>最简单粗暴的方式：<strong>如果分解后的某一个子模式包含了关系R的候选键，那么这个分解一定是无损连接。</strong></p>
+</blockquote>
+<p><strong>a.建表</strong>：行代表分解后的子模式 Ri，列代表原关系的属性 Aj<br><strong>b.填表</strong>：如果属性 Aj在 Ri中，填 aj。如果不在，填 bij。<br><strong>c.根据函数依赖修改表</strong>：针对每一个函数依赖 X→Y：</p>
+<ul>
+<li>寻找在 X属性列上具有相同符号的行。</li>
+<li>如果这些行在 Y列上的符号不同，则修改为相同：<ul>
+<li>如果其中有 a，则全部改为 a</li>
+<li>如果没有 a，则改为其中序号最小的 b</li>
+</ul>
+</li>
+</ul>
+<p><strong>d.循环判断</strong>：反复应用所有的函数依赖，直到表格不再发生变化。<br><strong>结论：</strong>如果最后有一行全是 a，则该分解是无损连接的；否则是有损的。</p>
+<h2 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h2><p>设关系模式R（U, F）, 其中:</p>
+<p>U&#x3D;{A, B, C, D, E}, F&#x3D;{A→B, DE→B, CB→E, E→A, B→D}</p>
+<p>关系模式R的候选关键字为：CE 。</p>
+<p>分解（55） 是无损连接，并保持函数依赖的。<br>$$<br>A.\text{ρ}&#x3D;\left&lt;!–swig￼0–&gt;<em>{\text{1}}\left(\text{AC}\right)\text{,\ }{\text{R}}</em>{\text{2}}\left(\text{ED}\right)\text{,\ }{\text{R}}<em>{\text{3}}\left(\text{B}\right)\right} \<br>B.\text{ρ}&#x3D;\left&lt;!–swig￼1–&gt;</em>{\text{1}}\left(\text{AC}\right)\text{,\ }{\text{R}}<em>{\text{2}}\left(\text{E}\right)\text{,\ }{\text{R}}</em>{\text{3}}\left(\text{DB}\right)\right} \<br>C.\text{ρ}&#x3D;\left&lt;!–swig￼2–&gt;<em>{\text{1}}\left(\text{AC}\right)\text{,\ }{\text{R}}</em>{\text{2}}\left(\text{ED}\right)\text{,\ }{\text{R}}<em>{\text{3}}\left(\text{AB}\right)\right} \<br>D.\text{ρ}&#x3D;\left&lt;!–swig￼3–&gt;</em>{\text{1}}\left(\text{ABC}\right)\text{,\ }{\text{R}}<em>{\text{2}}\left(\text{ED}\right)\text{,\ }{\text{R}}</em>{\text{3}}\left(\text{ACE}\right)\right}<br>$$</p>
+<p>法1.D中包含了关系R的候选键，那么这个分解一定是无损连接。</p>
+<p>法2.表格法</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R1(ABC)</td>
+<td>a1</td>
+<td>a2</td>
+<td>a3</td>
+<td><del>b11</del> a4</td>
+<td><del>b12</del> a5</td>
+</tr>
+<tr>
+<td>R2(ED)</td>
+<td><del>b21</del> a1</td>
+<td><del>b22</del> a2</td>
+<td>b23</td>
+<td>a4</td>
+<td>a5</td>
+</tr>
+<tr>
+<td>R3(ACE)</td>
+<td>a1</td>
+<td><del>b31</del>  a2</td>
+<td>a3</td>
+<td><del>b32</del> <del>b11</del> a4</td>
+<td>a5</td>
+</tr>
+</tbody></table>
+<p>依赖：</p>
+<p>A→B,  R1 R3的A列值相同且R1 R3的B列值有a，将B列值改为a。b31改为a2</p>
+<p>CB→E, R1 R3的AB列值相同且R1 R3的E列值有a，将E列值改为a。b12改为a5</p>
+<p>E→A, R1 R2 R3的E列值都相同且R1 R2 R3的A列值有a，将他们的A列值都改为a。b21改为a1</p>
+<p>B→D，R1 R3的B列值相同而R1 R3的D列无a，将D列改为最小的b。b32改为b11</p>
+<p>A→B,  R1 R2 R3的A列值相同且R1 R2 R3的B列值有a，将B列值改为a1。b22改为a2</p>
+<p>B→D，R1 R2 R3的B列值相同且R1 R2 R3的D列有a，将D列改为a。b11改为a4</p>
+<p>此时R1行全为a，分解无损</p>
+<p>所以D为无损连接。</p>
+<h1 id="依赖保持判断"><a href="#依赖保持判断" class="headerlink" title="依赖保持判断"></a>依赖保持判断</h1><blockquote>
+<p>分解后，所有子模式的函数依赖并集，逻辑上等价于原函数依赖集F。</p>
+</blockquote>
+<h2 id="直接观察法"><a href="#直接观察法" class="headerlink" title="直接观察法"></a>直接观察法</h2><p>检查F中的每一个依赖 X→Y。如果X和Y被<strong>拆分到了不同的子表</strong>中，导致没有任何一个子表能独立检查这个约束，那么每次插入&#x2F;更新都要做复杂的连表查询，这就是<strong>依赖不保持</strong>。所以拆完后，看看每个依赖的<strong>左边和右边是否都在同一个子模式里</strong></p>
+<ul>
+<li>接上例：依赖 A→B 在 R1 里（保持）；依赖 B→C 在 R2 里（保持）。所以<strong>依赖保持</strong>。</li>
+<li>如果有一个依赖是 A→C，它被拆到了 R1 和 R2 两边，没有任何一个表能单独检查 A→C，那就<strong>不保持</strong>。</li>
+</ul>
+<h2 id="属性闭包法"><a href="#属性闭包法" class="headerlink" title="属性闭包法"></a>属性闭包法</h2><blockquote>
+<p>当某个依赖 X→Y的属性分散在不同的子表中时用。</p>
+</blockquote>
+<p>算法步骤（针对 X→Y）：</p>
+<p>a.令临时集合 Z&#x3D;X。<br>b.<strong>循环更新 Z</strong>：对每一个子模式 Ri：</p>
+<ul>
+<li>求 (Z∩Ri)在原依赖集 F下的闭包。</li>
+<li>将结果中属于 Ri的属性并入 Z中：Z&#x3D;Z∪((Z∩Ri)+∩Ri)。</li>
+</ul>
+<p>c.循环直到 Z不再增大。</p>
+<p><strong>结论</strong>：如果最终的 Z包含了 Y（即 Y⊆Z），则 X→Y被保持了。对 F中每一个依赖都做一遍，全部通过才叫保持依赖</p>
+<h2 id="例题-2"><a href="#例题-2" class="headerlink" title="例题"></a>例题</h2><p>关系模式 R(A,B,C)，函数依赖集 F&#x3D;A→B,B→C,C→A。判断分解 ρ&#x3D;R1(A,B) , R2(B,C)是否保持依赖。</p>
+<p>检查 A→B：A,B都在 R1(A,B)中，保持。<br>检查 B→C：B,C都在 R2(B,C)中，保持。<br>检查 C→A：属性分散在 R1,R2中，闭包算法。</p>
+<ul>
+<li>设 Z&#x3D;C。</li>
+<li>考虑 R1(A,B)：Z∩R1&#x3D;∅</li>
+<li>考虑 R2(B,C) ：Z∩R2&#x3D;C。<ul>
+<li>在 F 中C→A,将A加入C闭包{C , A}</li>
+<li>C闭包中的A在 F 中有A→B，将B加入C闭包</li>
+<li>最终C的闭包为{C , A , B}</li>
+</ul>
+</li>
+<li>将结果中属于 R2的属性B并入 Z得到{ C , B }</li>
+<li>再次考虑 R1(A,B)：Z∩R1&#x3D;B。<ul>
+<li>在 F 中C→A,将A加入C闭包{C , A}</li>
+<li>C闭包中的A在 F 中有A→B，将B加入C闭包</li>
+<li>最终C的闭包为{C , A , B}</li>
+</ul>
+</li>
+<li>将结果中属于 R1的属性A,B并入 Z：{ A , B , C }</li>
+</ul>
+<p>此时依赖的右边 A⊆Z，说明 C→A被保持了。</p>
+<p>所有原依赖都被保持，分解保持函数依赖</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io">Cheng-orange</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/">https://orange-xue.github.io/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://orange-xue.github.io" target="_blank">圆橙子</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mysql/">mysql</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/" title="数据库理论学习-软考真题"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">数据库理论学习-软考真题</div></div><div class="info-2"><div class="info-item-1">数据模型采用二维表格结构表达实体类型及实体间联系的数据模型是：关系模型  常用数据模型有： 层次模型（非关系型模型 网状模型（非关系型模型 面向对象数据库模型：OODBS 关系模型–特色为描述的一致性；一个关系模式相当于一个记录型。关系是一个实例也是一张表，因此关系更新时，关系实例的内容也变化。  关系代数下列查询B&#x3D;“大数据”且F&#x3D;“开发平台”，结果集属性列为A、B、C、F的关系代数表达式中，查询效率最高的是：D$$A. \pi_{1,2,3,8}\bigl(\sigma_{2&#x3D;\text{‘大数据’}\land  1&#x3D;5 \land  3&#x3D;6 \land 8&#x3D;\text{‘开发平台’}}(R\times S)\bigr)$$ $$B. \pi_{1,2,3,8}\bigl(\sigma_{1&#x3D;5 \land 3&#x3D;6 \land  8&#x3D;\text{‘开发平台’}}(\sigma_{2&#x3D;\text{‘大数据’}}(R)\times S)\bigr)$$ $$C....</div></div></div></a><a class="pagination-related" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135506.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">数据库理论学习-ER图相关内容</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0/" title="数据库学习-updating"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-07</div><div class="info-item-2">数据库学习-updating</div></div><div class="info-2"><div class="info-item-1"> navicat+idea  1.MySQL下载2.数据库服务启动和连接win+r并输入cmd，同时按住ctrl和shift并点确定，用管理员模式打开cmd。 12net start mysql //启动数据库服务mysql -u root -p //连接到数据库  不用管理员模式会显示“发生系统错误5.拒绝访问”。 3.navicat连接到本地数据库并建表 连接前先启动数据库服务   点击进入连接信息界面后依次填入信息，最后点击下方“测试连接”。测试无误后点击确认即可连接到本地数据库。 右键建库建表。使用“生成数据”生成模拟数据。 4.idea中连接数据库点击图中右侧图标后，选择“新建数据源”，输入用户、密码、数据库这些信息后“测试连接”，最后点击确认即可。  创建后窗口会自动弹出console窗口，后续各种表和数据操作的sql语句在这里编写和保存。可以右键选择将其重命名，这样便于后续操作。 5.Mybatis1.配置Mybatis并测试1.创建springboot项目时勾选Mybatis相关依赖：MySQL Driver和MyBaties...</div></div></div></a><a class="pagination-related" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135506.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-19</div><div class="info-item-2">数据库理论学习-ER图相关内容</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">数据库理论学习-sql语句</div></div><div class="info-2"><div class="info-item-1">列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223242526272829/*创建*/-- 约束项没有就不加create table 表名 (	列名 数据类型 约束1 约束2,    	 ...		 ,    列名 数据类型 约束1);/*删除*/drop table 表名;     -- 直接删除表，不检查是否存在drop table if exists 表名; -- 如果存在表就删除/*修改*/-- 插入一列。如果不要求在特定列后插入，after及以后部分不写alter table 表名 add 列名 数据类型 约束 after 特定列;-- 交换列1、2alter table 表名 modify 列名1 数据类型 after...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">数据库理论学习-关系代数</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a><a class="pagination-related" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/" title="数据库理论学习-软考真题"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-12</div><div class="info-item-2">数据库理论学习-软考真题</div></div><div class="info-2"><div class="info-item-1">数据模型采用二维表格结构表达实体类型及实体间联系的数据模型是：关系模型  常用数据模型有： 层次模型（非关系型模型 网状模型（非关系型模型 面向对象数据库模型：OODBS 关系模型–特色为描述的一致性；一个关系模式相当于一个记录型。关系是一个实例也是一张表，因此关系更新时，关系实例的内容也变化。  关系代数下列查询B&#x3D;“大数据”且F&#x3D;“开发平台”，结果集属性列为A、B、C、F的关系代数表达式中，查询效率最高的是：D$$A. \pi_{1,2,3,8}\bigl(\sigma_{2&#x3D;\text{‘大数据’}\land  1&#x3D;5 \land  3&#x3D;6 \land 8&#x3D;\text{‘开发平台’}}(R\times S)\bigr)$$ $$B. \pi_{1,2,3,8}\bigl(\sigma_{1&#x3D;5 \land 3&#x3D;6 \land  8&#x3D;\text{‘开发平台’}}(\sigma_{2&#x3D;\text{‘大数据’}}(R)\times S)\bigr)$$ $$C....</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Cheng-orange</div><div class="author-info-description">一起看日出吧^</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/orange-xue"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD"><span class="toc-number">1.</span> <span class="toc-text">冗余异常判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">例题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">关系分解步骤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E6%8D%9F%E8%BF%9E%E6%8E%A5%E5%88%A4%E6%96%AD"><span class="toc-number">3.</span> <span class="toc-text">无损连接判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%85%83%E5%88%A4%E5%AE%9A%E8%A7%84%E5%88%99%E2%80%93%E4%B8%80%E6%AC%A1%E6%80%A7%E4%B8%A4%E4%B8%AA%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E5%88%86%E8%A7%A3"><span class="toc-number">3.1.</span> <span class="toc-text">二元判定规则–一次性两个关系模式分解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E4%B8%AA%E5%8F%8A%E4%BB%A5%E4%B8%8A%E7%9A%84%E5%A4%9A%E8%B7%AF%E5%88%86%E8%A7%A3%E2%80%93Chase%EF%BC%88%E8%A1%A8%E6%A0%BC%E6%B3%95%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">3个及以上的多路分解–Chase（表格法）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98-1"><span class="toc-number">3.3.</span> <span class="toc-text">例题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E4%BF%9D%E6%8C%81%E5%88%A4%E6%96%AD"><span class="toc-number">4.</span> <span class="toc-text">依赖保持判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E8%A7%82%E5%AF%9F%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">直接观察法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E9%97%AD%E5%8C%85%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">属性闭包法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98-2"><span class="toc-number">4.3.</span> <span class="toc-text">例题</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135506.jpg" data-cover-fallback="/img/cover7.jpg" onerror="this.onerror=null;this.src='/img/cover7.jpg'" alt="数据库理论学习-ER图相关内容"/></a><div class="content"><a class="title" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容">数据库理论学习-ER图相关内容</a><time datetime="2026-08-19T03:11:03.000Z" title="发表于 2026-08-19 11:11:03">2026-08-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/" title="数据库理论学习-冗余异常判断和关系分解"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg" data-cover-fallback="/img/cover6.jpg" onerror="this.onerror=null;this.src='/img/cover6.jpg'" alt="数据库理论学习-冗余异常判断和关系分解"/></a><div class="content"><a class="title" href="/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/" title="数据库理论学习-冗余异常判断和关系分解">数据库理论学习-冗余异常判断和关系分解</a><time datetime="2026-08-18T02:09:06.000Z" title="发表于 2026-08-18 10:09:06">2026-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/" title="数据库理论学习-软考真题"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg" data-cover-fallback="/img/cover5.jpg" onerror="this.onerror=null;this.src='/img/cover5.jpg'" alt="数据库理论学习-软考真题"/></a><div class="content"><a class="title" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/" title="数据库理论学习-软考真题">数据库理论学习-软考真题</a><time datetime="2026-08-12T05:51:13.000Z" title="发表于 2026-08-12 13:51:13">2026-08-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" data-cover-fallback="/img/cover4.jpg" onerror="this.onerror=null;this.src='/img/cover4.jpg'" alt="数据库理论学习-sql语句"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句">数据库理论学习-sql语句</a><time datetime="2026-08-10T06:03:03.000Z" title="发表于 2026-08-10 14:03:03">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" data-cover-fallback="/img/cover3.jpg" onerror="this.onerror=null;this.src='/img/cover3.jpg'" alt="数据库理论学习-关系代数"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数">数据库理论学习-关系代数</a><time datetime="2026-08-10T02:17:43.000Z" title="发表于 2026-08-10 10:17:43">2026-08-10</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By Cheng-orange</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i><span id="percent">0</span></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer src="/js/nav.js"></script><script defer data-pjax src="/js/readPercent.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([href="/bpfs/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false 
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script>window.COVER_LOCAL_POOL=[];</script>
+<script defer data-pjax src="/js/cover-fallback.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135218.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/JAVA后端/&quot;);" href="javascript:void(0);">JAVA后端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">SpringBoot相关知识学习</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135217.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/hexo/&quot;);" href="javascript:void(0);">hexo</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr">blog美化建设中...</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135216.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/安装和使用/&quot;);" href="javascript:void(0);">安装和使用</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">各种环境与工具安装使用</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/部署/&quot;);" href="javascript:void(0);">部署</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">打包与服务器部署</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/前端/&quot;);" href="javascript:void(0);">前端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">vue3相关</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/demo/&quot;);" href="javascript:void(0);">demo</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">无所属项目</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/数据库/&quot;);" href="javascript:void(0);">数据库</a><span class="categoryBar-list-count">6</span><span class="categoryBar-list-descr">mysql</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>

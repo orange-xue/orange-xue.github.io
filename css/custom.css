@@ -509,3 +509,101 @@ div#archive {
   display: inline-block;
   -webkit-font-smoothing: antialiased;
 }
+
+/* 文章顶栏：标题+元信息做成封面浮层白卡片，宽度对齐下方 .layout（文章+侧栏） */
+#page-header.post-bg #post-info {
+  left: 50%;
+  right: auto;
+  bottom: 28px !important;
+  /* 与 .layout 一致：max-width 1200px，左右各留 15px */
+  width: calc(100% - 30px);
+  max-width: 1200px;
+  padding: 22px 28px 18px !important;
+  transform: translateX(-50%);
+  text-align: left !important;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+@media screen and (min-width: 2000px) {
+  #page-header.post-bg #post-info {
+    max-width: 70%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #page-header.post-bg #post-info {
+    /* 与 .layout 移动端 padding: 20px 5px 对齐 */
+    width: calc(100% - 10px);
+    bottom: 14px !important;
+    padding: 16px 16px 14px !important;
+    border-radius: 14px;
+  }
+
+  #page-header.post-bg #post-info .post-title {
+    font-size: 1.35em;
+    margin-bottom: 8px;
+  }
+}
+
+#page-header.post-bg #post-info > * {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+}
+
+#page-header.post-bg #post-info .post-title {
+  display: block;
+  margin: 0 0 18px;
+  padding: 0;
+  color: #111 !important;
+  font-weight: 700;
+  font-size: 2.4em;
+  font-family: "楷体";
+  line-height: 1.5;
+  text-align: center;
+  text-shadow: none;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+#page-header.post-bg #post-info .post-title .post-edit-link {
+  color: #111;
+}
+
+#page-header.post-bg #post-info #post-meta,
+#page-header.post-bg #post-info #post-meta a,
+#page-header.post-bg #post-info #post-meta .post-meta-icon {
+  color: #6b7280 !important;
+  text-shadow: none;
+  text-align: center;
+  line-height: 1.5;
+}
+
+#page-header.post-bg #post-info #post-meta {
+  font-size: 0.9em;
+  line-height: 1.7;
+}
+
+[data-theme='dark'] #page-header.post-bg #post-info {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+[data-theme='dark'] #page-header.post-bg #post-info .post-title,
+[data-theme='dark'] #page-header.post-bg #post-info .post-title .post-edit-link {
+  color: #111 !important;
+}
+
+/* 文章段落两端对齐 */
+#article-container{
+  text-align: justify;
+  font-size: 22px;
+  line-height: 1.8;
+  font-family: "楷体";
+}

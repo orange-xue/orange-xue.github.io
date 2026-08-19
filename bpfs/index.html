@@ -206,7 +206,7 @@
         </div>
     </div>
 
-    <div id="blow-hint"><p class="text-lg font-bold text-pink-200 mb-1">🎤 对着麦克风吹气</p><p class="text-xs text-gray-400">(如果麦克风不灵可以尝试电脑长按空格 · 手机长按屏幕)</p></div>
+    <div id="blow-hint"><p class="text-lg font-bold text-pink-200 mb-1">🎤 对着麦克风吹气</p><p class="text-xs text-gray-400">(如果麦克风不灵可以尝试电脑长按空格)</p></div>
     <div id="blow-meter-container"><div id="blow-meter-bar"></div></div>
 
     <div id="top-banner" class="hidden">
@@ -226,19 +226,13 @@
                 <button id="music-btn" class="interactive-element p-3 glass-panel hover:bg-white/20 transition rounded-full active:scale-90">🎵</button>
             </div>
         </div>
-        
-        <div id="settings-panel">
-            <div class="color-control"><span>底层颜色</span><input type="color" id="picker-bottom" value="#FF69B4"></div>
-            <div class="color-control"><span>顶层颜色</span><input type="color" id="picker-top" value="#FFB6C1"></div>
-            <div class="color-control"><span>奶油颜色</span><input type="color" id="picker-cream" value="#FFFFFF"></div>
-        </div>
 
         <div id="center-instruction" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none w-full z-0">
             <div class="flex items-center justify-center gap-4 mb-2">
                 <span id="hand-icon" class="text-6xl animate-bounce">👋</span>
                 <h2 id="instruction-text" class="text-6xl md:text-8xl font-bold text-white neon-pulse transition-all duration-700">举起双手</h2>
             </div>
-            <p id="sub-instruction" class="mt-4 text-xl md:text-2xl text-pink-200/80 font-light tracking-[0.3em]">让魔法发生</p>
+            <p id="sub-instruction" class="mt-4 text-xl md:text-2xl text-pink-200/80 font-light tracking-[0.3em]">等待片刻</p>
             <!-- 自动倒数提示文字 -->
             <p id="auto-countdown-text" class="mt-4 text-sm text-pink-200/60 font-light tracking-wider animate-pulse hidden"></p>
         </div>
@@ -705,7 +699,7 @@
             log('展示蛋糕，开启吹气检测');
             currentState = STATE.BLOWING;
             transitionTo('cake');
-            ui.settingsPanel.style.display = 'flex';
+            if (ui.settingsPanel) ui.settingsPanel.style.display = 'flex';
             ui.mainText.innerText = "";
             ui.subText.innerText = "";
             ui.topBanner.classList.remove('hidden'); 
@@ -720,7 +714,7 @@
             ui.statusText.innerText = "WISH GRANTED";
             ui.blowMeter.style.opacity = '0';
             ui.blowHint.style.opacity = '0';
-            ui.settingsPanel.style.display = 'none';
+            if (ui.settingsPanel) ui.settingsPanel.style.display = 'none';
             
             document.body.classList.add('shake-screen');
             setTimeout(() => document.body.classList.remove('shake-screen'), 500);
@@ -747,15 +741,23 @@
             }, 1500);
         }
 
-        document.getElementById('picker-bottom').addEventListener('input', (e) => CAKE_THEME.bottom = e.target.value);
-        document.getElementById('picker-top').addEventListener('input', (e) => CAKE_THEME.top = e.target.value);
-        document.getElementById('picker-cream').addEventListener('input', (e) => CAKE_THEME.cream = e.target.value);
+        // 调色板 DOM 已移除，仅在节点存在时绑定，避免脚本中断导致开始按钮无响应
+        const pickerBottom = document.getElementById('picker-bottom');
+        const pickerTop = document.getElementById('picker-top');
+        const pickerCream = document.getElementById('picker-cream');
+        if (pickerBottom) pickerBottom.addEventListener('input', (e) => CAKE_THEME.bottom = e.target.value);
+        if (pickerTop) pickerTop.addEventListener('input', (e) => CAKE_THEME.top = e.target.value);
+        if (pickerCream) pickerCream.addEventListener('input', (e) => CAKE_THEME.cream = e.target.value);
         
-        ui.settingsToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const display = ui.settingsPanel.style.display;
-            ui.settingsPanel.style.display = (display === 'none' || display === '') ? 'flex' : 'none';
-        });
+        if (ui.settingsToggle && ui.settingsPanel) {
+            ui.settingsToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const display = ui.settingsPanel.style.display;
+                ui.settingsPanel.style.display = (display === 'none' || display === '') ? 'flex' : 'none';
+            });
+        } else if (ui.settingsToggle) {
+            ui.settingsToggle.classList.add('hidden');
+        }
 
         // 信封/塔罗交互改由 birthday/custom.js（挥手开、握拳关、握拳摊开进塔罗）
         // 信件正文来自 ./letter.md，不再使用页内打字机文案

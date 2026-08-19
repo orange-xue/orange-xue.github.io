@@ -1,0 +1,660 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数据库理论学习-软考真题 | 圆橙子</title><meta name="author" content="Cheng-orange"><meta name="copyright" content="Cheng-orange"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据模型采用二维表格结构表达实体类型及实体间联系的数据模型是：关系模型  常用数据模型有： 层次模型（非关系型模型 网状模型（非关系型模型 面向对象数据库模型：OODBS 关系模型–特色为描述的一致性；一个关系模式相当于一个记录型。关系是一个实例也是一张表，因此关系更新时，关系实例的内容也变化。  关系代数下列查询B&#x3D;“大数据”且F&#x3D;“开发平台”，结果集属性列为A、B、C、F的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库理论学习-软考真题">
+<meta property="og:url" content="https://orange-xue.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/index.html">
+<meta property="og:site_name" content="圆橙子">
+<meta property="og:description" content="数据模型采用二维表格结构表达实体类型及实体间联系的数据模型是：关系模型  常用数据模型有： 层次模型（非关系型模型 网状模型（非关系型模型 面向对象数据库模型：OODBS 关系模型–特色为描述的一致性；一个关系模式相当于一个记录型。关系是一个实例也是一张表，因此关系更新时，关系实例的内容也变化。  关系代数下列查询B&#x3D;“大数据”且F&#x3D;“开发平台”，结果集属性列为A、B、C、F的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg">
+<meta property="article:published_time" content="2026-08-12T05:51:13.000Z">
+<meta property="article:modified_time" content="2026-08-19T03:26:19.896Z">
+<meta property="article:author" content="Cheng-orange">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "数据库理论学习-软考真题",
+  "url": "https://orange-xue.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/",
+  "image": "https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg",
+  "datePublished": "2026-08-12T05:51:13.000Z",
+  "dateModified": "2026-08-19T03:26:19.896Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Cheng-orange",
+      "url": "https://orange-xue.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/sun.svg"><link rel="canonical" href="https://orange-xue.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数据库理论学习-软考真题',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/modify.css"><link rel="stylesheet" href="//at.alicdn.com/t/c/font_4890961_bimfirxk94m.css"><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/readPercent.css"><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/loving.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><style>#loading-box{position:fixed;inset:0;z-index:2147483646;width:100vw;height:100vh;overflow:hidden;text-align:center;background:#37474f}
+#loading-box.loaded{opacity:0;visibility:hidden;pointer-events:none;z-index:-1;transition:opacity .35s ease,visibility .35s}
+#loading-box .pokeball-back{position:absolute;inset:0;background:#37474f}
+#loading-box .pokeball-loading{height:48px;width:264px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2}
+#loading-box .pokeball{width:4px;height:4px;transform-origin:24px 24px;animation:bf-rotate-ball 1.5s infinite forwards}
+#loading-box #pokeball-great{animation-delay:.25s;margin:-4px 0 0 54px}
+#loading-box #pokeball-ultra{animation-delay:.5s;margin:-4px 0 0 108px}
+#loading-box #pokeball-master{animation-delay:.75s;margin:-4px 0 0 162px}
+#loading-box #pokeball-safari{animation-delay:1s;margin:-4px 0 0 216px}
+@keyframes bf-rotate-ball{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+</style><div id="loading-box"><div class="pokeball-back"></div><div class="pokeball-loading"><div class="pokeball" id="pokeball-normal"></div><div class="pokeball" id="pokeball-great"></div><div class="pokeball" id="pokeball-ultra"></div><div class="pokeball" id="pokeball-master"></div><div class="pokeball" id="pokeball-safari"></div></div></div><script>(() => {
+  const box = document.getElementById('loading-box')
+  if (!box) return
+  const MIN_MS = 900
+  const MAX_MS = 15000
+  const started = Date.now()
+  let ended = false
+
+  const extractBgUrls = (value) => {
+    if (!value || value === 'none') return []
+    const out = []
+    const re = /url\(["']?([^"')]+)["']?\)/g
+    let m
+    while ((m = re.exec(value))) out.push(m[1])
+    return out
+  }
+
+  const loadUrl = (url) => new Promise((resolve) => {
+    if (!url || url.startsWith('data:')) return resolve()
+    const img = new Image()
+    img.onload = img.onerror = () => resolve()
+    img.src = url
+  })
+
+  const waitDomImages = () => Promise.all(
+    Array.from(document.images || []).map((img) => {
+      if (img.complete) return Promise.resolve()
+      return new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true })
+        img.addEventListener('error', resolve, { once: true })
+      })
+    })
+  )
+
+  const waitCssBackgrounds = () => {
+    const urls = new Set()
+    const nodes = [
+      document.getElementById('web_bg'),
+      document.getElementById('page-header'),
+      document.querySelector('.banner'),
+      document.querySelector('#blog-info'),
+      ...Array.from(document.querySelectorAll('[style*="background"]'))
+    ].filter(Boolean)
+    nodes.forEach((el) => {
+      extractBgUrls(el.getAttribute('style') || '').forEach((u) => urls.add(u))
+      try {
+        extractBgUrls(getComputedStyle(el).backgroundImage).forEach((u) => urls.add(u))
+      } catch (e) {}
+    })
+    return Promise.all(Array.from(urls).map(loadUrl))
+  }
+
+  const whenReady = () => Promise.all([
+    new Promise((resolve) => {
+      if (document.readyState === 'complete') resolve()
+      else window.addEventListener('load', resolve, { once: true })
+    }),
+    waitDomImages(),
+    waitCssBackgrounds()
+  ])
+
+  const preloader = {
+    endLoading: () => {
+      if (ended) return
+      const wait = Math.max(0, MIN_MS - (Date.now() - started))
+      setTimeout(() => {
+        if (ended) return
+        ended = true
+        document.body.style.overflow = ''
+        box.classList.add('loaded')
+      }, wait)
+    },
+    initLoading: () => {
+      ended = false
+      document.body.style.overflow = 'hidden'
+      box.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  whenReady().then(preloader.endLoading).catch(preloader.endLoading)
+  setTimeout(preloader.endLoading, MAX_MS)
+})()</script><div id="web_bg" style="background-image: url(/img/banner.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">圆橙子</span></a><a class="nav-page-title" href="/"><span class="site-name">数据库理论学习-软考真题</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-xiewenzhang"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw iconfont icon-shijianzhou"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw iconfont icon-fenleiguanli"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw iconfont icon-shengdanbiaoqian"></i><span> 标签合集</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-shejiao"></i><span> 碎碎念</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw iconfont icon-a-wangzhanlianjiehulianwang"></i><span> 常用链接</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw iconfont icon-liuyanban"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw iconfont icon-chengzizhi"></i><span> 关于</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw iconfont icon-25-BalalaikaFlat"></i><span> 音乐馆</span></a></li><li><a class="site-page child" href="/loving/"><i class="fa-fw iconfont icon-lianaixingqiu"></i><span> 恋爱日记</span></a></li></ul></div></div><div id="mask-name-container" style="z-index: -1"></div><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span= ' ' + _p('search.title')--></span></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">数据库理论学习-软考真题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-12T05:51:13.000Z" title="发表于 2026-08-12 13:51:13">2026-08-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-19T03:26:19.896Z" title="更新于 2026-08-19 11:26:19">2026-08-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h1><p>采用二维表格结构表达实体类型及实体间联系的数据模型是：<code>关系模型</code></p>
+<blockquote>
+<p>常用数据模型有：</p>
+<p>层次模型（非关系型模型</p>
+<p>网状模型（非关系型模型</p>
+<p>面向对象数据库模型：OODBS</p>
+<p>关系模型–特色为描述的一致性；一个关系模式相当于一个记录型。关系是一个实例也是一张表，因此关系更新时，关系实例的内容也变化。</p>
+</blockquote>
+<h1 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h1><p>下列查询B&#x3D;“大数据”且F&#x3D;“开发平台”，结果集属性列为A、B、C、F的关系代数表达式中，查询效率最高的是：<code>D</code><br>$$<br>A. \pi_{1,2,3,8}\bigl(\sigma_{2&#x3D;\text{‘大数据’}\land  1&#x3D;5 \land  3&#x3D;6 \land 8&#x3D;\text{‘开发平台’}}(R\times S)\bigr)<br>$$</p>
+<p>$$<br>B. \pi_{1,2,3,8}\bigl(\sigma_{1&#x3D;5 \land 3&#x3D;6 \land  8&#x3D;\text{‘开发平台’}}(\sigma_{2&#x3D;\text{‘大数据’}}(R)\times S)\bigr)<br>$$</p>
+<p>$$<br>C. \pi_{1,2,3,8}\bigl(\sigma_{2&#x3D;\text{‘大数据’} \land 1&#x3D;5 \land 3&#x3D;6}(R\times \sigma_{4&#x3D;\text{‘开发平台’}}(S))\bigr)<br>$$</p>
+<p>$$<br>D. \pi_{1,2,3,8}\bigl(\sigma_{1&#x3D;5\land 3&#x3D;6}(\sigma_{2&#x3D;\text{’大数据‘}}(R)\times \sigma_{4&#x3D;\text{’开发平台‘}}(S))\bigr)<br>$$</p>
+<blockquote>
+<p>关系代数式查询优化原则-核心是让中间结果越小越好</p>
+<p>具体查看<a href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数">关系代数查询优化原则</a></p>
+</blockquote>
+<h1 id="SQL语言"><a href="#SQL语言" class="headerlink" title="SQL语言"></a>SQL语言</h1><h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><p>某销售公司数据库有关系：零件P（零件号, 零件名称, 供应商, 供应商所在地，单价（元）, 库存量），其中同一种零件可由不同的供应商供应，一个供应商可以供应多种零件。</p>
+<p>1）零件关系的主键为：<code>零件号, 供应商</code></p>
+<blockquote>
+<p>查找主键的核心两步：<strong>先看单个属性是否可行，不行就组合起来看a+b能不能唯一确定一行。</strong></p>
+<p>针对这张表的详细推导过程：</p>
+<p><strong>1. 排除单个属性做主键</strong></p>
+<ul>
+<li><strong>零件号</strong>：题目说“同一种零件可由不同的供应商供应”。比如“螺丝”既可以是“甲厂”供应，也可以是“乙厂”供应。如果只用“零件号”做主键，表中就会出现两行“螺丝”的记录，主键重复了。<strong>❌ 不行。</strong></li>
+<li><strong>供应商</strong>：题目说“一个供应商可以供应多种零件”。比如“甲厂”既供应“螺丝”又供应“螺母”。如果只用“供应商”做主键，表中会出现两行“甲厂”的记录，主键也重复了。<strong>❌ 不行。</strong></li>
+<li><strong>零件名称</strong>：显然不同零件可能重名，且同一零件不同供应商名称一样，❌ 不行。</li>
+<li><strong>供应商所在地</strong>：同一城市有很多供应商，❌ 不行。</li>
+<li><strong>库存量</strong>：不同供应商库存不同，且数量会变，❌ 不行。</li>
+</ul>
+<p><strong>2. 尝试组合属性（(零件号, 供应商)）</strong></p>
+<p>单个属性都“撑不住”，就需要把能唯一区分业务含义的属性绑在一起。</p>
+<ul>
+<li><strong>业务含义</strong>：这张表的每一行，本质上记录的是 <strong>“某个供应商（供应商）供应某种零件（零件号）时的库存量”</strong>。</li>
+<li><strong>唯一性验证</strong>：当你确定了“螺丝”+“甲厂”，在正常的业务逻辑下，这张表里<strong>只能有且仅有一条</strong>对应的库存记录。不可能出现两条完全相同的“螺丝+甲厂”记录。</li>
+<li><strong>最小性</strong>：去掉“零件号”只看“供应商”会乱（甲厂有螺丝、螺母），去掉“供应商”只看“零件号”也会乱（螺丝有甲厂、乙厂）。所以 <strong>(零件号, 供应商)</strong> 是最小的、能唯一标识一行的属性组合。</li>
+</ul>
+</blockquote>
+<p>某销售公司数据库有关系：零件P（零件号, 零件名称, 供应商, 供应商所在地，单价（元）, 库存量），其中同一种零件可由不同的供应商供应，一个供应商可以供应多种零件。</p>
+<p>2）查询各种零件的平均单价、最高单价与最低单价之间差距的SQL语句为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	零件号, 零件名称, </span><br><span class="line">	<span class="built_in">AVG</span>(单价) <span class="keyword">AS</span> 平均单价,</span><br><span class="line">    <span class="built_in">MAX</span>(单价) <span class="operator">-</span> <span class="built_in">MIN</span>(单价) <span class="keyword">AS</span> 价格差距</span><br><span class="line"><span class="keyword">FROM</span> P</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> 零件号, 零件名称;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong><code>AVG</code>（平均）、<code>MAX</code>（最大）、<code>MIN</code>（最小）都是“聚合函数”（多行变一行）</strong>。</p>
+<ul>
+<li>如果不写 <code>GROUP BY</code>，数据库会把<strong>整张表</strong>里所有的零件混在一起，只算出一个“全局平均单价”和一个“全局最大-最小差”</li>
+<li>写了 <code>GROUP BY 零件号</code>，数据库就会把“同一个零件号”的所有记录<strong>划成一个个独立的小组</strong>，然后对<strong>每个小组</strong>分别执行 <code>AVG</code>、<code>MAX</code>、<code>MIN</code>，这样每个零件号都会输出一行自己的统计结果</li>
+</ul>
+</blockquote>
+<p>3)査询各种零件的平均库存量、最多库存量与最少库存量之间差值的SQL语句如下:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	零件号, 零件名称, </span><br><span class="line">	<span class="built_in">AVG</span>(库存量) <span class="keyword">AS</span> 平均库存量, </span><br><span class="line">	<span class="built_in">MAX</span>(库存量) <span class="operator">-</span> <span class="built_in">MIN</span>(库存量) <span class="keyword">AS</span> 差值</span><br><span class="line"><span class="keyword">FROM</span> P</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>零件号</span><br></pre></td></tr></table></figure>
+
+<h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><p>假设学生Students和教师Teachers的关系模式如下所示：</p>
+<p>Students（学号, 姓名, 性别, 类别, 身份证号）</p>
+<p>Teachers（教师号, 姓名, 性别, 身份证号, 工资）</p>
+<p>其中，学生关系中的类别分为“本科生”和“研究生”两类。查询既是女教师，又是研究生且工资大于等于3500元的身份证号和姓名的SQL语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">SELECT</span> 身份证号, 姓名</span><br><span class="line"><span class="keyword">FROM</span> Students</span><br><span class="line"><span class="keyword">WHERE</span>  性别<span class="operator">=</span><span class="string">&#x27;女&#x27;</span> <span class="keyword">AND</span> 类别<span class="operator">=</span><span class="string">&#x27;研究生&#x27;</span> )</span><br><span class="line"><span class="keyword">INTERSECT</span></span><br><span class="line">(<span class="keyword">SELECT</span> 身份证号, 姓名</span><br><span class="line"><span class="keyword">FROM</span> Teachers</span><br><span class="line"><span class="keyword">WHERE</span> 工资<span class="operator">&gt;=</span><span class="number">3500</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>1.intersect：对两个select结果模式都是（身份证，姓名），所有可以直接取交集</p>
+<p>2.注意&gt;&#x3D;3500这里的3500就是数字，不用加引号</p>
+</blockquote>
+<h2 id="3"><a href="#3" class="headerlink" title="3"></a>3</h2><p>先有关系：员工工资表（员工号 姓名 部门 基本工资 岗位工资 全勤奖 应发工资 扣款 实发工资）。查询人数大于2的部门和部门员工应发工资的平均工资的SQL语句如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> 部门, <span class="built_in">AVG</span>(应发工资) <span class="keyword">AS</span> 平均工资</span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> 工资表</span><br><span class="line"></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span>部门</span><br><span class="line"></span><br><span class="line"><span class="keyword">HAVING</span> <span class="built_in">COUNT</span>(姓名) <span class="operator">&gt;</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对最后一行：</p>
+<p><code>WHERE</code> 是在<strong>分组之前</strong>对<strong>原始行</strong>进行筛选；<code>HAVING</code> 是在<strong>分组之后</strong>对<strong>组（部门）</strong>进行筛选。</p>
+<ul>
+<li><strong><code>WHERE COUNT(姓名) &gt; 2</code><strong>：SQL 的执行顺序是 <strong>FROM → WHERE → GROUP BY → HAVING</strong>。当数据库执行到 <code>WHERE</code> 时，</strong>还没开始分组</strong>，此时 <code>COUNT(姓名)</code> 是整个表的总人数（比如 100 人），而不是某个部门的人数。此外，绝大多数数据库（如 Oracle、SQL Server、PostgreSQL）<strong>根本不允许</strong>在 <code>WHERE</code> 里直接使用聚合函数，会直接报语法错误。❌</li>
+<li><strong>B. <code>WHERE COUNT(DISTINCT(部门)) &gt; 2</code><strong>：同样犯了两条大忌。一是 <code>WHERE</code> 里不能用聚合函数；二是算的是“</strong>总共有多少个不同的部门</strong>”（比如一共 3 个部门），跟“部门内的员工人数”毫无关系。❌</li>
+</ul>
+<p>DISTINCT查询结果中去除重复的行，只返回唯一的、不同的值</p>
+<ul>
+<li><strong><code>HAVING COUNT(DISTINCT(部门)) &gt; 2</code><strong>：大错特错。既然已经写了 <code>GROUP BY 部门</code>，那</strong>每一个组里“部门”的值都是一样的</strong>。比如“人事部”这个组里，所有行的部门都是“人事部”，<code>COUNT(DISTINCT 部门)</code> 在这个组里计算出来<strong>永远是 1</strong>。这相当于在问“这个组里包含几种不同的部门”？答案永远是一种，根本判断不了人数。❌</li>
+<li>也就是<strong>COUNT(部门)<strong>：数的是</strong>这一列有多少行记录</strong>（有 100 条员工记录，结果就是 100，包含重复值）。<strong>COUNT(DISTINCT 部门)<strong>：数的是</strong>这一列有多少种不同的值</strong>（100 个员工分属 3 个部门，结果就是 <strong>3</strong>）。</li>
+</ul>
+</blockquote>
+<h2 id="4联系类型"><a href="#4联系类型" class="headerlink" title="4联系类型"></a>4联系类型</h2><p>1：1 </p>
+<p>1：n </p>
+<p>n：m</p>
+<h1 id="三级模式"><a href="#三级模式" class="headerlink" title="三级模式"></a>三级模式</h1><p> 外模式又称用户模式&#x2F;子模式</p>
+<h1 id="函数依赖和属性闭包计算"><a href="#函数依赖和属性闭包计算" class="headerlink" title="函数依赖和属性闭包计算"></a>函数依赖和属性闭包计算</h1><h2 id="1-1"><a href="#1-1" class="headerlink" title="1"></a>1</h2><p>给定关系模式R&lt;U,F&gt;, U &#x3D; {A,B,C} , F &#x3D; {AB-&gt;C , C-&gt;B}。关系R ( D ), 且分别有 ( C )。</p>
+<p>(1) A. 只有1个候选关键字AC        B. 只有1个候选关键字AB</p>
+<p>​	C. 有2个候选关键字AC和BC   D. 有2个候选关键字AC和AB</p>
+<p>(2)A. 1个非主属性和2个主属性     B. 2个非主属性和1个主属性</p>
+<p>C. 0个非主属性和3个主属性     D. 3个非主属性和0个主属性</p>
+<blockquote>
+<p>函数依赖集：<br>F&#x3D;{AB→C, C→B}<em>F</em>&#x3D;{<em>A**B</em>→<em>C</em>, <em>C</em>→<em>B</em>}</p>
+<h4 id="1-先看单个属性是否能成为候选关键字"><a href="#1-先看单个属性是否能成为候选关键字" class="headerlink" title="1. 先看单个属性是否能成为候选关键字"></a>1. 先看单个属性是否能成为候选关键字</h4><ul>
+<li>A+&#x3D;{A}<em>A</em>+&#x3D;{<em>A</em>}，不能决定全部属性，所以 A 不是候选键。</li>
+<li>B+&#x3D;{B}<em>B</em>+&#x3D;{<em>B</em>}，不能决定全部属性，所以 B 不是候选键。</li>
+<li>C+&#x3D;{C,B}<em>C</em>+&#x3D;{<em>C</em>,<em>B</em>}，不能决定 A，所以 C 不是候选键。</li>
+</ul>
+<h4 id="2-看两个属性组合"><a href="#2-看两个属性组合" class="headerlink" title="2. 看两个属性组合"></a>2. 看两个属性组合</h4><ul>
+<li>(AB)+(<em>A**B</em>)+：<br>AB→C<em>A**B</em>→<em>C</em>，所以加入 C；<br>又 C→B<em>C</em>→<em>B</em>，B 已有；<br>得到 {A,B,C}{<em>A</em>,<em>B</em>,<em>C</em>}，所以 AB 能决定全部属性，且没有多余属性，因此 AB 是候选关键字。</li>
+<li>(AC)+(<em>A**C</em>)+：<br>C→B<em>C</em>→<em>B</em>，所以加入 B；<br>又 AB→C<em>A**B</em>→<em>C</em>，C 已有；<br>得到 {A,B,C}{<em>A</em>,<em>B</em>,<em>C</em>}，所以 AC 也能决定全部属性，且没有多余属性，因此 AC 也是候选关键字。</li>
+<li>(BC)+(<em>BC</em>)+：<br>C→B<em>C</em>→<em>B</em>，B 已有；<br>但无法得到 A，因为 AB→C<em>A**B</em>→<em>C</em> 需要 A；<br>所以 BC 不能决定全部属性，不是候选关键字。</li>
+</ul>
+<p>因此候选关键字有 <strong>2 个</strong>：<strong>AB 和 AC</strong>。<br>所以（55）选 <strong>D</strong>。</p>
+<h4 id="3-主属性和非主属性"><a href="#3-主属性和非主属性" class="headerlink" title="3. 主属性和非主属性"></a>3. 主属性和非主属性</h4><p>候选关键字是 AB 和 AC，它们包含的属性并集为：</p>
+<p>{A,B,C}{<em>A</em>,<em>B</em>,<em>C</em>}</p>
+<p>也就是说，A、B、C 全部都是主属性，非主属性个数为 <strong>0</strong>。</p>
+</blockquote>
+<h2 id="2-1"><a href="#2-1" class="headerlink" title="2"></a>2</h2><p>若关系R（H, L, M, P）的主键为全码（All-Key），则关系R的主键应 为HLMP</p>
+<blockquote>
+<p>全码(All-key)是指关系模型的所有属性构成的码是这个关系模式<br>的候选码，本题所有属性组为HLMP</p>
+</blockquote>
+<h2 id="3-1"><a href="#3-1" class="headerlink" title="3"></a>3</h2><p>给定关系模式 R(U, F)，其中：U为关系模式R中的属性集，F是U上的一组函数依赖。U &#x3D; {A1, A2, A3, A4}，F &#x3D; {A1→A2, A1A2→A3, A1→A4, A2→A4}。</p>
+<p>主键应为（A1），函数依赖集F中的 （A1→A4） 是冗余的</p>
+<blockquote>
+<h4 id="1-求（主键）"><a href="#1-求（主键）" class="headerlink" title="1. 求（主键）"></a>1. 求（主键）</h4><p>已知函数依赖集：</p>
+<ul>
+<li>A₁ → A₂</li>
+<li>A₁A₂ → A₃</li>
+<li>A₁ → A₄</li>
+<li>A₂ → A₄</li>
+</ul>
+<p>计算 **A₁ 的闭包 (A₁⁺)**：</p>
+<ul>
+<li>初始：A₁⁺ &#x3D; {A₁}</li>
+<li>由 A₁ → A₂，加入 A₂ → {A₁, A₂}</li>
+<li>由 A₁ → A₄，加入 A₄ → {A₁, A₂, A₄}</li>
+<li>现在有 A₁ 和 A₂，利用 A₁A₂ → A₃，加入 A₃ → {A₁, A₂, A₃, A₄}</li>
+<li>已包含全部属性 U，所以 A₁⁺ &#x3D; U</li>
+</ul>
+<p>因此，<strong>单独属性 A₁ 就能决定所有属性</strong>，且不包含多余属性，所以 A₁ 是唯一的候选键，也就是主键。</p>
+<p>其他选项都是包含 A₁ 的超集，不是最小键，所以不选。</p>
+<hr>
+<h4 id="2-判断冗余的函数依赖"><a href="#2-判断冗余的函数依赖" class="headerlink" title="2. 判断冗余的函数依赖"></a>2. 判断冗余的函数依赖</h4><p>检查每个依赖是否能由其他依赖推出（利用 Armstrong 公理）。</p>
+<ul>
+<li><strong>A₁ → A₂</strong>：无法由其他依赖推出，不是冗余。</li>
+<li><strong>A₁A₂ → A₃</strong>：这是唯一能推出 A₃ 的依赖，无法由其他依赖推出，不是冗余。</li>
+<li><strong>A₁ → A₄</strong>：可由 A₁ → A₂ 和 A₂ → A₄ 通过<strong>传递律</strong>推出（A₁→A₂，A₂→A₄ ⇒ A₁→A₄），所以该依赖是冗余的。</li>
+<li><strong>A₂ → A₄</strong>：无法由其他依赖推出，不是冗余。</li>
+</ul>
+<p>因此冗余的是 <strong>A₁ → A₄</strong></p>
+</blockquote>
+<h2 id="4"><a href="#4" class="headerlink" title="4"></a>4</h2><p>给定关系R（U, Fr）其中，属性属U&#x3D;{A, B, C, D}，函数依赖集Fr&#x3D;{A→BC, B→D}；关系S（U, Fs），其中，属性集U&#x3D;{A, C, E}，函数依赖集Fs&#x3D;{A→C, C→E}，R和S的主键分别为（ A、A ），关于Fr和Fs的叙述，正确的是（C）</p>
+<p>A. Fr蕴含A→B, A→C，但Fr不存在传递依赖</p>
+<p>B. Fs蕴含A→E, Fs存在传递依赖，但Fr不存在传递依赖</p>
+<p>C. Fr, Fs分别蕴含A→D, A→E，故Fr, Fs都存在传递依赖</p>
+<p>D. Fr蕴含A→D, Fr存在传递依赖，但是Fs不存在传递依赖</p>
+<blockquote>
+<p>主键（候选键）是能决定所有属性的最小属性集，用<strong>闭包</strong>来判断。</p>
+<ul>
+<li><strong>对于 R（U&#x3D;{A,B,C,D}，F&#x3D;{A→BC, B→D}）</strong>：<br>计算 **A 的闭包 (A⁺)**：<ul>
+<li>初始：{A}</li>
+<li>由 A→BC，得 B、C → {A,B,C}</li>
+<li>现在有了 B，由 B→D，得 D → {A,B,C,D} &#x3D; 全集 U<br>因为 A 单独就能推出全部属性，所以 <strong>R 的主键是 A</strong>。</li>
+</ul>
+</li>
+<li><strong>对于 S（U&#x3D;{A,C,E}，F&#x3D;{A→C, C→E}）</strong>：<br>计算 **A 的闭包 (A⁺)**：<ul>
+<li>初始：{A}</li>
+<li>由 A→C，得 C → {A,C}</li>
+<li>现在有了 C，由 C→E，得 E → {A,C,E} &#x3D; 全集 U<br>因为 A 单独就能推出全部属性，所以 <strong>S 的主键也是 A</strong>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="2-判断传递依赖"><a href="#2-判断传递依赖" class="headerlink" title="2. 判断传递依赖"></a>2. 判断传递依赖</h4><p><strong>传递依赖的定义</strong>：在关系模式中，如果存在 <strong>X → Y</strong>，<strong>Y → Z</strong>，且满足：</p>
+<ul>
+<li><p><strong>Y 不包含 X</strong>（即 Y 不是 X 的子集）</p>
+</li>
+<li><p><strong>Y → X 不成立</strong>（即 Y 不能反过来决定 X）<br>那么称 <strong>Z 传递依赖于 X</strong>（即 X → Z 是传递依赖）。</p>
+<p>【后不含前，后不推前】</p>
+</li>
+</ul>
+<h5 id="分析-Fr（R-中）："><a href="#分析-Fr（R-中）：" class="headerlink" title="分析 Fr（R 中）："></a>分析 Fr（R 中）：</h5><ul>
+<li>有 A→BC，根据分解规则，可得 <strong>A→B</strong> 和 <strong>A→C</strong>。</li>
+<li>还有 <strong>B→D</strong>。</li>
+<li>串联起来：<strong>A → B → D</strong>。</li>
+<li>检查条件：B 不包含 A，且 B 不能推出 A（因为不存在 B→A），所以 <strong>A→D 是传递依赖</strong>。因此 <strong>Fr 存在传递依赖</strong>。</li>
+</ul>
+<h5 id="分析-Fs（S-中）："><a href="#分析-Fs（S-中）：" class="headerlink" title="分析 Fs（S 中）："></a>分析 Fs（S 中）：</h5><ul>
+<li>有 <strong>A→C</strong> 和 <strong>C→E</strong>。</li>
+<li>串联起来：<strong>A → C → E</strong>。</li>
+<li>检查条件：C 不包含 A，且 C 不能推出 A（因为不存在 C→A），所以 <strong>A→E 是传递依赖</strong>。因此 <strong>Fs 也存在传递依赖</strong>。</li>
+</ul>
+<hr>
+<h5 id="逐个排除选项："><a href="#逐个排除选项：" class="headerlink" title="逐个排除选项："></a>逐个排除选项：</h5><ul>
+<li><strong>A 错</strong>：Fr 存在传递依赖（A→B→D）。</li>
+<li><strong>B 错</strong>：Fr 也存在传递依赖。</li>
+<li><strong>C 对</strong>：Fr 蕴含 A→D（由 A→B→D），Fs 蕴含 A→E（由 A→C→E），且两者都存在传递依赖。</li>
+<li><strong>D 错</strong>：Fs 也存在传递依赖（A→C→E）。</li>
+</ul>
+</blockquote>
+<h3 id="Armstrong-公理"><a href="#Armstrong-公理" class="headerlink" title="Armstrong 公理"></a><strong>Armstrong 公理</strong></h3><p>Armstrong 公理-3 条基本规则</p>
+<ul>
+<li><strong>自反律</strong>：若 Y ⊆ X，则 X → Y。（例如：AB → A）</li>
+<li><strong>增广律</strong>：若 X → Y，且 Z 为任意属性集，则 XZ → YZ。（例如：若 A→B，则 AC→BC）</li>
+<li><strong>传递律</strong>：若 X → Y 且 Y → Z，则 X → Z。（例如：若 A→B，B→C，则 A→C）</li>
+</ul>
+<p> <strong>由公理推出的常用规则（方便解题）</strong></p>
+<ul>
+<li><strong>合并规则</strong>：若 X→Y，X→Z，则 X→YZ。</li>
+<li><strong>分解规则</strong>：若 X→YZ，则 X→Y 且 X→Z。</li>
+<li><strong>伪传递规则</strong>：若 X→Y，WY→Z，则 WX→Z。</li>
+</ul>
+<p><strong>冗余函数依赖</strong>，指的是：<strong>在一个函数依赖集 F 中，某个依赖可以由 F 中的其他依赖逻辑推导出来，如果把它删掉，F 的逻辑闭包（即能推导出的全部依赖）不会发生任何改变。</strong></p>
+<p>通俗地说：<strong>这条依赖是“多余的”，没有它，其他依赖照样能推出它。</strong></p>
+<hr>
+<h3 id="冗余依赖"><a href="#冗余依赖" class="headerlink" title="冗余依赖"></a>冗余依赖</h3><blockquote>
+<p><strong>如果“去掉这个结论”，其他依赖照样能推出你的结论，那么就是冗余依赖。</strong><br>判断方法：去掉它，再求左侧属性的闭包，看结论是否还在闭包里。</p>
+</blockquote>
+<p>对于依赖 <strong>X → A</strong>，要看它是否冗余，只需：</p>
+<ol>
+<li>从 F 中暂时去掉 X → A，得到剩余依赖集 F’。</li>
+<li>在 F’ 下，计算 **X 的闭包 (X⁺)**。</li>
+<li>如果 <strong>A ∈ X⁺</strong>（即靠其他依赖能推出 A），则 X → A 是冗余的；否则不是。</li>
+</ol>
+<hr>
+<p>例如：F &#x3D; { A₁→A₂, A₁A₂→A₃, A₁→A₄, A₂→A₄ }哪个依赖冗余？</p>
+<p>： <strong>A₁→A₄</strong>。</p>
+<ul>
+<li>去掉 A₁→A₄，剩余 F’ &#x3D; { A₁→A₂, A₁A₂→A₃, A₂→A₄ }</li>
+<li>在 F’ 下求 A₁ 的闭包：<ul>
+<li>初始 {A₁}</li>
+<li>由 A₁→A₂，得 {A₁, A₂}</li>
+<li>由 A₂→A₄，得 {A₁, A₂, A₄}</li>
+</ul>
+</li>
+<li>闭包中已经包含 A₄，所以即使没有 A₁→A₄，也能推出 A₄，因此 <strong>A₁→A₄ 是冗余的</strong>。</li>
+</ul>
+<p>而其他依赖，比如 A₁→A₂，如果去掉它，A₁ 的闭包就只剩 {A₁}，再也得不到 A₂，所以它不是冗余的。</p>
+<hr>
+<h3 id="判断主键-属性闭包的计算方法"><a href="#判断主键-属性闭包的计算方法" class="headerlink" title="判断主键-属性闭包的计算方法"></a>判断主键-属性闭包的计算方法</h3><blockquote>
+<p>如果有属性从未出现在任何依赖的右边，只出现在左边，那么候选码一定包含这些属性</p>
+</blockquote>
+<p>闭包 X+是指“从 X 出发，通过已知函数依赖能推出的所有属性集合”。计算步骤如下：</p>
+<ol>
+<li><strong>初始化</strong>：令 X+ &#x3D; X（包含自身）。</li>
+<li><strong>迭代搜索</strong>：<ul>
+<li>扫描所有函数依赖（如 L→R）。</li>
+<li>如果当前 X+中<strong>包含</strong>依赖的左侧属性 L（即 L⊆X+ ），则将右侧属性 R 全部加入 X+</li>
+</ul>
+</li>
+<li><strong>重复步骤 2</strong>，直到 X+不再增加为止。</li>
+</ol>
+<p><strong>举例（用上面 R 的 A 来演示）</strong>：</p>
+<ul>
+<li>初始：A+ &#x3D;{A}</li>
+<li>扫描 A→BC：左侧 A 在集合中，加入 B、C → {A,B,C}</li>
+<li>扫描 B→D：左侧 B 在集合中，加入 D → {A,B,C,D}</li>
+<li>再次扫描，没有新的依赖能触发，结束。得到全集，所以 A 是主键。</li>
+</ul>
+<h1 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h1><p>关系模式 R（课程C，教师T，学生S，成绩G，时间Ti，教室Ro）。其中函数依赖集F &#x3D; { C → T,  (S, C) → G ,  (Ti, Ro) → C ,  (Ti, T) → Ro , (Ti, S) → Ro }</p>
+<p>关系模式R的一个主键是：（时间Ti, 学生S）</p>
+<p>若将关系模式R分解为3个关系模式R1( 课程C，教师T ) , R2( 学生S, 课程C , 成绩G ), R3( 学生S，时间Ti，教室Ro, 课程C ) , 则R,R2,R3的范式分别为：</p>
+<blockquote>
+<p>因为 (Ti, S) 能推出全部属性，且去掉 Ti 或 S 都无法推出全部（单独闭包均只有自身），所以**(时间，学生) 是唯一候选码**。</p>
+<hr>
+<h4 id="判断-R-的整体范式"><a href="#判断-R-的整体范式" class="headerlink" title="判断 R 的整体范式"></a>判断 R 的整体范式</h4><ul>
+<li><strong>候选键</strong>：(Ti, S)</li>
+<li><strong>主属性</strong>：Ti, S</li>
+<li><strong>非主属性</strong>：C, T, Ro, G</li>
+</ul>
+<p><strong>① 检查 2NF（是否存在部分依赖）</strong><br>部分依赖是指非主属性依赖于候选键的<strong>一部分</strong>（即单独依赖 Ti 或单独依赖 S）。<br>检查依赖集：没有任何依赖的左侧只有 Ti 或只有 S（所有依赖左侧都是组合或 C、Ro等）。因此<strong>不存在部分函数依赖</strong>，R 至少满足 <strong>2NF</strong>。</p>
+<p><strong>② 检查 3NF（是否存在传递依赖）</strong><br>我们需要找一个链条：<strong>候选键 → 非主属性 → 非主属性</strong>。</p>
+<ul>
+<li>首先，由 (Ti, S) → Ro（已知），且 (Ti, Ro) → C（已知），我们可以推出 <strong>(Ti, S) → C</strong>（因为先得 Ro，再用 Ro 和 Ti 得 C）。</li>
+<li>现在有链条：**(Ti, S) → C**，且 <strong>C → T</strong>（已知）。</li>
+<li>这里 C 和 T 都是<strong>非主属性</strong>，且 C 不能推出 (Ti, S)，所以 **T 传递依赖于候选键 (Ti, S)**。</li>
+</ul>
+<p>因此 R 不满足 3NF，最高只能到 <strong>2NF</strong>。</p>
+<hr>
+<p>分解后 R2 的范式</p>
+<ul>
+<li><strong>候选码</strong>：(S, C)</li>
+<li><strong>非主属性</strong>：G</li>
+</ul>
+<p>G完全依赖于(S, C)，至少是2NF。只有一个非主属性，不存在传递依赖，至少是3NF。唯一的依赖左侧 (学生, 课程) 是超键， 满足 <strong>BCNF</strong>。</p>
+<p>分解后 R3 (S，Ti，Ro, C)的范式</p>
+<p> (Ti, Ro) → C  , (Ti, S) → Ro  </p>
+<p>: (Ti, S) → Ro，加入 Ro → {S, Ti, Ro},由 (Ti, Ro) → C，加入 C → {S, Ti, Ro, C} &#x3D; 全集 U</p>
+<ul>
+<li><strong>候选码</strong>：(Ti, S)</li>
+<li><strong>非主属性</strong>：Ro, C</li>
+</ul>
+<p>Ro完全依赖于(Ti, S) ,  <strong>候选键里的属性子集（比如只拿Ti，或只拿S）不能单独推出非主属性</strong> C，所以C也不存在部分函数依赖，满足2NF。(Ti, S) → Ro Ti → C 存在传递依赖，不满足3NF。既然不满足 3NF，也就不用再看 BCNF 了（BCNF 比 3NF 更严格）。</p>
+<p>但是即便跳过 3NF 直接看 BCNF，也会发现不满足。BCNF 要求：<strong>所有函数依赖的左侧都必须是超键</strong>。<br>依赖 (Ti, Ro) → C：左侧 (Ti, Ro) 的闭包是 {Ti, Ro, C}，缺少 S，不等于全集 U，所以 (Ti, Ro) <strong>不是超键</strong>。因此 R3 也不满足 BCNF。</p>
+</blockquote>
+<h3 id="范式判断步骤"><a href="#范式判断步骤" class="headerlink" title="范式判断步骤"></a>范式判断步骤</h3><p>判断一个关系模式属于哪一级范式，请按从低到高顺序，满足一条再往后判断：</p>
+<ol>
+<li><strong>1NF</strong>：属性是否都不可再分（原子性）？一般都是默认满足。</li>
+<li><strong>2NF</strong>：在 1NF 基础上，检查是否存在 <strong>非主属性对候选码的部分函数依赖</strong>（即非主属性依赖于候选键的<strong>真子集</strong>）。<ul>
+<li>若无，则达到 2NF。</li>
+</ul>
+</li>
+<li><strong>3NF</strong>：在 2NF 基础上，检查是否存在 <strong>非主属性Y对候选码X的传递函数依赖</strong>: X → Y，Y → Z，其中 X 是候选键，Y 和 Z 都是非主属性，且 Y 不能推出 X。（也就是找一个链条：<strong>候选键 → 非主属性 → 非主属性</strong>，且链条的前两个遵循后不推前）。<ul>
+<li>若无，则达到 3NF。</li>
+</ul>
+</li>
+<li><strong>BCNF</strong>：在 3NF 基础上，检查<strong>所有函数依赖的左侧（决定因素）是否都是超键</strong>（即是否能推出全部属性）。<ul>
+<li>若所有左侧都是超键，则达到 BCNF。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>超键：</p>
+<p><strong>在关系模式中，能够唯一标识一条记录（元组）的属性或属性组合。</strong>只要给出的这组属性在整个表里不会有重复值（能区分每一行），那它就是超键。</p>
+<p><strong>候选键 &#x3D; 最小的超键</strong>（去掉任何一个属性，就不能唯一标识记录了）。<br><strong>主键 &#x3D; 从候选键里选出来的一个</strong>。<br><strong>所以：超键 ≥ 候选键 ≥ 主键</strong>（范围从大到小）。</p>
+<p>例如：学生表有（学号，姓名，身份证号）。</p>
+<ul>
+<li><strong>超键</strong>：{学号}、{身份证号}、{学号, 姓名}、{身份证号, 姓名}、{学号, 身份证号}……只要能区分每个人的都算超键。</li>
+<li><strong>候选键</strong>：只有 {学号} 和 {身份证号}，因为去掉姓名后仍然能区分，它们是最精简的。</li>
+<li><strong>主键</strong>：如果选了 {学号} 做主键，那它就是唯一的那个。</li>
+</ul>
+<p>在函数依赖中，判断“是不是超键”有一个数学标准：<br><strong>如果属性集 X 的闭包 X+等于全集 U</strong>，那么 <strong>X 就是超键</strong>。</p>
+</blockquote>
+<h3 id="各个范式存在的问题"><a href="#各个范式存在的问题" class="headerlink" title="各个范式存在的问题"></a>各个范式存在的问题</h3><p>1NF（第一范式）只保证属性原子性。</p>
+<ul>
+<li><strong>存在大量数据冗余</strong>，且<strong>插入、删除异常严重，修改操作存在不一致性</strong>。</li>
+</ul>
+<p>2NF（第二范式）消除了非主属性对候选码的“部分依赖”，但遗留了“传递依赖”</p>
+<ul>
+<li><strong>残留问题</strong>：<strong>依然存在较严重的冗余和异常</strong>，但比1NF好一些。</li>
+</ul>
+<p>3NF（第三范式）消除了非主属性对候选键的<strong>传递</strong>依赖。</p>
+<ul>
+<li><strong>残留问题</strong>：<strong>冗余大幅减少，异常极少发生</strong>，但依然存在。</li>
+</ul>
+<p>BCNF：消除了“决定因素不是超键”的情况，要求<strong>所有依赖的左侧都必须是超键</strong>。</p>
+<ul>
+<li><strong>残留问题</strong>：<strong>针对“函数依赖”而言，冗余和异常基本被彻底消灭</strong>。</li>
+<li><strong>特殊情况（极少数）</strong>：BCNF依然可能存在由<strong>多值依赖</strong>或<strong>连接依赖</strong>引起的冗余（这已经是4NF和5NF的范畴了）。例如，一个教师教多门课，又指导多个项目，即使满足BCNF，表里依然会有大量重复，但这时插入&#x2F;删除异常已极其轻微，且不属于常规函数依赖导致的问题。</li>
+</ul>
+<h1 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h1><p>六个阶段，每个阶段需要什么</p>
+<p>分布式数据库</p>
+<p>杂题</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io">Cheng-orange</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://orange-xue.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/">https://orange-xue.github.io/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://orange-xue.github.io" target="_blank">圆橙子</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mysql/">mysql</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">数据库理论学习-sql语句</div></div><div class="info-2"><div class="info-item-1">列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223242526272829/*创建*/-- 约束项没有就不加create table 表名 (	列名 数据类型 约束1 约束2,    	 ...		 ,    列名 数据类型 约束1);/*删除*/drop table 表名;     -- 直接删除表，不检查是否存在drop table if exists 表名; -- 如果存在表就删除/*修改*/-- 插入一列。如果不要求在特定列后插入，after及以后部分不写alter table 表名 add 列名 数据类型 约束 after 特定列;-- 交换列1、2alter table 表名 modify 列名1 数据类型 after...</div></div></div></a><a class="pagination-related" href="/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/" title="数据库理论学习-冗余异常判断和关系分解"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">数据库理论学习-冗余异常判断和关系分解</div></div><div class="info-2"><div class="info-item-1">冗余异常判断1.找候选码，区分出主属性和非主属性 2.一般1、2、3NF都是有冗余和修改、插入、删除异常的（有冗余一定有异常）。BCNF一般就没有冗余和异常了，除非存在“多值依赖”，才会有冗余  冗余：能够由其他数据推导出的、不必要的重复存储”。  元组重复：整行数据（除主键外）完全相同，也就是非主属性值在表中多次重复出现。 派生冗余：比如表中同时存了“单价、数量、总价”，总价可以由前两者算出，那么“总价”这一列也是冗余（即使它没有完全重复的值）。   插入异常：想插入一条“只包含新实体信息，但缺少主键（或主键不全）”的记录，看插得进去吗  正常情况：学校成立了“人工智能系”，系主任是“赵教授”。这是一个客观事实，理应被数据库记录下来。 现实困境：因为这张表的主键是“学号”，而新系目前还没有招生（没有学生）。为了能插入，只能伪造一个“虚拟学号”（比如...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/05/07/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0/" title="数据库学习-updating"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-07</div><div class="info-item-2">数据库学习-updating</div></div><div class="info-2"><div class="info-item-1"> navicat+idea  1.MySQL下载2.数据库服务启动和连接win+r并输入cmd，同时按住ctrl和shift并点确定，用管理员模式打开cmd。 12net start mysql //启动数据库服务mysql -u root -p //连接到数据库  不用管理员模式会显示“发生系统错误5.拒绝访问”。 3.navicat连接到本地数据库并建表 连接前先启动数据库服务   点击进入连接信息界面后依次填入信息，最后点击下方“测试连接”。测试无误后点击确认即可连接到本地数据库。 右键建库建表。使用“生成数据”生成模拟数据。 4.idea中连接数据库点击图中右侧图标后，选择“新建数据源”，输入用户、密码、数据库这些信息后“测试连接”，最后点击确认即可。  创建后窗口会自动弹出console窗口，后续各种表和数据操作的sql语句在这里编写和保存。可以右键选择将其重命名，这样便于后续操作。 5.Mybatis1.配置Mybatis并测试1.创建springboot项目时勾选Mybatis相关依赖：MySQL Driver和MyBaties...</div></div></div></a><a class="pagination-related" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135506.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-19</div><div class="info-item-2">数据库理论学习-ER图相关内容</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">数据库理论学习-sql语句</div></div><div class="info-2"><div class="info-item-1">列约束not null 非空 unique 列中值唯一 PRIMARY KEY 主键 FOREIGN KEY 外键 CHECK(条件) 检查，用于限制列中的值必须满足指定条件 AUTO_INCREMENT 关键字用于创建一个自增长的列 数据定义DDL 提供定义关系模式和视图、删除关系和视图、修改关系模式的命令  表的增删改查1234567891011121314151617181920212223242526272829/*创建*/-- 约束项没有就不加create table 表名 (	列名 数据类型 约束1 约束2,    	 ...		 ,    列名 数据类型 约束1);/*删除*/drop table 表名;     -- 直接删除表，不检查是否存在drop table if exists 表名; -- 如果存在表就删除/*修改*/-- 插入一列。如果不要求在特定列后插入，after及以后部分不写alter table 表名 add 列名 数据类型 约束 after 特定列;-- 交换列1、2alter table 表名 modify 列名1 数据类型 after...</div></div></div></a><a class="pagination-related" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-10</div><div class="info-item-2">数据库理论学习-关系代数</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a><a class="pagination-related" href="/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/" title="数据库理论学习-冗余异常判断和关系分解"><img class="cover" src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-18</div><div class="info-item-2">数据库理论学习-冗余异常判断和关系分解</div></div><div class="info-2"><div class="info-item-1">冗余异常判断1.找候选码，区分出主属性和非主属性 2.一般1、2、3NF都是有冗余和修改、插入、删除异常的（有冗余一定有异常）。BCNF一般就没有冗余和异常了，除非存在“多值依赖”，才会有冗余  冗余：能够由其他数据推导出的、不必要的重复存储”。  元组重复：整行数据（除主键外）完全相同，也就是非主属性值在表中多次重复出现。 派生冗余：比如表中同时存了“单价、数量、总价”，总价可以由前两者算出，那么“总价”这一列也是冗余（即使它没有完全重复的值）。   插入异常：想插入一条“只包含新实体信息，但缺少主键（或主键不全）”的记录，看插得进去吗  正常情况：学校成立了“人工智能系”，系主任是“赵教授”。这是一个客观事实，理应被数据库记录下来。 现实困境：因为这张表的主键是“学号”，而新系目前还没有招生（没有学生）。为了能插入，只能伪造一个“虚拟学号”（比如...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Cheng-orange</div><div class="author-info-description">一起看日出吧^</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/orange-xue"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">数据模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">关系代数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E8%AF%AD%E8%A8%80"><span class="toc-number">3.</span> <span class="toc-text">SQL语言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1"><span class="toc-number">3.1.</span> <span class="toc-text">1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2"><span class="toc-number">3.2.</span> <span class="toc-text">2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3"><span class="toc-number">3.3.</span> <span class="toc-text">3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E8%81%94%E7%B3%BB%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.4.</span> <span class="toc-text">4联系类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">三级模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96%E5%92%8C%E5%B1%9E%E6%80%A7%E9%97%AD%E5%8C%85%E8%AE%A1%E7%AE%97"><span class="toc-number">5.</span> <span class="toc-text">函数依赖和属性闭包计算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1"><span class="toc-number">5.1.</span> <span class="toc-text">1</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%85%88%E7%9C%8B%E5%8D%95%E4%B8%AA%E5%B1%9E%E6%80%A7%E6%98%AF%E5%90%A6%E8%83%BD%E6%88%90%E4%B8%BA%E5%80%99%E9%80%89%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">1. 先看单个属性是否能成为候选关键字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%9C%8B%E4%B8%A4%E4%B8%AA%E5%B1%9E%E6%80%A7%E7%BB%84%E5%90%88"><span class="toc-number">5.1.0.2.</span> <span class="toc-text">2. 看两个属性组合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%B8%BB%E5%B1%9E%E6%80%A7%E5%92%8C%E9%9D%9E%E4%B8%BB%E5%B1%9E%E6%80%A7"><span class="toc-number">5.1.0.3.</span> <span class="toc-text">3. 主属性和非主属性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1"><span class="toc-number">5.2.</span> <span class="toc-text">2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1"><span class="toc-number">5.3.</span> <span class="toc-text">3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B1%82%EF%BC%88%E4%B8%BB%E9%94%AE%EF%BC%89"><span class="toc-number">5.3.0.1.</span> <span class="toc-text">1. 求（主键）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%A4%E6%96%AD%E5%86%97%E4%BD%99%E7%9A%84%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="toc-number">5.3.0.2.</span> <span class="toc-text">2. 判断冗余的函数依赖</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4"><span class="toc-number">5.4.</span> <span class="toc-text">4</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%A4%E6%96%AD%E4%BC%A0%E9%80%92%E4%BE%9D%E8%B5%96"><span class="toc-number">5.4.0.1.</span> <span class="toc-text">2. 判断传递依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E6%9E%90-Fr%EF%BC%88R-%E4%B8%AD%EF%BC%89%EF%BC%9A"><span class="toc-number">5.4.0.1.1.</span> <span class="toc-text">分析 Fr（R 中）：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E6%9E%90-Fs%EF%BC%88S-%E4%B8%AD%EF%BC%89%EF%BC%9A"><span class="toc-number">5.4.0.1.2.</span> <span class="toc-text">分析 Fs（S 中）：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%90%E4%B8%AA%E6%8E%92%E9%99%A4%E9%80%89%E9%A1%B9%EF%BC%9A"><span class="toc-number">5.4.0.1.3.</span> <span class="toc-text">逐个排除选项：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Armstrong-%E5%85%AC%E7%90%86"><span class="toc-number">5.4.1.</span> <span class="toc-text">Armstrong 公理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%97%E4%BD%99%E4%BE%9D%E8%B5%96"><span class="toc-number">5.4.2.</span> <span class="toc-text">冗余依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E4%B8%BB%E9%94%AE-%E5%B1%9E%E6%80%A7%E9%97%AD%E5%8C%85%E7%9A%84%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="toc-number">5.4.3.</span> <span class="toc-text">判断主键-属性闭包的计算方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F"><span class="toc-number">6.</span> <span class="toc-text">范式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD-R-%E7%9A%84%E6%95%B4%E4%BD%93%E8%8C%83%E5%BC%8F"><span class="toc-number">6.0.0.1.</span> <span class="toc-text">判断 R 的整体范式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F%E5%88%A4%E6%96%AD%E6%AD%A5%E9%AA%A4"><span class="toc-number">6.0.1.</span> <span class="toc-text">范式判断步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%84%E4%B8%AA%E8%8C%83%E5%BC%8F%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">6.0.2.</span> <span class="toc-text">各个范式存在的问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1"><span class="toc-number">7.</span> <span class="toc-text">数据库设计</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135506.jpg" data-cover-fallback="/img/cover7.jpg" onerror="this.onerror=null;this.src='/img/cover7.jpg'" alt="数据库理论学习-ER图相关内容"/></a><div class="content"><a class="title" href="/2026/08/19/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-ER%E5%9B%BE%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9/" title="数据库理论学习-ER图相关内容">数据库理论学习-ER图相关内容</a><time datetime="2026-08-19T03:11:03.000Z" title="发表于 2026-08-19 11:11:03">2026-08-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/" title="数据库理论学习-冗余异常判断和关系分解"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133065.jpg" data-cover-fallback="/img/cover6.jpg" onerror="this.onerror=null;this.src='/img/cover6.jpg'" alt="数据库理论学习-冗余异常判断和关系分解"/></a><div class="content"><a class="title" href="/2026/08/18/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%86%97%E4%BD%99%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD%E5%92%8C%E5%85%B3%E7%B3%BB%E5%88%86%E8%A7%A3/" title="数据库理论学习-冗余异常判断和关系分解">数据库理论学习-冗余异常判断和关系分解</a><time datetime="2026-08-18T02:09:06.000Z" title="发表于 2026-08-18 10:09:06">2026-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/" title="数据库理论学习-软考真题"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg" data-cover-fallback="/img/cover5.jpg" onerror="this.onerror=null;this.src='/img/cover5.jpg'" alt="数据库理论学习-软考真题"/></a><div class="content"><a class="title" href="/2026/08/12/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E8%BD%AF%E8%80%83%E7%9C%9F%E9%A2%98/" title="数据库理论学习-软考真题">数据库理论学习-软考真题</a><time datetime="2026-08-12T05:51:13.000Z" title="发表于 2026-08-12 13:51:13">2026-08-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg" data-cover-fallback="/img/cover4.jpg" onerror="this.onerror=null;this.src='/img/cover4.jpg'" alt="数据库理论学习-sql语句"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-sql%E8%AF%AD%E5%8F%A5/" title="数据库理论学习-sql语句">数据库理论学习-sql语句</a><time datetime="2026-08-10T06:03:03.000Z" title="发表于 2026-08-10 14:03:03">2026-08-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数"><img src="https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg" data-cover-fallback="/img/cover3.jpg" onerror="this.onerror=null;this.src='/img/cover3.jpg'" alt="数据库理论学习-关系代数"/></a><div class="content"><a class="title" href="/2026/08/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0/" title="数据库理论学习-关系代数">数据库理论学习-关系代数</a><time datetime="2026-08-10T02:17:43.000Z" title="发表于 2026-08-10 10:17:43">2026-08-10</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2026 By Cheng-orange</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i><span id="percent">0</span></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script defer src="/js/nav.js"></script><script defer data-pjax src="/js/readPercent.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([href="/bpfs/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      const usePjax = true
+      false 
+        ? (usePjax ? pjax.loadUrl('/404.html') : window.location.href = '/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script>window.COVER_LOCAL_POOL=[];</script>
+<script defer data-pjax src="/js/cover-fallback.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 380px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 320px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135218.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/JAVA后端/&quot;);" href="javascript:void(0);">JAVA后端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">SpringBoot相关知识学习</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135217.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/hexo/&quot;);" href="javascript:void(0);">hexo</a><span class="categoryBar-list-count">4</span><span class="categoryBar-list-descr">blog美化建设中...</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135216.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/安装和使用/&quot;);" href="javascript:void(0);">安装和使用</a><span class="categoryBar-list-count">3</span><span class="categoryBar-list-descr">各种环境与工具安装使用</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135214.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/部署/&quot;);" href="javascript:void(0);">部署</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">打包与服务器部署</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135507.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/前端/&quot;);" href="javascript:void(0);">前端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">vue3相关</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291135215.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/demo/&quot;);" href="javascript:void(0);">demo</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">无所属项目</span></li><li class="categoryBar-list-item" style="background:url(https://cdn.jsdelivr.net/gh/orange-xue/PicgoImg/202607291133066.jpg);"> <a class="categoryBar-list-link" onclick="pjax.loadUrl(&quot;categories/数据库/&quot;);" href="javascript:void(0);">数据库</a><span class="categoryBar-list-count">6</span><span class="categoryBar-list-descr">mysql</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><!-- hexo injector body_end end --></body></html>
