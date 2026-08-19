@@ -260,15 +260,17 @@
 }
 
 :root {
-  --trans-light: rgba(255, 255, 255, 0.88);
-  --trans-dark: rgba(25, 25, 25, 0.88);
-  --border-style: 1px solid rgb(169, 169, 169);
-  --backdrop-filter: blur(5px) saturate(150%);
+  /* 毛玻璃：半透明底 + 模糊（适中） */
+  --trans-light: rgba(255, 255, 255, 0.72);
+  --trans-dark: rgba(25, 25, 25, 0.72);
+  --border-style: 1px solid rgba(169, 169, 169, 0.45);
+  --backdrop-filter: blur(20px) saturate(160%);
 }
 
 /* 首页文章卡片 */
 #recent-posts .recent-post-items > .recent-post-item {
-  background: #fff;
+  background: var(--trans-light);
+  -webkit-backdrop-filter: var(--backdrop-filter);
   backdrop-filter: var(--backdrop-filter);
   border-radius: 16px;
   border: var(--border-style);
@@ -348,6 +350,7 @@
 /* 首页侧栏卡片 */
 #aside-content .card-widget {
   background: var(--trans-light);
+  -webkit-backdrop-filter: var(--backdrop-filter);
   backdrop-filter: var(--backdrop-filter);
   border-radius: 18px;
   border: var(--border-style);
@@ -358,6 +361,7 @@ div#post,
 div#page,
 div#archive {
   background: var(--trans-light);
+  -webkit-backdrop-filter: var(--backdrop-filter);
   backdrop-filter: var(--backdrop-filter);
   border: var(--border-style);
   border-radius: 20px;
@@ -365,12 +369,13 @@ div#archive {
 
 /* 导航栏 */
 #page-header.nav-fixed #nav {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.65);
+  -webkit-backdrop-filter: var(--backdrop-filter);
   backdrop-filter: var(--backdrop-filter);
 }
 
 [data-theme="dark"] #page-header.nav-fixed #nav {
-  background: rgba(0, 0, 0, 0.7) !important;
+  background: rgba(0, 0, 0, 0.55) !important;
 }
 
 /* 夜间模式遮罩 */
@@ -380,6 +385,8 @@ div#archive {
 [data-theme="dark"] div#archive,
 [data-theme="dark"] div#page {
   background: var(--trans-dark);
+  -webkit-backdrop-filter: var(--backdrop-filter);
+  backdrop-filter: var(--backdrop-filter);
 }
 
 
@@ -600,10 +607,233 @@ div#archive {
   color: #111 !important;
 }
 
-/* 文章段落两端对齐 */
-#article-container{
-  text-align: justify;
-  font-size: 22px;
-  line-height: 1.8;
-  font-family: "楷体";
+/* ========== 标签 / 分类页（毛玻璃卡片网格） ========== */
+#page.nc:has(.tax-page) {
+  padding: 24px 20px 48px !important;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.tax-page {
+  --tax-ink: #1e3a5f;
+  --tax-muted: #6b7c93;
+  --tax-accent: #5b9bd5;
+  --tax-pill-bg: rgba(91, 155, 213, 0.18);
+  --tax-glass: rgba(255, 255, 255, 0.62);
+  --tax-border: 1px solid rgba(255, 255, 255, 0.55);
+  --tax-shadow: 0 8px 28px rgba(30, 58, 95, 0.08);
+  box-sizing: border-box;
+}
+
+.tax-hero {
+  padding: 36px 40px 28px;
+  margin-bottom: 22px;
+  border-radius: 22px;
+  background: var(--tax-glass);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  border: var(--tax-border);
+  box-shadow: var(--tax-shadow);
+  box-sizing: border-box;
+}
+
+.tax-hero-title {
+  margin: 0 0 10px;
+  font-size: 2.6em;
+  font-weight: 800;
+  color: var(--tax-ink);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.tax-hero-desc {
+  margin: 0 0 18px;
+  max-width: 36em;
+  color: var(--tax-muted);
+  font-size: 1.02rem;
+  font-style: italic;
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  line-height: 1.7;
+}
+
+.tax-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tax-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--tax-pill-bg);
+  color: var(--tax-accent);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.tax-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.tax-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 118px;
+  padding: 18px 18px 14px;
+  border-radius: 18px;
+  background: var(--tax-glass);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  border: var(--tax-border);
+  box-shadow: var(--tax-shadow);
+  text-decoration: none !important;
+  color: var(--tax-ink);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  box-sizing: border-box;
+}
+
+.tax-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(30, 58, 95, 0.14);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--tax-ink);
+}
+
+.tax-card-body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tax-card-name {
+  flex: 1 1 auto;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--tax-ink);
+  word-break: break-word;
+}
+
+.tax-hash {
+  color: var(--tax-accent);
+  font-weight: 800;
+}
+
+.tax-card-count {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1;
+}
+
+.tax-card-num {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--tax-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.tax-card-unit {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--tax-muted);
+}
+
+.tax-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tax-card-line {
+  flex: 1 1 auto;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(91, 155, 213, 0.35), transparent);
+}
+
+.tax-card-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.tax-card-dots .tax-dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--tax-accent);
+  opacity: 0.75;
+}
+
+.tax-empty {
+  text-align: center;
+  color: var(--tax-muted);
+  padding: 40px 0;
+}
+
+[data-theme='dark'] .tax-page {
+  --tax-ink: #e8eef8;
+  --tax-muted: #a8b4c4;
+  --tax-accent: #8ec5ff;
+  --tax-pill-bg: rgba(142, 197, 255, 0.16);
+  --tax-glass: rgba(30, 36, 48, 0.62);
+  --tax-border: 1px solid rgba(255, 255, 255, 0.12);
+  --tax-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+[data-theme='dark'] .tax-card:hover {
+  background: rgba(40, 48, 64, 0.78);
+}
+
+@media screen and (max-width: 1100px) {
+  .tax-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #page.nc:has(.tax-page) {
+    padding: 16px 12px 36px !important;
+  }
+
+  .tax-hero {
+    padding: 26px 20px 20px;
+    border-radius: 16px;
+  }
+
+  .tax-hero-title {
+    font-size: 2em;
+  }
+
+  .tax-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .tax-card {
+    min-height: 104px;
+    padding: 14px 14px 12px;
+    border-radius: 14px;
+  }
+
+  .tax-card-num {
+    font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .tax-grid {
+    grid-template-columns: 1fr;
+  }
 }
